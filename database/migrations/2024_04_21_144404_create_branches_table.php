@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('seat');
             $table->string('type')->default('single');
             $table->text('details')->nullable();
-            $table->foreignIdFor('company_id')->constrained('companies')->onDelete('cascade');
+            $table->foreignId('company_id')->constrained('companies', 'id')->onDelete('cascade');
             $table->timestamps();
         });
     }
