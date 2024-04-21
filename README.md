@@ -31,3 +31,7 @@ To run unit test:
 `1. docker-compose exec app bash`
 
 `2. vendor/bin/phpunit`
+
+Schema hints diagram
+
+![alt text](image.png)
