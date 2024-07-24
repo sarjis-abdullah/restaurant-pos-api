@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -12,19 +13,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $states  = array_column(PaymentStatus::cases(), 'value');
-        Schema::create('payments', function (Blueprint $table) use ($states) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
+            $table->unsignedBigInteger('customer_id');
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
-            $table->enum('status', $states);
-            $table->integer('date');
-            $table->integer('amount');
-            $table->integer('receivedAmount')->nullable();
-            $table->integer('changedAmount')->nullable();
-            $table->string('method');
+            $table->dateTime('date');
+            $table->decimal('amount');
+            $table->decimal('receivedAmount')->nullable();
+            $table->decimal('changedAmount')->nullable();
+            $table->string('method')->default(PaymentMethod::cash->value);
+            $table->string('status')->default(PaymentStatus::pending->value);
             $table->string('referenceNumber')->nullable();
             $table->string('transactionNumber')->nullable();
+            $table->foreignId('company_id')->constrained('companies', 'id')->onDelete('cascade');
             $table->timestamps();
         });
     }

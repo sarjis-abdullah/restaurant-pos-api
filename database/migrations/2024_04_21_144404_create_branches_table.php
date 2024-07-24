@@ -15,10 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('phone');
-            $table->string('status')->default('active');
+            $table->string('status')->default(\App\Enums\BranchStatus::active);
             $table->text('address')->nullable();
-            $table->integer('seat');
-            $table->string('type')->default('single');
+            $table->string('type')->default(\App\Enums\BranchType::multiple);
             $table->text('details')->nullable();
             $table->foreignId('company_id')->constrained('companies', 'id')->onDelete('cascade');
             $table->timestamps();

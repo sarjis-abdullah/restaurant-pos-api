@@ -12,11 +12,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $states  = array_column(CompanyStatus::cases(), 'value');
-        Schema::create('companies', function (Blueprint $table) use ($states) {
+        Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('status', $states)->default('active');
+            $table->string('status')->default(CompanyStatus::active->value);
             $table->timestamps();
         });
     }

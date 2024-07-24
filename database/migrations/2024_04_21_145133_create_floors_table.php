@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
+            $table->string('status')->default(\App\Enums\FloorStatus::open->value);
+            $table->foreignId('company_id')->constrained('companies', 'id')->onDelete('cascade');
             $table->timestamps();
         });
     }

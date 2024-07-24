@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('floor_id')->constrained()->onDelete('cascade');
             $table->integer('seat');
-            $table->enum('status', ['fill-up', 'empty', 'available']);
+            $table->string('status')->default(\App\Enums\TableStatus::available->value);
+            $table->foreignId('company_id')->constrained('companies', 'id')->onDelete('cascade');
             $table->timestamps();
         });
     }

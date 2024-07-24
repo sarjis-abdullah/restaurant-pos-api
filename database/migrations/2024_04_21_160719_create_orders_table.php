@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\OrderStatus;
 use App\Enums\OrderType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -12,15 +13,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $order_types  = array_column(OrderType::cases(), 'value');
-        Schema::create('orders', function (Blueprint $table) use ($order_types) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->enum('status', ['ready for kitchen', 'delivered']);
-            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
-            $table->foreignId('table_id')->constrained()->onDelete('cascade');
-            $table->date('date');
-            $table->enum('type', $order_types);
-            $table->date('pickup_date');
+            $table->unsignedBigInteger('order_by');
+            $table->unsignedBigInteger('table_id');
+            $table->dateTime('date');
+            $table->string('status')->default(OrderStatus::processing->value);
+            $table->string('type')->default(OrderType::dine_in->value);
+            $table->dateTime('pickup_date')->nullable();
+            $table->foreignId('company_id')->constrained('companies', 'id')->onDelete('cascade');
             $table->timestamps();
         });
     }

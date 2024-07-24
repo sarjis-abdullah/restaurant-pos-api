@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->date('start_date');
             $table->date('end_date');
+            $table->string('status')->default(\App\Enums\MenuStatus::available);
+            $table->foreignId('company_id')->constrained('companies', 'id')->onDelete('cascade');
             $table->timestamps();
         });
     }
