@@ -4,9 +4,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function (Request $request) {
-    return response()->json(['message' => 'INAIA Trading API. hello']);
+    return response()->json(['message' => 'INAIA Trading API.']);
 });
 
+Route::get('/test', function (Request $request) {
+    return response()->json(['message' => 'INAIA Trading API. test']);
+})->middleware('auth:sanctum');
 
 Route::group(['prefix' => 'api/v1'], function () {
     Route::get('/', function (Request $request) {
