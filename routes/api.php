@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-dd(122);
 Route::get('/', function (Request $request) {
     return response()->json(['message' => 'INAIA Trading API.']);
 });
@@ -19,9 +18,8 @@ Route::group(['prefix' => 'api/v1'], function () {
 
     Route::post('/login', 'UserController@login')->name('login');
 
-    Route::group(['prefix' => 'instruments'], function () {
-        Route::get('/', 'InstrumentController@index');
-        Route::get('/supported', 'InstrumentController@getListOfSupportedInstruments');
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::apiResource('user', 'UserController');
     });
 
     Route::group(['prefix' => 'trading-user'], function () {

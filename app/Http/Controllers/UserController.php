@@ -10,14 +10,18 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function index()
+    {
+        $users = User::paginate(1);
+        return $users;
+    }
     public function login()
     {
         $user = User::find(1);
-        $token = $user->createToken();
+        $token = $user->createToken('test');
         return response()->json([
-            'token' => $token,
             'plainTextToken' => $token->plainTextToken,
-            $user
+            'user' => $user,
         ]);
     }
 
