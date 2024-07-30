@@ -2,6 +2,7 @@
 
 use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,17 +16,17 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('customer_id');
-            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
-            $table->dateTime('date');
-            $table->decimal('amount');
-            $table->decimal('receivedAmount')->nullable();
-            $table->decimal('changedAmount')->nullable();
+            $table->decimal('total_amount');
+            $table->decimal('paid_amount');
             $table->string('method')->default(PaymentMethod::cash->value);
             $table->string('status')->default(PaymentStatus::pending->value);
-            $table->string('referenceNumber')->nullable();
-            $table->string('transactionNumber')->nullable();
-            $table->foreignId('company_id')->constrained('companies', 'id')->onDelete('cascade');
+            $table->string('reference_number')->nullable();
+            $table->string('transaction_number')->nullable();
+            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
+            $table->foreignIdFor(User::class, 'created_by');
+            $table->foreignIdFor(User::class, 'received_by');
+            $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
+            $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
             $table->timestamps();
         });
     }

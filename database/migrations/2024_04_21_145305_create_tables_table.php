@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\TableStatus;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,9 +15,14 @@ return new class extends Migration
     {
         Schema::create('tables', function (Blueprint $table) {
             $table->id();
+            $table->integer('max_seat');
+            $table->integer('min_seat')->nullable();
+            $table->string('status')->default(TableStatus::available->value);
+            $table->dateTime('booking_from')->nullable();
+            $table->dateTime('booking_to')->nullable();
+            $table->foreignIdFor(User::class, 'booked_by')->nullable();
             $table->foreignId('floor_id')->constrained()->onDelete('cascade');
-            $table->integer('seat');
-            $table->string('status')->default(\App\Enums\TableStatus::available->value);
+            $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
             $table->foreignId('company_id')->constrained('companies', 'id')->onDelete('cascade');
             $table->timestamps();
         });

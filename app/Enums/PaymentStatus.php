@@ -8,4 +8,7 @@ enum PaymentStatus : string
     case failed        = 'failed';
     case declined        = 'declined';
     case pending        = 'pending';
+    case paid = 'paid'   ;
+    const unpaid = 'unpaid';
+    const partial = 'partial';
 }

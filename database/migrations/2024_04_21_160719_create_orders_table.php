@@ -2,6 +2,9 @@
 
 use App\Enums\OrderStatus;
 use App\Enums\OrderType;
+use App\Models\MenuItem;
+use App\Models\Table;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,12 +18,13 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('order_by');
-            $table->unsignedBigInteger('table_id');
-            $table->dateTime('date');
+            $table->foreignIdFor(User::class, 'order_by');
+            $table->foreignIdFor(MenuItem::class, 'menu_item_id');
+            $table->foreignIdFor(Table::class, 'table_id');
             $table->string('status')->default(OrderStatus::processing->value);
             $table->string('type')->default(OrderType::dine_in->value);
             $table->dateTime('pickup_date')->nullable();
+            $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
             $table->foreignId('company_id')->constrained('companies', 'id')->onDelete('cascade');
             $table->timestamps();
         });

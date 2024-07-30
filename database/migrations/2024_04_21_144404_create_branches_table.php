@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('branches', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('phone');
+            $table->string('contact_number')->nullable();
             $table->string('status')->default(\App\Enums\BranchStatus::active);
             $table->text('address')->nullable();
             $table->string('type')->default(\App\Enums\BranchType::multiple);
