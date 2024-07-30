@@ -24,7 +24,7 @@ services:
     container_name: webserver_restaurant_pos_service
     restart: unless-stopped
     ports:
-      - "8190:80"
+      - "8199:80"
       - "23527:23517"
     volumes:
       - .:/var/www
