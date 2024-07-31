@@ -7,13 +7,9 @@ Route::get('/', function (Request $request) {
     return response()->json(['message' => 'INAIA Trading API.']);
 });
 
-Route::get('/test', function (Request $request) {
-    return response()->json(['message' => 'INAIA Trading API. test']);
-})->middleware('auth:sanctum');
-
 Route::group(['prefix' => 'api/v1'], function () {
     Route::get('/', function (Request $request) {
-        return response()->json(['message' => 'INAIA Trading API.']);
+        return response()->json(['message' => 'Restaurant POS API.']);
     });
 
     Route::post('/login', 'UserController@login')->name('login');

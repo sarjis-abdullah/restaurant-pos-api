@@ -6,25 +6,32 @@ Tech stack:
 
 `3. Mysql: ^8.0`
 
+To run locally (recommended):
+
+`1. docker-compose build` (for the first time it will take some time to install everything.)
+
+`2. docker-compose up -d` (everytime before run this project should execute this command)
+
+`docker-compose build --no-cache` (this command will remove existing docker setup and create new instance)
+
 To setup locally:
 
 `create a .env file in project root directory`
 
 `copy and paste everything from .env.example to .env`
 
+`docker-compose exec app bash`
+
 `composer install`
 
 `php artisan config:clear`
-
-To run locally:
-
-`docker-compose up` (for the first time it will take some time to install everything.)
 
 To run migrations:
 
 `1. docker-compose exec app bash`
 
 `2. php artisan migrate`
+
 
 To run unit test:
 
@@ -35,3 +42,7 @@ To run unit test:
 Schema hints diagram
 
 ![alt text](image.png)
+
+Schema design
+
+https://dbdiagram.io/d/6624910103593b6b61872f2a
