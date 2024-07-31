@@ -42,6 +42,7 @@ To run unit test:
 Schema hints diagram
 
 ![alt text](image.png)
+![alt text](schema-2.svg)
 
 Schema design
 
