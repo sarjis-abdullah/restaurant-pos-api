@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreFloorRequest;
 use App\Http\Requests\UpdateFloorRequest;
+use App\Http\Resources\FloorResource;
+use App\Http\Resources\FloorResourceCollection;
 use App\Models\Floor;
 
 class FloorController extends Controller
@@ -13,7 +15,8 @@ class FloorController extends Controller
      */
     public function index()
     {
-        //
+        $items = Floor::paginate(5);
+        return new FloorResourceCollection($items);
     }
 
     /**
@@ -29,7 +32,8 @@ class FloorController extends Controller
      */
     public function store(StoreFloorRequest $request)
     {
-        //
+        $items = Floor::create($request->all());
+        return new FloorResource($items);
     }
 
     /**

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePaymentRequest;
 use App\Http\Requests\UpdatePaymentRequest;
+use App\Http\Resources\PaymentResource;
+use App\Http\Resources\PaymentResourceCollection;
 use App\Models\Payment;
 
 class PaymentController extends Controller
@@ -13,7 +15,8 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        //
+        $items = Payment::paginate(5);
+        return new PaymentResourceCollection($items);
     }
 
     /**
@@ -29,7 +32,8 @@ class PaymentController extends Controller
      */
     public function store(StorePaymentRequest $request)
     {
-        //
+        $items = Payment::paginate(5);
+        return new PaymentResource($items);
     }
 
     /**

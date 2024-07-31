@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Resources\CategoryResource;
+use App\Http\Resources\CategoryResourceCollection;
 use App\Models\Category;
 
 class CategoryController extends Controller
@@ -13,7 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $items = Category::paginate(5);
+        return new CategoryResourceCollection($items);
     }
 
     /**
@@ -29,7 +32,8 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        $items = Category::create($request->all());
+        return new CategoryResource($items);
     }
 
     /**

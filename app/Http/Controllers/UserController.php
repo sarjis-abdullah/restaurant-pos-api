@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\LoginRequest;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\UserResourceCollection;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -12,17 +16,24 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(1);
-        return $users;
+        $users = User::paginate(5);
+        return new UserResourceCollection($users);
     }
-    public function login()
+    public function login(LoginRequest $request)
     {
-        $user = User::find(1);
-        $token = $user->createToken('test');
-        return response()->json([
-            'plainTextToken' => $token->plainTextToken,
-            'user' => $user,
-        ]);
+        $user = User::where('email', $request->email)->first();
+
+        if ($user instanceof User) {
+            if (Hash::check($request->get('password'), $user->password)) {
+                $token = $user->createToken('Password Grant Client')->plainTextToken;
+
+                return response(['accessToken' => $token, 'user' => new UserResource($user)], 200);
+            } else {
+                return response(['message' => 'password mismatch error'], 422);
+            }
+        } else {
+            return response(['message' => 'No user in this credentials'], 422);
+        }
     }
 
     /**
@@ -38,7 +49,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $users = User::create($request->all());
+        return new UserResource($users);
     }
 
     /**

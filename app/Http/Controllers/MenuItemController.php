@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMenuItemRequest;
 use App\Http\Requests\UpdateMenuItemRequest;
+use App\Http\Resources\MenuItemResource;
+use App\Http\Resources\MenuItemResourceCollection;
 use App\Models\MenuItem;
 
 class MenuItemController extends Controller
@@ -13,7 +15,8 @@ class MenuItemController extends Controller
      */
     public function index()
     {
-        //
+        $items = MenuItem::paginate(5);
+        return new MenuItemResourceCollection($items);
     }
 
     /**
@@ -29,7 +32,8 @@ class MenuItemController extends Controller
      */
     public function store(StoreMenuItemRequest $request)
     {
-        //
+        $items = MenuItem::paginate(5);
+        return new MenuItemResource($items);
     }
 
     /**

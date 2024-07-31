@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMenuRequest;
 use App\Http\Requests\UpdateMenuRequest;
+use App\Http\Resources\FloorResource;
+use App\Http\Resources\MenuResourceCollection;
+use App\Models\Floor;
 use App\Models\Menu;
 
 class MenuController extends Controller
@@ -13,7 +16,8 @@ class MenuController extends Controller
      */
     public function index()
     {
-        //
+        $items = Menu::paginate(5);
+        return new MenuResourceCollection($items);
     }
 
     /**
@@ -29,7 +33,8 @@ class MenuController extends Controller
      */
     public function store(StoreMenuRequest $request)
     {
-        //
+        $items = Floor::paginate(5);
+        return new FloorResource($items);
     }
 
     /**

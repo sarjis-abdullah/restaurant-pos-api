@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBranchRequest;
 use App\Http\Requests\UpdateBranchRequest;
+use App\Http\Resources\BranchResource;
+use App\Http\Resources\BranchResourceCollection;
 use App\Models\Branch;
 
 class BranchController extends Controller
@@ -13,7 +15,8 @@ class BranchController extends Controller
      */
     public function index()
     {
-        //
+        $items = Branch::paginate(5);
+        return new BranchResourceCollection($items);
     }
 
     /**
@@ -29,7 +32,8 @@ class BranchController extends Controller
      */
     public function store(StoreBranchRequest $request)
     {
-        //
+        $items = Branch::create($request->all());
+        return new BranchResource($items);
     }
 
     /**

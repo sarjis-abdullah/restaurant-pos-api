@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTableRequest;
 use App\Http\Requests\UpdateTableRequest;
+use App\Http\Resources\TableResource;
+use App\Http\Resources\TableResourceCollection;
 use App\Models\Table;
 
 class TableController extends Controller
@@ -13,7 +15,8 @@ class TableController extends Controller
      */
     public function index()
     {
-        //
+        $items = Table::paginate(5);
+        return new TableResourceCollection($items);
     }
 
     /**
@@ -29,7 +32,8 @@ class TableController extends Controller
      */
     public function store(StoreTableRequest $request)
     {
-        //
+        $items = Table::create($request->all());
+        return new TableResource($items);
     }
 
     /**
