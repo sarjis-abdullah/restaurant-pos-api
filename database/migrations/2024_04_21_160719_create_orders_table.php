@@ -19,6 +19,8 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class, 'order_by');
+            $table->foreignIdFor(User::class, 'prepare_by')->nullable();
+            $table->foreignIdFor(User::class, 'received_by')->nullable();
             $table->foreignIdFor(MenuItem::class, 'menu_item_id');
             $table->foreignIdFor(Table::class, 'table_id');
             $table->string('status')->default(OrderStatus::processing->value);

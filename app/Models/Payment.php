@@ -14,4 +14,9 @@ class Payment extends Model
         'reference_number', 'transaction_number',
         'company_id', 'branch_id'
     ];
+
+    function paid_by()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
 }
