@@ -7,13 +7,18 @@ class RolesAndPermissions
 {
 //#region Roles
 
-    public const EMPLOYEE    = 'employee';
-    public const ADMIN = 'admin';
-    public const OPERATOR = 'operator';
-    public const SUPER_ADMIN = 'super_admin';
-    public const CLERK       = 'clerk';
+    public const EMPLOYEE                   = 'employee';
+    public const ADMIN                      = 'admin';
+    public const OPERATOR                   = 'operator';
+    public const SUPER_ADMIN                = 'super_admin';
 
     public const CUSTOMER                   = 'customer';
+    public const WAITER                     = 'waiter';
+    public const CASHIER                    = 'cashier';
+    public const CHEF                       = 'chef';
+    public const MANAGER                    = 'manager';
+
+    public const CLERK                      = 'clerk';
     public const PRIVATE_CUSTOMER           = 'private_customer';
     public const BUSINESS_CUSTOMER          = 'business_customer';
     public const APPROVED_BUSINESS_CUSTOMER = 'approved_business_customer';

@@ -20,15 +20,14 @@ class RolesAndPermissionsSeeder extends Seeder
 
         createAllPermissions();
 
-        defineCustomerRole();
-        defineRolePrivateCustomer();
-        defineRoleBusinessCustomer();
-        defineRoleApprovedBusinessCustomer();
-        defineRoleInvestor();
-        defineRoleHomeBuyer();
+//        defineCustomerRole();
+//        defineRolePrivateCustomer();
+//        defineRoleBusinessCustomer();
+//        defineRoleApprovedBusinessCustomer();
+//        defineRoleInvestor();
+//        defineRoleHomeBuyer();
 
         defineEmployee();
-        defineRoleClerk();
         defineRoleSuperAdmin();
     }
 }
@@ -95,7 +94,19 @@ function defineRoleHomeBuyer()
 
 function defineEmployee()
 {
-    Role::create(['name' => RolesAndPermissions::ADMIN])
+    Role::create(['name' => RolesAndPermissions::WAITER])
+        ->givePermissionTo(RolesAndPermissions::PROFILE_VIEW);
+
+    Role::create(['name' => RolesAndPermissions::MANAGER])
+        ->givePermissionTo(RolesAndPermissions::PROFILE_VIEW);
+
+    Role::create(['name' => RolesAndPermissions::CHEF])
+        ->givePermissionTo(RolesAndPermissions::PROFILE_VIEW);
+
+    Role::create(['name' => RolesAndPermissions::CASHIER])
+        ->givePermissionTo(RolesAndPermissions::PROFILE_VIEW);
+
+    Role::create(['name' => RolesAndPermissions::CUSTOMER])
         ->givePermissionTo(RolesAndPermissions::PROFILE_VIEW);
 }
 
@@ -119,6 +130,12 @@ function defineRoleSuperAdmin()
             RolesAndPermissions::ALL_PERMISSIONS,
             ...RolesAndPermissions::PERMISSIONS,
             RolesAndPermissions::USER_EDIT_ADMINS,
+        ]);
+
+    Role::create(['name' => RolesAndPermissions::ADMIN])
+        ->givePermissionTo([
+            RolesAndPermissions::ALL_PERMISSIONS,
+            ...RolesAndPermissions::PERMISSIONS,
         ]);
 
 }

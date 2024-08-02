@@ -17,17 +17,30 @@ class UserSeeder extends Seeder
 
     public function run()
     {
+        $pass = '@Test123';
         $this->createUser(
-            'Super Admin',  'sarjis.m.a@gmail.com', '@Test123', RolesAndPermissions::SUPER_ADMIN
+            'SA|Sarjis',  'sarjis.m.a@gmail.com', $pass, RolesAndPermissions::SUPER_ADMIN
         );
         $this->createUser(
-            'Admin1',  'it@khulshimart.com', 'mplit@2024', RolesAndPermissions::ADMIN
+            'SA|',  'sadmin@gmail.com', $pass, RolesAndPermissions::SUPER_ADMIN
         );
         $this->createUser(
-            'Admin2', 'admin@khulshimart.com', 'khulshi@321', RolesAndPermissions::ADMIN
+            'A|Admin',  'admin@gmail.com', $pass, RolesAndPermissions::ADMIN
         );
         $this->createUser(
-            'Operator|Nishan', 'khalid@gmail.com', '@Test123', RolesAndPermissions::OPERATOR
+            'C|Customer', 'customer@gmail.com', $pass, RolesAndPermissions::CUSTOMER
+        );
+        $this->createUser(
+            'W|Waiter', 'khalid@gmail.com', $pass, RolesAndPermissions::WAITER
+        );
+        $this->createUser(
+            'CH|Chef', 'khalid@gmail.com', $pass, RolesAndPermissions::CHEF
+        );
+        $this->createUser(
+            'M|Manager', 'khalid@gmail.com', $pass, RolesAndPermissions::MANAGER
+        );
+        $this->createUser(
+            'CA|cashier', 'khalid@gmail.com', $pass, RolesAndPermissions::CASHIER
         );
     }
 
