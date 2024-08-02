@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
-interface BaseRepository
+interface BaseInterface
 {
     /**
      * find a resource by id

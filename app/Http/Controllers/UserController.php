@@ -6,18 +6,26 @@ use App\Http\Requests\User\LoginRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UserResourceCollection;
 use App\Models\User;
+use App\Repositories\Contracts\UserInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    private UserInterface $interface;
+
+    public function __construct(UserInterface $interface)
+    {
+        $this->interface = $interface;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): UserResourceCollection
     {
-        $users = User::paginate(5);
-        return new UserResourceCollection($users);
+        $data = $this->interface->findBy($request->all());
+        return new UserResourceCollection($data);
     }
     public function login(LoginRequest $request)
     {

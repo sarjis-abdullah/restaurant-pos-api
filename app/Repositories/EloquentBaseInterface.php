@@ -2,14 +2,14 @@
 
 namespace App\Repositories;
 
-use App\Repositories\Contracts\BaseRepository;
+use App\Repositories\Contracts\BaseInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-class EloquentBaseRepository implements BaseRepository
+class EloquentBaseInterface implements BaseInterface
 {
     /**
      * @var Model
@@ -17,7 +17,7 @@ class EloquentBaseRepository implements BaseRepository
     protected $model;
 
     /**
-     * EloquentBaseRepository constructor.
+     * EloquentBaseInterface constructor.
      *
      * @param Model $model
      */

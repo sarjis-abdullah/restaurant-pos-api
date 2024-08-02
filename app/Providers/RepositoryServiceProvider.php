@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 
-use App\Models\InstrumentSupported;
-use App\Repositories\Contracts\InstrumentSupportedRepository;
-use App\Repositories\EloquentInstrumentSupportedRepository;
+use App\Models\User;
+use App\Repositories\Contracts\UserInterface;
+use App\Repositories\EloquentUserRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -25,9 +25,9 @@ class RepositoryServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->app->bind(InstrumentSupportedRepository::class, fn() => new EloquentInstrumentSupportedRepository(new InstrumentSupported()));
+        $this->app->bind(UserInterface::class, fn() => new EloquentUserRepository(new User()));
 
 
     }
