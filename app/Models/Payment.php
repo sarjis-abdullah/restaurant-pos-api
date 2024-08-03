@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Payment extends Model
 {
@@ -15,8 +16,12 @@ class Payment extends Model
         'company_id', 'branch_id'
     ];
 
-    function paid_by()
+    function paid_by(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+    function received_by(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'received_by', 'id');
     }
 }

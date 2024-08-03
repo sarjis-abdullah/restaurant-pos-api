@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Branch\StoreRequest;
 use App\Http\Requests\StoreBranchRequest;
 use App\Http\Requests\UpdateBranchRequest;
 use App\Http\Resources\BranchResource;
@@ -30,7 +31,7 @@ class BranchController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBranchRequest $request)
+    public function store(StoreRequest $request)
     {
         $items = Branch::create($request->all());
         return new BranchResource($items);

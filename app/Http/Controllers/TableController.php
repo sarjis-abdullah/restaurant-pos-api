@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TableStatus;
+use App\Exceptions\PosException;
 use App\Http\Requests\StoreTableRequest;
+use App\Http\Requests\Table\BookingRequest;
+use App\Http\Requests\Table\StoreRequest;
 use App\Http\Requests\UpdateTableRequest;
 use App\Http\Resources\TableResource;
 use App\Http\Resources\TableResourceCollection;
@@ -30,10 +34,26 @@ class TableController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTableRequest $request)
+    public function store(StoreRequest $request)
     {
         $items = Table::create($request->all());
         return new TableResource($items);
+    }
+
+    /**
+     * @throws PosException
+     */
+    public function bookTable(BookingRequest $request, Table $table): TableResource
+    {
+        if ($table->status == TableStatus::available->value){
+            $table->update([
+                'status' => TableStatus::booked->value
+            ]);
+            return new TableResource($table);
+        }
+        throw new PosException([
+            'message' => 'Table is not available or already booked'
+        ]);
     }
 
     /**

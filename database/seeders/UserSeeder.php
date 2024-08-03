@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'SA|Sarjis',  'sarjis.m.a@gmail.com', $pass, RolesAndPermissions::SUPER_ADMIN
         );
         $this->createUser(
-            'SA|',  'sadmin@gmail.com', $pass, RolesAndPermissions::SUPER_ADMIN
+            'SA|',  'superadmin@gmail.com', $pass, RolesAndPermissions::SUPER_ADMIN
         );
         $this->createUser(
             'A|Admin',  'admin@gmail.com', $pass, RolesAndPermissions::ADMIN
@@ -31,16 +31,16 @@ class UserSeeder extends Seeder
             'C|Customer', 'customer@gmail.com', $pass, RolesAndPermissions::CUSTOMER
         );
         $this->createUser(
-            'W|Waiter', 'khalid@gmail.com', $pass, RolesAndPermissions::WAITER
+            'W|Waiter', 'waiter@gmail.com', $pass, RolesAndPermissions::WAITER
         );
         $this->createUser(
-            'CH|Chef', 'khalid@gmail.com', $pass, RolesAndPermissions::CHEF
+            'CH|Chef', 'chef@gmail.com', $pass, RolesAndPermissions::CHEF
         );
         $this->createUser(
-            'M|Manager', 'khalid@gmail.com', $pass, RolesAndPermissions::MANAGER
+            'M|Manager', 'manager@gmail.com', $pass, RolesAndPermissions::MANAGER
         );
         $this->createUser(
-            'CA|cashier', 'khalid@gmail.com', $pass, RolesAndPermissions::CASHIER
+            'CA|cashier', 'cashier@gmail.com', $pass, RolesAndPermissions::CASHIER
         );
     }
 

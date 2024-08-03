@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('contact_number')->nullable();
             $table->string('status')->default(\App\Enums\BranchStatus::active);
             $table->text('address')->nullable();
-            $table->string('type')->default(\App\Enums\BranchType::multiple);
+            $table->string('type')->default(\App\Enums\BranchType::generic);
             $table->text('details')->nullable();
             $table->foreignId('company_id')->constrained('companies', 'id')->onDelete('cascade');
             $table->timestamps();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Floor\StoreRequest;
 use App\Http\Requests\StoreFloorRequest;
 use App\Http\Requests\UpdateFloorRequest;
 use App\Http\Resources\FloorResource;
@@ -30,7 +31,7 @@ class FloorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreFloorRequest $request)
+    public function store(StoreRequest $request)
     {
         $items = Floor::create($request->all());
         return new FloorResource($items);
