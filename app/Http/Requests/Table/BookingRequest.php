@@ -16,7 +16,8 @@ class BookingRequest extends Request
     public function rules(): array
     {
         return [
-            //
+            'booking_from' => 'required|date|date_format:Y-m-d H:i:s',
+            'booking_to' => 'required|date|date_format:Y-m-d H:i:s',
         ];
     }
 }

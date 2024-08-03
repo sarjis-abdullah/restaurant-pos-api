@@ -15,12 +15,14 @@ return new class extends Migration
     {
         Schema::create('tables', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->integer('max_seat');
             $table->integer('min_seat')->nullable();
             $table->string('status')->default(TableStatus::available->value);
             $table->dateTime('booking_from')->nullable();
             $table->dateTime('booking_to')->nullable();
-            $table->foreignIdFor(User::class, 'booked_by')->nullable();
+            $table->foreignIdFor(User::class, 'request_by')->nullable();
+            $table->foreignIdFor(User::class, 'received_by')->nullable();
             $table->foreignId('floor_id')->constrained()->onDelete('cascade');
             $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
             $table->foreignId('company_id')->constrained('companies', 'id')->onDelete('cascade');

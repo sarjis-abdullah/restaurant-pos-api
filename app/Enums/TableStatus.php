@@ -8,4 +8,6 @@ enum TableStatus : string
     case empty      = 'empty';
     case booked      = 'booked';
     case available      = 'available';
+    case requestToBook      = 'request-to-book';
+    case released      = 'released';
 }

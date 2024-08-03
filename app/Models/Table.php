@@ -9,8 +9,16 @@ class Table extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'max_seat', 'min_seat', 'status', 'booking_from',
-        'booking_to', 'booked_by', 'floor_id', 'company_id',
-        'branch_id'
+        'name',
+        'max_seat',
+        'min_seat',
+        'status',
+        'booking_from',
+        'booking_to',
+        'floor_id',
+        'company_id',
+        'branch_id',
+        'request_by',
+        'received_by'
     ];
 }

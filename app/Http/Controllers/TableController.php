@@ -46,9 +46,9 @@ class TableController extends Controller
     public function bookTable(BookingRequest $request, Table $table): TableResource
     {
         if ($table->status == TableStatus::available->value){
-            $table->update([
-                'status' => TableStatus::booked->value
-            ]);
+            $data = $request->validated();
+            $data['status'] = TableStatus::booked->value;
+            $table->update($data);
             return new TableResource($table);
         }
         throw new PosException([
