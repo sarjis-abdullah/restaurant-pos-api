@@ -11,9 +11,17 @@ class Order extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'status', 'table_id', 'menu_item_id',
-        'type', 'pickup_date', 'company_id', 'branch_id',
-        'received_by', 'prepare_by', 'taken_by', 'order_by'
+        'status',
+        'table_id',
+        'menu_item_id',
+        'type',
+        'pickup_date',
+        'company_id',
+        'branch_id',
+        'received_by',
+        'prepare_by',
+        'taken_by',
+        'order_by'
     ];
     function order_by(): BelongsTo
     {
@@ -33,6 +41,10 @@ class Order extends Model
     }
     function order_items(): HasMany
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(OrderItem::class, 'order_id', 'id');
+    }
+    function menu_items()
+    {
+        return $this->belongsToMany(OrderItem::class, 'order_items', 'order_id', 'menu_item_id')->withTimestamps();
     }
 }

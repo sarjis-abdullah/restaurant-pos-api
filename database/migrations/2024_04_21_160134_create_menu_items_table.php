@@ -17,6 +17,12 @@ return new class extends Migration
             $table->decimal('price');
             $table->decimal('quantity');
             $table->foreignId('menu_id')->constrained('menus')->onDelete('cascade');
+            $table->string('type')->default('piece'); // 'piece', 'set_menu', 'mix_of_platter', etc.
+            $table->text('description')->nullable();
+//            $table->string('image_url')->nullable(); // should have attachments
+            $table->text('ingredients')->nullable();
+            $table->integer('preparation_time')->nullable(); // in minutes
+            $table->integer('serves')->default(1);
             $table->timestamps();
         });
     }

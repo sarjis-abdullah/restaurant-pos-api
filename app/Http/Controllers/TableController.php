@@ -47,7 +47,7 @@ class TableController extends Controller
     {
         if ($table->status == TableStatus::available->value){
             $data = $request->validated();
-            $data['status'] = TableStatus::booked->value;
+            $data['status'] = TableStatus::requestToBook->value;
             $table->update($data);
             return new TableResource($table);
         }
