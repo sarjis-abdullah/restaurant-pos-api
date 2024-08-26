@@ -123,10 +123,6 @@ class DatabaseSeeder extends Seeder
         dump('order assigned to chef');
 
         $order->update([
-            'prepare_by' => $chef->id,
-        ]);
-
-        $order->update([
             'status' => OrderStatus::ready->value
         ]);
 
