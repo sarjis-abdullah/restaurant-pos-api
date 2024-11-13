@@ -55,20 +55,6 @@ class DatabaseSeeder extends Seeder
             "max_seat" => 10
         ]);
 
-        $toDate = \Carbon\Carbon::parse('2025-11-01 15:04:19');
-
-        $table->update([
-            'status' => TableStatus::requestToBook->value,
-            'request_by' => $customer->id,
-            'booking_from' => Carbon::now()->toDateTimeString(),
-            'booking_to' => $toDate,
-        ]);
-
-        $table->update([
-            'status' => TableStatus::booked->value,
-            'received_by' => $admin->id,
-        ]);
-
         $menu = Menu::create([
             'name' => 'Sea food',
             "branch_id" => $branch->id,
@@ -84,6 +70,27 @@ class DatabaseSeeder extends Seeder
             "menu_id" => $menu->id,
         ]);
 
+        /*
+
+        $toDate = \Carbon\Carbon::parse('2025-11-01 15:04:19');
+
+        $table->update([
+            'status' => TableStatus::requestToBook->value,
+            'request_by' => $customer->id,
+            'booking_from' => Carbon::now()->toDateTimeString(),
+            'booking_to' => $toDate,
+        ]);
+
+        dump('Table is requestToBook');
+
+        $table->update([
+            'status' => TableStatus::booked->value,
+            'received_by' => $admin->id,
+        ]);
+
+        dump('Table is booked and received_by admin');
+
+        */
         $orderData = [
             'table_id' => $table->id,
             'menu_item_id' => $menuItem->id,
@@ -104,19 +111,30 @@ class DatabaseSeeder extends Seeder
 
         dump('order placed');
 
-        $order->update([
-            'received_by' => $admin->id,
+        $updateData = [
             'status' => OrderStatus::received->value
-        ]);
+        ];
+        if (isset($order->taken_by)){
+            $updateData['received_by'] = $order->taken_by;
+        }else{
+            $updateData['received_by'] = $admin->id;
+        }
+        $order->update($updateData);
 
         dump('order received');
+
+        $order->update([
+            'status' => OrderStatus::ready_for_kitchen->value
+        ]);
+
+        dump('order ready_for_kitchen');
 
         $order->update([
             'prepare_by' => $chef->id,
             'status' => OrderStatus::processing->value
         ]);
 
-        dump('order assigned to chef');
+        dump('order assigned to chef and order is processing');
 
         $order->update([
             'status' => OrderStatus::ready->value
