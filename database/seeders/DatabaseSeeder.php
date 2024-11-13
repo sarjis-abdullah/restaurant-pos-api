@@ -46,13 +46,11 @@ class DatabaseSeeder extends Seeder
         $floor = Floor::create([
             "name" => "Floor 1",
             "branch_id" => $branch->id,
-            'company_id' => $company->id
         ]);
 
         $table = Table::create([
             "name" => "Table 1",
             "branch_id" => $branch->id,
-            'company_id' => $company->id,
             "floor_id" => $floor->id,
             "max_seat" => 10
         ]);
@@ -74,7 +72,6 @@ class DatabaseSeeder extends Seeder
         $menu = Menu::create([
             'name' => 'Sea food',
             "branch_id" => $branch->id,
-            'company_id' => $company->id,
         ]);
 
         $menuItem = MenuItem::create([
@@ -93,7 +90,6 @@ class DatabaseSeeder extends Seeder
             'order_by' => $customer->id,
             'status' => OrderStatus::requested->value,
             'branch_id' => $branch->id,
-            'company_id' => $company->id,
         ];
         $this->processOrder($orderData, $admin, $chef);
 

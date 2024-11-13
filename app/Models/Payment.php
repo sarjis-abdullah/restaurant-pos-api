@@ -13,7 +13,7 @@ class Payment extends Model
         'created_by', 'received_by', 'order_id', 'status',
         'total_amount', 'paid_amount', 'method',
         'reference_number', 'transaction_number',
-        'company_id', 'branch_id'
+        'branch_id'
     ];
 
     function paid_by(): BelongsTo

@@ -6,13 +6,13 @@ Tech stack:
 
 `3. Mysql: ^8.0`
 
-To run locally (recommended):
+To run locally (recommended for linux):
 
-`1. docker-compose build` (for the first time it will take some time to install everything.)
+`1. sudo docker-compose build` (for the first time it will take some time to install everything.)
 
-`2. docker-compose up -d` (everytime before run this project should execute this command)
+`2. sudo docker-compose up -d` (everytime before run this project should execute this command)
 
-`docker-compose build --no-cache` (this command will remove existing docker setup and create new instance)
+`sudo docker-compose build --no-cache` (this command will remove existing docker setup and create new instance)
 
 To setup locally:
 

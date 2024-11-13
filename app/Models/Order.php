@@ -16,7 +16,6 @@ class Order extends Model
         'menu_item_id',
         'type',
         'pickup_date',
-        'company_id',
         'branch_id',
         'received_by',
         'prepare_by',

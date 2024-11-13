@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class, 'created_by');
             $table->foreignIdFor(User::class, 'received_by');
             $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
-            $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
+//            $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
             $table->timestamps();
         });
     }

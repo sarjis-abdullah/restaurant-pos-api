@@ -16,7 +16,6 @@ class Table extends Model
         'booking_from',
         'booking_to',
         'floor_id',
-        'company_id',
         'branch_id',
         'request_by',
         'received_by'

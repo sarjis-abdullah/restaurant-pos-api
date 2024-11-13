@@ -25,7 +25,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class, 'received_by')->nullable();
             $table->foreignId('floor_id')->constrained()->onDelete('cascade');
             $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
-            $table->foreignId('company_id')->constrained('companies', 'id')->onDelete('cascade');
+//            $table->foreignId('company_id')->constrained('companies', 'id')->onDelete('cascade');
             $table->timestamps();
         });
     }
