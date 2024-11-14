@@ -10,6 +10,19 @@ class MenuItem extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'price', 'quantity', 'category_id', 'menu_id'
+        'name',
+        'price',
+        'quantity',
+        'category_id',
+        'menu_id',
+        'discount_id',
+        'tax_id',
+        'tax_included',
+        'type',
+        'description',
+        'ingredients',
+        'preparation_time',
+        'serves',
+        'allow_other_discount',
     ];
 }

@@ -5,19 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Discount extends Model
+class Tax extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'name',
+        'rate',
         'type',
-        'amount',
-        'promo_code',
-        'valid_for_hours',
-        'valid_after_visits',
-        'start_date',
-        'end_date',
-        'is_active',
         'branch_id',
     ];
 }

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true); // Whether discount is active
             $table->dateTime('start_date')->nullable(); // Whether discount is active
             $table->dateTime('end_date')->nullable(); // Whether discount is active
+            $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
             $table->timestamps();
         });
     }

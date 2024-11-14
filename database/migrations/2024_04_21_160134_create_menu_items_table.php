@@ -18,6 +18,8 @@ return new class extends Migration
             $table->decimal('quantity');
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('discount_id')->nullable();
+            $table->unsignedBigInteger('tax_id')->nullable();
+            $table->boolean('tax_included')->default(false);
             $table->foreignId('menu_id')->constrained('menus')->onDelete('cascade');
             $table->string('type')->default('piece'); // 'piece', 'set_menu', 'mix_of_platter', etc.
             $table->text('description')->nullable();

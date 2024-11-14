@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order_items', function (Blueprint $table) {
+        Schema::create('taxes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
-            $table->foreignId('menu_item_id')->constrained('menu_items')->onDelete('cascade');
-            $table->decimal('total_price');
-            $table->decimal('quantity', 5, 2);
+            $table->string('name')->nullable(); // e.g., "Sales Tax", "Luxury Tax"
+            $table->decimal('rate'); // The tax rate as a decimal
+            $table->enum('type', ['flat', 'percentage'])->default('percentage');
+            $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_items');
+        Schema::dropIfExists('taxes');
     }
 };

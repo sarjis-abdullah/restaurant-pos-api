@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\OrderStatus;
+use App\Enums\OrderType;
 use App\Enums\TableStatus;
 use App\Models\Branch;
 use App\Models\Company;
@@ -12,6 +13,7 @@ use App\Models\MenuItem;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Table;
+use App\Models\Tax;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Carbon\Carbon;
@@ -57,11 +59,22 @@ class DatabaseSeeder extends Seeder
             "branch_id" => $branch->id,
         ]);
 
-        $table = Table::create([
-            "name" => "Table ".$faker->name,
-            "branch_id" => $branch->id,
-            "floor_id" => $floor->id,
-        ]);
+        foreach (range(1, 10) as $index) {
+            $table = Table::create([
+                "name" => "Table ".$faker->name,
+                "branch_id" => $branch->id,
+                "floor_id" => $floor->id,
+            ]);
+        }
+
+        foreach (range(1, 3) as $index) {
+            Tax::create([
+                'name' => 'Tax '.$faker->name,
+                "rate" => 5,
+                "branch_id" => $branch->id,
+                "type" => 'percentage',
+            ]);
+        }
 
         $this->call([
             MenuSeeder::class,
@@ -104,53 +117,39 @@ class DatabaseSeeder extends Seeder
 
         */
         $orderData = [
-            'table_id' => $table->id,
-            'order_by' => $customer->id,
-            'status' => OrderStatus::requested->value,
+            'table_id'  => $table->id,
+            'created_by' => $waiter->id,
+            'status'    => OrderStatus::requested->value,
             'branch_id' => $branch->id,
+            'type'      => OrderType::dine_in->value,
         ];
-        $orderData['taken_by'] = $admin->id;
-        $this->processOrder($orderData, $admin, $chef, $menuItem);
 
-        $orderData['order_by'] = null;
-        $orderData['taken_by'] = $waiter->id;
-        $this->processOrder($orderData, $admin, $chef, $menuItem);
+
+
+//        $this->processOrder($orderData, $chef, $menuItem);
 
         DB::commit();
     }
 
-    function processOrder($data, $admin, $chef, $menuItem)
+    function processOrder($data, $chef, $menuItem)
     {
         $order = Order::create($data);
+
         $orderQty = rand(1,4);
         OrderItem::create([
             'order_id' => $order->id,
             'menu_item_id' => $menuItem->id,
-            'total_price' => $menuItem->price*$orderQty,
+            'total_price' => $menuItem->price*rand(1,4),
             'quantity' => $orderQty,
         ]);
 
         dump('order placed');
 
-        $updateData = [
-            'status' => OrderStatus::received->value
-        ];
-        $updateData['received_by'] = $order->taken_by;
-//        if (isset($order?->taken_by)){
-//            $updateData['received_by'] = $order->taken_by;
-//            dump('order received_by ');
-//        }else{
-//            $updateData['received_by'] = $admin->id;
-//        }
-        $order->update($updateData);
-
-        dump('order received');
-
         $order->update([
-            'status' => OrderStatus::ready_for_kitchen->value
+            'status' => OrderStatus::received->value
         ]);
 
-        dump('order ready_for_kitchen');
+        dump('order received');
 
         $order->update([
             'prepare_by' => $chef->id,

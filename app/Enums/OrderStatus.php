@@ -10,4 +10,6 @@ enum OrderStatus: string
     case processing = 'processing';
     case requested = 'requested';
     case ready = 'ready';
+    case inKitchen = 'in-kitchen';
+    case cancelled = 'cancelled';
 }

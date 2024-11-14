@@ -16,9 +16,8 @@ class Order extends Model
         'type',
         'pickup_date',
         'branch_id',
-        'received_by',
         'prepare_by',
-        'taken_by',
+        'created_by',
         'order_by'
     ];
     function order_by(): BelongsTo
@@ -29,13 +28,9 @@ class Order extends Model
     {
         return $this->belongsTo(User::class, 'prepare_by', 'id');
     }
-    function received_by(): BelongsTo
+    function created_by(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'received_by', 'id');
-    }
-    function taken_by(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'taken_by', 'id');
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
     function order_items(): HasMany
     {
