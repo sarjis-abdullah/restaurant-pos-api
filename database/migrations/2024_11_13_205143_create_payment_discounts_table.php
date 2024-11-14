@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('payment_discounts', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); //promo, membership, instant discount etc.
-            $table->string('type'); //flat, percentage, free
+            $table->string('type'); //promo, membership, instant discount, menu item etc.
             $table->decimal('amount');
             $table->foreignId('payment_id')->constrained('payments')->onDelete('cascade');
             $table->timestamps();

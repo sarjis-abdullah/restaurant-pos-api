@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MenuItem extends Model
 {
@@ -25,4 +26,17 @@ class MenuItem extends Model
         'serves',
         'allow_other_discount',
     ];
+
+    function discount(): BelongsTo
+    {
+        return $this->belongsTo(Discount::class, 'discount_id', 'id');
+    }
+    function tax(): BelongsTo
+    {
+        return $this->belongsTo(Tax::class, 'tax_id', 'id');
+    }
+    function menu(): BelongsTo
+    {
+        return $this->belongsTo(Menu::class, 'menu_id', 'id');
+    }
 }

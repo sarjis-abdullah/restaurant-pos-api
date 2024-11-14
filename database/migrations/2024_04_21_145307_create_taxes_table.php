@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->nullable(); // e.g., "Sales Tax", "Luxury Tax"
             $table->decimal('rate'); // The tax rate as a decimal
             $table->enum('type', ['flat', 'percentage'])->default('percentage');
+            $table->boolean('apply_before_discount')->default(true);
             $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
             $table->timestamps();
         });
