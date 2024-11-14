@@ -10,8 +10,13 @@ class Branch extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'contact_number', 'status', 'address', 'type',
-        'details', 'company_id'
+        'name',
+        'contact_number',
+        'status',
+        'address',
+        'type',
+        'details',
+        'company_id'
     ];
 
     function company() : BelongsTo

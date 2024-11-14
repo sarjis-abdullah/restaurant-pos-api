@@ -22,13 +22,11 @@ return new class extends Migration
             $table->foreignIdFor(User::class, 'taken_by')->nullable();
             $table->foreignIdFor(User::class, 'prepare_by')->nullable();
             $table->foreignIdFor(User::class, 'received_by')->nullable();
-            $table->foreignIdFor(MenuItem::class, 'menu_item_id');
             $table->foreignIdFor(Table::class, 'table_id');
             $table->string('status')->default(OrderStatus::requested->value);
             $table->string('type')->default(OrderType::dine_in->value);
             $table->dateTime('pickup_date')->nullable();
             $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
-//            $table->foreignId('company_id')->constrained('companies', 'id')->onDelete('cascade');
             $table->timestamps();
         });
     }

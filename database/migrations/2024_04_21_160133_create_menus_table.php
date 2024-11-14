@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('status')->default(MenuStatus::available);
             $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
-//            $table->foreignId('company_id')->constrained('companies', 'id')->onDelete('cascade');
             $table->timestamps();
         });
     }

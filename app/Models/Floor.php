@@ -9,7 +9,8 @@ class Floor extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'status', 'booking_from', 'booking_to',
-        'booked_by', 'branch_id'
+        'name',
+        'status',
+        'branch_id'
     ];
 }

@@ -10,14 +10,12 @@ class Table extends Model
     use HasFactory;
     protected $fillable = [
         'name',
-        'max_seat',
-        'min_seat',
         'status',
         'booking_from',
         'booking_to',
         'floor_id',
         'branch_id',
-        'request_by',
-        'received_by'
+//        'request_by',
+//        'received_by'
     ];
 }

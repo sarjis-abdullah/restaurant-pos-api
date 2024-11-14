@@ -13,7 +13,6 @@ class Order extends Model
     protected $fillable = [
         'status',
         'table_id',
-        'menu_item_id',
         'type',
         'pickup_date',
         'branch_id',
@@ -41,9 +40,5 @@ class Order extends Model
     function order_items(): HasMany
     {
         return $this->hasMany(OrderItem::class, 'order_id', 'id');
-    }
-    function menu_items()
-    {
-        return $this->belongsToMany(OrderItem::class, 'order_items', 'order_id', 'menu_item_id')->withTimestamps();
     }
 }

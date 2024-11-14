@@ -10,20 +10,29 @@ use App\Models\Floor;
 use App\Models\Menu;
 use App\Models\MenuItem;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Table;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Faker\Factory as Faker;
+use Illuminate\Support\Str;
+
 
 class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
      */
-    public function run(): void
+    public function run()
     {
+
+        DB::beginTransaction();
+        $faker = Faker::create();
+
         $this->call([
             RolesAndPermissionsSeeder::class,
             UserSeeder::class,
@@ -35,33 +44,36 @@ class DatabaseSeeder extends Seeder
         $waiter = User::find(5);
 
         $company = Company::create([
-            'name' => 'Company 1 seeder'
+            'name' => 'Company '.$faker->company,
         ]);
 
         $branch = Branch::create([
-            'name' => 'Branch 1 seeder',
+            'name' => 'Branch '.$faker->name,
             'company_id' => $company->id
         ]);
 
         $floor = Floor::create([
-            "name" => "Floor 1",
+            "name" => "Floor ".$faker->firstName(),
             "branch_id" => $branch->id,
         ]);
 
         $table = Table::create([
-            "name" => "Table 1",
+            "name" => "Table ".$faker->name,
             "branch_id" => $branch->id,
             "floor_id" => $floor->id,
-            "max_seat" => 10
+        ]);
+
+        $this->call([
+            MenuSeeder::class,
         ]);
 
         $menu = Menu::create([
-            'name' => 'Sea food',
+            'name' => $faker->company,
             "branch_id" => $branch->id,
         ]);
 
         $menuItem = MenuItem::create([
-            "name" => 'Rui fish fry',
+            "name" => $faker->company,
             "price" => 200,
             "quantity" => 2,
             "type" => 'set-menu',
@@ -93,32 +105,43 @@ class DatabaseSeeder extends Seeder
         */
         $orderData = [
             'table_id' => $table->id,
-            'menu_item_id' => $menuItem->id,
             'order_by' => $customer->id,
             'status' => OrderStatus::requested->value,
             'branch_id' => $branch->id,
         ];
-        $this->processOrder($orderData, $admin, $chef);
+        $orderData['taken_by'] = $admin->id;
+        $this->processOrder($orderData, $admin, $chef, $menuItem);
 
         $orderData['order_by'] = null;
         $orderData['taken_by'] = $waiter->id;
-        $this->processOrder($orderData, $admin, $chef);
+        $this->processOrder($orderData, $admin, $chef, $menuItem);
+
+        DB::commit();
     }
 
-    function processOrder($data, $admin, $chef)
+    function processOrder($data, $admin, $chef, $menuItem)
     {
         $order = Order::create($data);
+        $orderQty = rand(1,4);
+        OrderItem::create([
+            'order_id' => $order->id,
+            'menu_item_id' => $menuItem->id,
+            'total_price' => $menuItem->price*$orderQty,
+            'quantity' => $orderQty,
+        ]);
 
         dump('order placed');
 
         $updateData = [
             'status' => OrderStatus::received->value
         ];
-        if (isset($order->taken_by)){
-            $updateData['received_by'] = $order->taken_by;
-        }else{
-            $updateData['received_by'] = $admin->id;
-        }
+        $updateData['received_by'] = $order->taken_by;
+//        if (isset($order?->taken_by)){
+//            $updateData['received_by'] = $order->taken_by;
+//            dump('order received_by ');
+//        }else{
+//            $updateData['received_by'] = $admin->id;
+//        }
         $order->update($updateData);
 
         dump('order received');

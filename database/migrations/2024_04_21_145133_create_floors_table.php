@@ -17,11 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('status')->default(FloorStatus::open->value);
-            $table->dateTime('booking_from')->nullable();
-            $table->dateTime('booking_to')->nullable();
-            $table->foreignIdFor(User::class, 'booked_by')->nullable();
             $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
-//            $table->foreignId('company_id')->constrained('companies', 'id')->onDelete('cascade');
             $table->timestamps();
         });
     }
