@@ -20,27 +20,23 @@ class PaymentSeeder extends Seeder
      */
     public function run(): void
     {
-        // Get an order to process payment
-        $order = Order::find(3); // Assume order ID is 1
-        $admin = User::find(2);  // The user handling the payment
+        $order = Order::find(3);
+        $admin = User::find(2);
 
-        // Retrieve order items for the order
         $orderItems = OrderItem::where('order_id', $order->id)
             ->with(['menu_item', 'menu_item.discount', 'menu_item.tax'])
             ->get();
 
-//        dump('Payment created successfully:', $orderItems->toArray());
         $expectedTotalAmount = 0;
         $totalDiscountAmount = 0;
         $menuItemDiscountAmount = 0;
-        $taxAmount = 0;
+        $totalTaxAmount = 0;
 
         foreach ($orderItems as $orderItem) {
+            $taxAmount = 0;
             $menuItem = $orderItem->menu_item;
             $itemPrice = $menuItem->price * $orderItem->quantity;
 
-//            dd($orderItem, $menuItem);
-            // Apply Discount if available
             if ($menuItem?->discount instanceof Discount) {
                 $discount = $menuItem->discount;
                 if ($discount->type === 'percentage') {
@@ -50,10 +46,13 @@ class PaymentSeeder extends Seeder
                 }
             }
 
-            // Adjust price after discount
+            if ($menuItem->allow_other_discount){
+                //todo
+                $totalDiscountAmount += 0;
+            }
+
             $priceAfterDiscount = $itemPrice - $menuItemDiscountAmount;
 
-            // Apply Tax if applicable
             if ($menuItem?->tax instanceof Tax) {
                 $tax = $menuItem->tax;
                 if (!$menuItem->tax_included) {
@@ -70,8 +69,8 @@ class PaymentSeeder extends Seeder
             }
 
             $expectedTotalAmount += $priceAfterDiscount + $taxAmount;
+            $totalTaxAmount += $taxAmount;
         }
-        dd($expectedTotalAmount);
         $totalDiscountAmount += $menuItemDiscountAmount;
         $customerPaysAmount = min($expectedTotalAmount, 10);
 
@@ -81,19 +80,17 @@ class PaymentSeeder extends Seeder
             $dueAmount = $expectedTotalAmount - $customerPaysAmount;
             $paymentType = 'partial-payment';
         }
-        // Create Payment record
+
         $payment = Payment::create([
             'total_amount' => $expectedTotalAmount,
-            'paid_amount' => $customerPaysAmount, // assuming full payment is done
-            'due_amount' => $dueAmount, // no due for full payment
-            'tax_amount' => $taxAmount,
+            'paid_amount' => $customerPaysAmount,
+            'due_amount' => $dueAmount,
+            'tax_amount' => $totalTaxAmount,
             'discount_amount' => $totalDiscountAmount,
-            'method' => 'cash', // or 'card', 'bkash', etc.
+            'method' => 'cash',
             'type' => $paymentType,
             'status' => 'success',
             'transaction_id' => uniqid(),
-//            'reference_number' => 'REF' . strtoupper(uniqid()),
-//            'transaction_number' => 'TXN' . strtoupper(uniqid()),
             'order_id' => $order->id,
             'created_by' => $admin->id,
             'received_by' => $admin->id,
@@ -108,11 +105,13 @@ class PaymentSeeder extends Seeder
             'date' => now(),
         ]);
 
-        PaymentDiscount::create([
-            'payment_id' => $payment->id,
-            'amount' => $menuItemDiscountAmount,
-            'type' => 'MenuItem',
-        ]);
+        if ($menuItemDiscountAmount > 0){
+            PaymentDiscount::create([
+                'payment_id' => $payment->id,
+                'amount' => $menuItemDiscountAmount,
+                'type' => 'MenuItem',
+            ]);
+        }
 
         dump('Payment created successfully:', $payment->toArray());
     }
