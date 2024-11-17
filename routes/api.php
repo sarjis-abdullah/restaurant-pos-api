@@ -59,6 +59,7 @@ Route::group(['prefix' => 'api/v1'], function () {
                 //  Route::get('/transaction', [\App\Http\Controllers\ReportController::class, 'getTransactionReport'])->name('transaction.report');
             });
             Route::apiResource('user', UserController::class);
+            Route::apiResource('branch', \App\Http\Controllers\BranchController::class);
             Route::apiResource('floor', \App\Http\Controllers\FloorController::class)->except('index');
             Route::apiResource('category', \App\Http\Controllers\CategoryController::class)->except('index');
 //            Route::apiResource('discount', \App\Http\Controllers\DiscountController::class)->except('index');

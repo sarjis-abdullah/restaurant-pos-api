@@ -9,7 +9,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-class EloquentBaseInterface implements BaseInterface
+class BaseRepository implements BaseInterface
 {
     /**
      * @var Model
@@ -17,7 +17,7 @@ class EloquentBaseInterface implements BaseInterface
     protected $model;
 
     /**
-     * EloquentBaseInterface constructor.
+     * BaseRepository constructor.
      *
      * @param Model $model
      */

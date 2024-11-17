@@ -1,23 +1,22 @@
 <?php
 
-namespace App\Http\Requests\Floor;
+namespace App\Http\Requests\User;
 
 use App\Http\Requests\Request;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends Request
+class UpdateRequest extends Request
 {
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'name' => 'required|string|unique:floors,name',
-            'branch_id' => 'required|exists:branches,id',
+            //
         ];
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class FloorResource extends JsonResource
+class FloorResource extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -14,6 +14,10 @@ class FloorResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'branch' => $this->when($this->needToInclude($request, 'b.branch'), fn()=> new BranchResource($this->branch)),
+        ];
     }
 }

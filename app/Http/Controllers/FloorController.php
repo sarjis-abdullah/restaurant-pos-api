@@ -2,21 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Floor\IndexRequest;
 use App\Http\Requests\Floor\StoreRequest;
+use App\Http\Requests\Floor\UpdateRequest;
 use App\Http\Requests\StoreFloorRequest;
 use App\Http\Requests\UpdateFloorRequest;
 use App\Http\Resources\FloorResource;
 use App\Http\Resources\FloorResourceCollection;
 use App\Models\Floor;
+use App\Repositories\Contracts\FloorInterface;
 
 class FloorController extends Controller
 {
+    private FloorInterface $interface;
+
+    public function __construct(FloorInterface $interface)
+    {
+        $this->interface = $interface;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexRequest $request)
     {
-        $items = Floor::paginate(5);
+        $items = $this->interface->findBy($request->all());
         return new FloorResourceCollection($items);
     }
 
@@ -33,7 +43,7 @@ class FloorController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $items = Floor::create($request->all());
+        $items = $this->interface->save($request->all());
         return new FloorResource($items);
     }
 
@@ -42,7 +52,7 @@ class FloorController extends Controller
      */
     public function show(Floor $floor)
     {
-        //
+        return new FloorResource($floor);
     }
 
     /**
@@ -56,16 +66,18 @@ class FloorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateFloorRequest $request, Floor $floor)
+    public function update(UpdateRequest $request, Floor $floor): FloorResource
     {
-        //
+        $items = $this->interface->update($floor, $request->all());
+        return new FloorResource($items);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Floor $floor)
+    public function destroy(Floor $floor): \Illuminate\Http\JsonResponse
     {
-        //
+        $this->interface->delete($floor);
+        return response()->json(null, 204);
     }
 }

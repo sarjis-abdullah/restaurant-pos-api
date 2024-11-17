@@ -2,21 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Branch\IndexRequest;
 use App\Http\Requests\Branch\StoreRequest;
 use App\Http\Requests\StoreBranchRequest;
 use App\Http\Requests\UpdateBranchRequest;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\BranchResourceCollection;
 use App\Models\Branch;
+use App\Repositories\Contracts\BranchInterface;
 
 class BranchController extends Controller
 {
+    private BranchInterface $interface;
+
+    public function __construct(BranchInterface $interface)
+    {
+        $this->interface = $interface;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexRequest $request)
     {
-        $items = Branch::paginate(5);
+        $items = $this->interface->findBy($request->all());
         return new BranchResourceCollection($items);
     }
 
@@ -56,7 +65,7 @@ class BranchController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBranchRequest $request, Branch $branch)
+    public function update(Update $request, Branch $branch)
     {
         //
     }

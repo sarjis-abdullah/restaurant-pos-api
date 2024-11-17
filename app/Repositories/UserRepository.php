@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Repositories\Contracts\UserInterface;
 
-class EloquentUserRepository extends EloquentBaseInterface implements UserInterface
+class UserRepository extends BaseRepository implements UserInterface
 {
 
 }

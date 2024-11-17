@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Floor extends Model
 {
@@ -13,4 +14,9 @@ class Floor extends Model
         'status',
         'branch_id'
     ];
+
+    function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
+    }
 }
