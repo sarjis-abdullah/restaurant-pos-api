@@ -45,8 +45,8 @@ Route::group(['prefix' => 'api/v1'], function () {
 //            Route::apiResource('membership', \App\Http\Controllers\MembershipController::class);
 //            Route::apiResource('cash-flow', \App\Http\Controllers\CashFlowController::class);
 
-            Route::get('category', [\App\Http\Controllers\CategoryController::class, 'index']);
-            Route::get('floor', [\App\Http\Controllers\FloorController::class, 'index']);
+//            Route::get('category', [\App\Http\Controllers\CategoryController::class, 'index']);
+//            Route::get('floor', [\App\Http\Controllers\FloorController::class, 'index']);
 
 //            Route::get('close-cash', [\App\Http\Controllers\CashFlowController::class, 'endDay']);
         });
@@ -60,9 +60,10 @@ Route::group(['prefix' => 'api/v1'], function () {
             });
             Route::apiResource('user', UserController::class);
             Route::apiResource('branch', \App\Http\Controllers\BranchController::class);
-            Route::apiResource('floor', \App\Http\Controllers\FloorController::class)->except('index');
-            Route::apiResource('category', \App\Http\Controllers\CategoryController::class)->except('index');
-//            Route::apiResource('discount', \App\Http\Controllers\DiscountController::class)->except('index');
+            Route::apiResource('floor', \App\Http\Controllers\FloorController::class);
+            Route::apiResource('category', \App\Http\Controllers\CategoryController::class);
+            Route::apiResource('discount', \App\Http\Controllers\DiscountController::class);
+            Route::apiResource('tax', \App\Http\Controllers\TaxController::class);
 //            Route::apiResource('membership-type', \App\Http\Controllers\MembershipTypeController::class);
         });
     });
