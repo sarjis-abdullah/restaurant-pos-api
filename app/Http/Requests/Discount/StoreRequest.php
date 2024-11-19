@@ -15,7 +15,14 @@ class StoreRequest extends Request
     public function rules(): array
     {
         return [
-            //
+            'type' => 'required|in:percentage,flat',
+//            'type' => 'required|in:percentage,flat,promo_code,time_based,loyalty,bulk',
+            'amount' => 'required|numeric|min:0',
+            'promo_code' => 'required|string|max:50|unique:discounts,promo_code',
+//            'valid_for_hours' => 'nullable|integer|min:1',
+//            'valid_after_visits' => 'nullable|integer|min:1',
+            'is_active' => 'required|boolean',
+            'branch_id' => 'required|exists:branches,id',
         ];
     }
 }
