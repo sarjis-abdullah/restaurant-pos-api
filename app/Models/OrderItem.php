@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OrderItem extends Model
 {
@@ -21,5 +22,13 @@ class OrderItem extends Model
     function menu_item(): BelongsTo
     {
         return $this->belongsTo(MenuItem::class, 'menu_item_id', 'id');
+    }
+    function variant(): BelongsTo
+    {
+        return $this->belongsTo(Variation::class, 'variant_id', 'id');
+    }
+    function orderItemAddons(): HasMany
+    {
+        return $this->hasMany(OrderItemAddon::class, 'order_item_id', 'id');
     }
 }

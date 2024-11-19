@@ -2,21 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Requests\Category\IndexRequest;
+use App\Http\Requests\Category\UpdateRequest;
+use App\Http\Requests\Category\StoreRequest;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\CategoryResourceCollection;
 use App\Models\Category;
+use App\Repositories\Contracts\CategoryInterface;
 
 class CategoryController extends Controller
 {
+    private CategoryInterface $interface;
+
+    public function __construct(CategoryInterface $interface)
+    {
+        $this->interface = $interface;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexRequest $request)
     {
-        $items = Category::paginate(5);
-        return new CategoryResourceCollection($items);
+        $list = $this->interface->findBy($request->all());
+        return new CategoryResourceCollection($list);
     }
 
     /**
@@ -30,10 +39,10 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(StoreRequest $request)
     {
-        $items = Category::create($request->all());
-        return new CategoryResource($items);
+        $list = $this->interface->save($request->all());
+        return new CategoryResource($list);
     }
 
     /**
@@ -41,7 +50,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return new CategoryResource($category);
     }
 
     /**
@@ -55,9 +64,10 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(UpdateRequest $request, Category $category)
     {
-        //
+        $list = $this->interface->update($category, $request->all());
+        return new CategoryResource($list);
     }
 
     /**

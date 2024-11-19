@@ -17,7 +17,7 @@ class FloorResource extends Resource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'branch' => $this->when($this->needToInclude($request, 'b.branch'), fn()=> new BranchResource($this->branch)),
+            'branch' => $this->when($this->needToInclude($request, 'b.branch'), fn() => new BranchResource($this->branch)),
         ];
     }
 }

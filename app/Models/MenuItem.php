@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class MenuItem extends Model
 {
@@ -38,5 +39,18 @@ class MenuItem extends Model
     function menu(): BelongsTo
     {
         return $this->belongsTo(Menu::class, 'menu_id', 'id');
+    }
+    function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
+
+    function variants(): HasMany
+    {
+        return $this->hasMany(Variation::class, 'menu_item_id', 'id');
+    }
+    function addons(): HasMany
+    {
+        return $this->hasMany(Addon::class, 'menu_item_id', 'id');
     }
 }
