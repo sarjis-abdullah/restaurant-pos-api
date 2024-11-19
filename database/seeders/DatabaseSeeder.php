@@ -31,10 +31,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            AddonSeeder::class,
-        ]);
-        return
+//        $this->call([
+//            OrderItemAddonSeeder::class,
+//        ]);
+//        return
         DB::beginTransaction();
         $faker = Faker::create();
 
@@ -82,6 +82,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             MenuSeeder::class,
             VariationSeeder::class,
+            AddonSeeder::class,
         ]);
 
         $menu = Menu::create([
