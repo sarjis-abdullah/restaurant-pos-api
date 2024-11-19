@@ -32,8 +32,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            MenuSeeder::class,
-            VariationSeeder::class,
+            AddonSeeder::class,
         ]);
         return
         DB::beginTransaction();
@@ -82,6 +81,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             MenuSeeder::class,
+            VariationSeeder::class,
         ]);
 
         $menu = Menu::create([
