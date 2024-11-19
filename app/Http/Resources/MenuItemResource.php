@@ -30,6 +30,10 @@ class MenuItemResource extends Resource
             'preparation_time'  => $this->preparation_time,
             'serves'            => $this->serves,
             'allow_other_discount' => $this->allow_other_discount,
+            'menu' => $this->when($this->needToInclude($request, 'menu'), fn() => new MenuResource($this->menu)),
+            'discount' => $this->when($this->needToInclude($request, 'discount'), fn() => new DiscountResource($this->discount)),
+            'tax' => $this->when($this->needToInclude($request, 'tax'), fn() => new TaxResource($this->tax)),
+            'category' => $this->when($this->needToInclude($request, 'category'), fn() => new CategoryResource($this->category)),
             'variants' => $this->when($this->needToInclude($request, 'variants'), fn() => VariationResource::collection($this->variants()->paginate(2))),
             'addons' => $this->when($this->needToInclude($request, 'addons'), fn() => AddonResource::collection($this->addons()->paginate(2))),
         ];
