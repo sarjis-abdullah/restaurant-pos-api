@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('variations', function (Blueprint $table) {
             $table->id();
-            $table->string('size')->nullable();
-            $table->string('color')->nullable();
-            $table->string('material')->nullable();
+            $table->string('name');
+            $table->string('type');
+            $table->decimal('price_modifier', 10, 2)->default(0);
             $table->foreignId('menu_item_id')->constrained('menu_items')->onDelete('cascade');
             $table->timestamps();
         });

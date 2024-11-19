@@ -31,6 +31,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call([
+            MenuSeeder::class,
+            VariationSeeder::class,
+        ]);
+        return
         DB::beginTransaction();
         $faker = Faker::create();
 

@@ -14,6 +14,7 @@ use App\Models\Table;
 use App\Models\Tax;
 use App\Models\User;
 use Carbon\Carbon;
+use Faker\Factory as Faker;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -121,6 +122,24 @@ class MenuSeeder extends Seeder
             'serves' => 1,
             'allow_other_discount' => true,
         ]);
+        $faker = Faker::create();
+        foreach (range(1,10) as $in){
+            MenuItem::create([
+                'name' => 'Fresh '.$faker->name,
+                'price' => $faker->numberBetween(1,100),
+                'quantity' => $faker->numberBetween(1,5),
+                'category_id' => $beverage->id, // Assume 'Beverages' category
+                'discount_id' => null,
+                'tax_id' => $taxIds->random(),
+                'menu_id' => $menu1->id, // Could appear in Breakfast Specials as well
+                'type' => 'piece',
+                'description' => '100% freshly '. $faker->name,
+                'ingredients' => 'Oranges',
+                'preparation_time' => 5,
+                'serves' => 1,
+                'allow_other_discount' => true,
+            ]);
+        }
 
 
         //orders
