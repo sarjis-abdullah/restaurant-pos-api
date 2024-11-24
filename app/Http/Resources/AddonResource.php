@@ -18,9 +18,9 @@ class AddonResource extends Resource
             'id' => $this->id,
             'name' => $this->name,
             'price' => $this->price,
-            'has_variations' => $this->has_variations,
+            'has_variants' => $this->has_variants,
             'branch_id' => $this->branch_id,
-            'variations' => $this->when($this->needToInclude($request, 'addon.variations'), fn()=> new AddonVariationResourceCollection($this->variations)),
+            'variants' => $this->when($this->needToInclude($request, 'addon.variants'), fn()=> new AddonVariationResourceCollection($this->variants)),
         ];
     }
 }

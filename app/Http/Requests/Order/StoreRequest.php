@@ -21,14 +21,14 @@ class StoreRequest extends Request
             'orders.*.addons' => 'array', // Addons is optional but if present, it must be an array
             'orders.*.addons.*.addon_id' => 'integer|exists:addons,id', // Validate addon_id, if addons exist
             'orders.*.addons.*.quantity' => 'integer|min:1', // Validate quantity of addon
-            'orders.*.addons.*.variant_id' => 'nullable|integer|exists:addon_variations,id', // Optional validation for variant_id
+            'orders.*.addons.*.variant_id' => 'nullable|integer|exists:addon_variants,id', // Optional validation for variant_id
             'orders.*.variant_id' => [
                 'nullable',
                 'integer',
                 function ($attribute, $value, $fail) {
                     $menuItemId = $this->input('orders.' . $this->getOrderIndex($attribute) . '.menu_item_id');
                     if ($menuItemId && $value) {
-                        $exists = \DB::table('variations')
+                        $exists = \DB::table('variants')
                             ->where('menu_item_id', $menuItemId)
                             ->where('id', $value)
                             ->exists();

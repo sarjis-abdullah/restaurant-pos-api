@@ -14,7 +14,7 @@ class Addon extends Model
     protected $fillable = [
         'name',
         'price',
-        'has_variations',
+        'has_variants',
         'menu_item_id',
     ];
 
@@ -23,7 +23,7 @@ class Addon extends Model
         return $this->belongsTo(MenuItem::class, 'menu_item_id', 'id');
     }
 
-    public function variations(): HasMany
+    public function variants(): HasMany
     {
         return $this->hasMany(AddonVariation::class);
     }

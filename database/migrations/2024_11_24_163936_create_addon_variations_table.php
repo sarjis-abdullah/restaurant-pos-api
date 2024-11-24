@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('addon_variations', function (Blueprint $table) {
+        Schema::create('addon_variants', function (Blueprint $table) {
             $table->id();
             $table->foreignId('addon_id')->constrained('addons')->onDelete('cascade');
             $table->string('attribute');
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('addon_variations');
+        Schema::dropIfExists('addon_variants');
     }
 };

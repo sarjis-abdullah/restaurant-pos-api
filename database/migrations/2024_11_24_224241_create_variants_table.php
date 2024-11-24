@@ -13,10 +13,6 @@ return new class extends Migration
     {
         Schema::create('variants', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('type');
-            $table->decimal('price', 10, 2)->default(0);
-            $table->foreignId('menu_item_id')->constrained('menu_items')->onDelete('cascade');
             $table->timestamps();
         });
     }

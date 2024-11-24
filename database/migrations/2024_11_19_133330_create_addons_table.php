@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->decimal('price');
             $table->text('description');
-            $table->boolean('has_variations')->default(false);
+            $table->boolean('has_variants')->default(false);
             $table->foreignId('menu_item_id')->constrained('menu_items')->onDelete('cascade'); // Link to a specific menu item
             $table->timestamps();
         });

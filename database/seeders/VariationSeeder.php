@@ -6,20 +6,20 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class VariationSeeder extends Seeder
+class variantseeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $variations = [
-            // Size Variations
+        $variants = [
+            // Size variants
             ['name' => 'Small', 'type' => 'size', 'price' => -1.00, 'menu_item_id' => 1],
             ['name' => 'Medium', 'type' => 'size', 'price' => 0.00, 'menu_item_id' => 1],
             ['name' => 'Large', 'type' => 'size', 'price' => 2.00, 'menu_item_id' => 1],
 
-            // Customization Variations
+            // Customization variants
             ['name' => 'Mild', 'type' => 'customization', 'price' => 0.00, 'menu_item_id' => 2],
             ['name' => 'Medium Spicy', 'type' => 'customization', 'price' => 0.00, 'menu_item_id' => 2],
             ['name' => 'Extra Hot', 'type' => 'customization', 'price' => 1.00, 'menu_item_id' => 2],
@@ -49,7 +49,7 @@ class VariationSeeder extends Seeder
             ['name' => 'Plastic Cup', 'type' => 'container', 'price' => -0.25, 'menu_item_id' => 7],
             ['name' => 'Paper Cup', 'type' => 'container', 'price' => 0.00, 'menu_item_id' => 7],
 
-            // Region-Specific Variations
+            // Region-Specific variants
             ['name' => 'Thin Crust', 'type' => 'regional', 'price' => 0.00, 'menu_item_id' => 8],
             ['name' => 'Stuffed Crust', 'type' => 'regional', 'price' => 3.00, 'menu_item_id' => 8],
 
@@ -58,10 +58,10 @@ class VariationSeeder extends Seeder
             ['name' => 'Gluten-Free', 'type' => 'diet', 'price' => 1.50, 'menu_item_id' => 9],
         ];
 
-        // Insert all variations
-        DB::table('variations')->insert($variations);
+        // Insert all variants
+        DB::table('variants')->insert($variants);
 
-        $variations = [
+        $variants = [
             ['name' => 'Red', 'type' => 'color', 'price' => 0.50, 'menu_item_id' => 10],
             ['name' => 'Green', 'type' => 'color', 'price' => 0.75, 'menu_item_id' => 10],
             ['name' => 'Yellow', 'type' => 'color', 'price' => 1.00, 'menu_item_id' => 10],
@@ -69,6 +69,6 @@ class VariationSeeder extends Seeder
             ['name' => 'Black', 'type' => 'color', 'price' => 1.25, 'menu_item_id' => 12],
         ];
 
-        DB::table('variations')->insert($variations);
+        DB::table('variants')->insert($variants);
     }
 }

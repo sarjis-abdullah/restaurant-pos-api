@@ -36,8 +36,8 @@ dump(1);
 
         DB::table('addons')->insert($addons);
 
-        $cheese = Addon::create(['name' => 'Cheese', 'price' => 10.00, 'has_variations' => true,  'menu_item_id' => $menuItemIds->random()]);
-        $sauce = Addon::create(['name' => 'Sauce', 'price' => 5.00, 'has_variations' => true, 'menu_item_id' => $menuItemIds->random()]);
+        $cheese = Addon::create(['name' => 'Cheese', 'price' => 10.00, 'has_variants' => true,  'menu_item_id' => $menuItemIds->random()]);
+        $sauce = Addon::create(['name' => 'Sauce', 'price' => 5.00, 'has_variants' => true, 'menu_item_id' => $menuItemIds->random()]);
 
         AddonVariation::insert([
             ['addon_id' => $cheese->id, 'attribute' => 'size', 'value' => 'small', 'price' => -2.00],
@@ -46,7 +46,7 @@ dump(1);
             ['addon_id' => $sauce->id, 'attribute' => 'color', 'value' => 'green', 'price' => 1.00],
         ]);
         dump(2);
-        $addonVariations = [
+        $addonvariants = [
             // Cheese Addon
             ['attribute' => 'size', 'value' => 'Small', 'price' => -2.00],
             ['attribute' => 'size', 'value' => 'Medium', 'price' => 0.00],
@@ -77,7 +77,7 @@ dump(1);
         // Fetch all Addon IDs
         $addonIds = Addon::pluck('id')->toArray();
         dump(66);
-        foreach ($addonVariations as $variation) {
+        foreach ($addonvariants as $variation) {
             AddonVariation::create(array_merge($variation, [
                 'addon_id' => $addonIds[array_rand($addonIds)], // Assign random addon_id
             ]));

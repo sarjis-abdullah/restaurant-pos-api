@@ -18,7 +18,7 @@ class StoreRequest extends Request
         return [
             'name' => 'required|string',
             'base_price' => 'required|numeric',
-            'has_variations' => 'required|boolean',
+            'has_variants' => 'required|boolean',
         ];
     }
 }
