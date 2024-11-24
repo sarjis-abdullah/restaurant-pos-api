@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('addon_variations', function (Blueprint $table) {
+        Schema::create('order_discounts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('addon_id')->constrained('addons')->onDelete('cascade');
-            $table->string('attribute');
-            $table->string('value');
-            $table->decimal('price', 10, 2)->default(0);
+            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
+            $table->string('type'); //membership, promo
+            $table->decimal('discount_amount');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('addon_variations');
+        Schema::dropIfExists('order_discounts');
     }
 };

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('type');
-            $table->decimal('price_modifier', 10, 2)->default(0);
+            $table->decimal('price', 10, 2)->default(0);
             $table->foreignId('menu_item_id')->constrained('menu_items')->onDelete('cascade');
             $table->timestamps();
         });

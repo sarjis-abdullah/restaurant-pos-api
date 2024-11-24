@@ -25,6 +25,9 @@ return new class extends Migration
             $table->string('status')->default(OrderStatus::requested->value);
             $table->string('type')->default(OrderType::dine_in->value);
             $table->dateTime('pickup_date')->nullable();
+            $table->decimal('total_price');
+            $table->decimal('total_discount');
+            $table->dateTime('order_date');
             $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
             $table->timestamps();
         });

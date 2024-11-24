@@ -14,7 +14,7 @@ class Variation extends Model
     protected $fillable = [
         'name',
         'type',
-        'price_modifier',
+        'price',
         'menu_item_id',
     ];
 

@@ -10,7 +10,7 @@ class AddonVariation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['addon_id', 'attribute', 'value', 'price_modifier'];
+    protected $fillable = ['addon_id', 'attribute', 'value', 'price'];
 
     public function addon(): BelongsTo
     {

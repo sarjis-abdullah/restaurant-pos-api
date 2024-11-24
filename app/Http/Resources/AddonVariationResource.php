@@ -18,7 +18,7 @@ class AddonVariationResource extends JsonResource
             'id' => $this->id,
             'addon_id' => $this->addon_id,
             'attribute' => $this->attribute,
-            'price_modifier' => $this->price_modifier,
+            'price' => $this->price,
             'value' => $this->value,
         ];
     }

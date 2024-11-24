@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('menu_item_id')->constrained('menu_items')->onDelete('cascade');
             $table->unsignedBigInteger('variant_id')->nullable();
             $table->decimal('total_price');
+            $table->decimal('total_discount')->default(0);
+            $table->decimal('total_tax')->default(0);
             $table->decimal('quantity', 5, 2);
             $table->timestamps();
         });
