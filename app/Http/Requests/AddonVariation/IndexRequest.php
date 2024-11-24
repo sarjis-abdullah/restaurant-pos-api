@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Addon;
+namespace App\Http\Requests\AddonVariation;
 
 use App\Http\Requests\Request;
 use Illuminate\Contracts\Validation\ValidationRule;

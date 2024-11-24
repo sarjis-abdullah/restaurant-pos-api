@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 //        $this->call([
-//            OrderItemAddonSeeder::class,
+//            AddonSeeder::class,
 //        ]);
 //        return
         DB::beginTransaction();
@@ -75,7 +75,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Tax '.$faker->name,
                 "rate" => 5,
                 "branch_id" => $branch->id,
-                "type" => $faker->randomElements(['flat', 'percentage']),
+                "type" => $index < 2 ? 'flat' : 'percentage',
             ]);
         }
 

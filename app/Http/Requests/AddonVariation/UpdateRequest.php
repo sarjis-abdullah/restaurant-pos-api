@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Http\Requests\Addon;
+namespace App\Http\Requests\AddonVariation;
 
 use App\Http\Requests\Request;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class IndexRequest extends Request
+class UpdateRequest extends Request
 {
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array|string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
