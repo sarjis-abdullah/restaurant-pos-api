@@ -43,6 +43,7 @@ To run unit test:
 
 Schema hints diagram
 
+![alt text](restarant-api-hints2.png)
 ![alt text](image.png)
 ![alt text](schema-2.svg)
 
