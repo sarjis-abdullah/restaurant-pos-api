@@ -27,15 +27,15 @@ class MenuSeeder extends Seeder
     public function run(): void
     {
         $breakfast = Category::create([
-            'name' => 'Breakfast',
+            'name' => 'Pizza',
             'branch_id' => 1,
         ]);
         $dinner = Category::create([
-            'name' => 'Dinner',
+            'name' => 'Burger',
             'branch_id' => 1,
         ]);
         $beverage = Category::create([
-            'name' => 'Beverages',
+            'name' => 'Set menu',
             'branch_id' => 1,
         ]);
 
@@ -126,7 +126,7 @@ class MenuSeeder extends Seeder
         $faker = Faker::create();
         foreach (range(1,10) as $in){
             MenuItem::create([
-                'name' => 'Fresh '.$faker->name,
+                'name' => 'Fresh menu item'.$faker->name,
                 'price' => $faker->numberBetween(1,100),
                 'quantity' => $faker->numberBetween(1,5),
                 'category_id' => $beverage->id, // Assume 'Beverages' category

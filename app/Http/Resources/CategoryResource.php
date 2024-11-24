@@ -19,6 +19,7 @@ class CategoryResource extends Resource
             'name' => $this->name,
             'description' => $this->description,
             'branch_id' => $this->branch_id,
+            'total_menu_items_count' => $this->when($this->needToInclude($request, 'total_menu_items_count'), fn() => count($this->menu_items)),
             'menu_items' => $this->when($this->needToInclude($request, 'menu_items'), fn() => MenuItemResource::collection($this->menu_items()->paginate(2))),
 //            'menu_items' => $this->menu_items,
         ];

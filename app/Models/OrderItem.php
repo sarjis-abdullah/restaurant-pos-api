@@ -27,7 +27,7 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Variation::class, 'variant_id', 'id');
     }
-    function orderItemAddons(): HasMany
+    function order_item_addons(): HasMany
     {
         return $this->hasMany(OrderItemAddon::class, 'order_item_id', 'id');
     }

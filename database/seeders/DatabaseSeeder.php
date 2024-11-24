@@ -64,7 +64,7 @@ class DatabaseSeeder extends Seeder
 
         foreach (range(1, 10) as $index) {
             $table = Table::create([
-                "name" => "Table ".$faker->name,
+                "name" => "Table ".$index . ' '.$faker->name,
                 "branch_id" => $branch->id,
                 "floor_id" => $floor->id,
             ]);
@@ -75,7 +75,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Tax '.$faker->name,
                 "rate" => 5,
                 "branch_id" => $branch->id,
-                "type" => 'percentage',
+                "type" => $faker->randomElements(['flat', 'percentage']),
             ]);
         }
 

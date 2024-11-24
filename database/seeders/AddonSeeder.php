@@ -27,7 +27,7 @@ class AddonSeeder extends Seeder
         ];
 
         foreach (range(1, 10) as $index) {
-            Addon::create(['name' => 'Chili '.$faker->name, 'price' => rand(1, 100), 'menu_item_id' => rand(1,15)]);
+            Addon::create(['name' => 'Chili '.$faker->name, 'price' => rand(20, 30), 'menu_item_id' => rand(1,15)]);
         }
 
         DB::table('addons')->insert($addons);

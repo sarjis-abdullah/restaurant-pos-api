@@ -2,21 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Order\IndexRequest;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\OrderResourceCollection;
 use App\Models\Order;
+use App\Repositories\Contracts\OrderInterface;
 
 class OrderController extends Controller
 {
+    private OrderInterface $interface;
+
+    public function __construct(OrderInterface $interface)
+    {
+        $this->interface = $interface;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexRequest $request)
     {
-        $items = Order::paginate(5);
-        return new OrderResourceCollection($items);
+        $list = $this->interface->findBy($request->all());
+        return new OrderResourceCollection($list);
     }
 
     /**
@@ -32,8 +41,8 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        $items = Order::create($request->all());
-        return new OrderResource($items);
+        $list = $this->interface->findBy($request->all());
+        return new OrderResource($list);
     }
 
     /**
