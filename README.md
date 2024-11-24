@@ -24,13 +24,15 @@ To setup locally:
 
 `composer install`
 
-`php artisan config:clear`
-
 To run migrations:
 
 `1. docker-compose exec app bash`
 
-`2. php artisan migrate`
+`2. php artisan config:clear`
+
+`3. php artisan migrate`
+
+`3. php artisan db:seed`
 
 
 To run unit test:
