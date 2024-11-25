@@ -17,7 +17,7 @@ use App\Models\OrderItemAddon;
 use App\Models\Table;
 use App\Models\Tax;
 use App\Models\User;
-use App\Models\Variation;
+use App\Models\Variant;
 use App\Repositories\AddonRepository;
 use App\Repositories\BranchRepository;
 use App\Repositories\CategoryRepository;
@@ -36,7 +36,7 @@ use App\Repositories\Contracts\OrderItemInterface;
 use App\Repositories\Contracts\TableInterface;
 use App\Repositories\Contracts\TaxInterface;
 use App\Repositories\Contracts\UserInterface;
-use App\Repositories\Contracts\VariationInterface;
+use App\Repositories\Contracts\VariantInterface;
 use App\Repositories\DiscountRepository;
 use App\Repositories\FloorRepository;
 use App\Repositories\MenuItemRepository;
@@ -47,7 +47,7 @@ use App\Repositories\OrderRepository;
 use App\Repositories\TableRepository;
 use App\Repositories\TaxRepository;
 use App\Repositories\UserRepository;
-use App\Repositories\VariationRepository;
+use App\Repositories\VariantRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -83,7 +83,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(DiscountInterface::class, fn() => new DiscountRepository(new Discount()));
         $this->app->bind(AddonInterface::class, fn() => new AddonRepository(new Addon()));
         $this->app->bind(OrderItemAddonInterface::class, fn() => new OrderItemAddonRepository(new OrderItemAddon()));
-        $this->app->bind(VariationInterface::class, fn() => new VariationRepository(new Variation()));
+        $this->app->bind(VariantInterface::class, fn() => new VariantRepository(new Variant()));
 
 
     }

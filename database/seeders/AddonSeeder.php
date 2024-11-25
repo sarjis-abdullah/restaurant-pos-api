@@ -3,11 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Addon;
-use App\Models\AddonVariation;
-use App\Models\Menu;
+use App\Models\AddonVariant;
 use App\Models\MenuItem;
 use Faker\Factory as Faker;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -39,7 +37,7 @@ dump(1);
         $cheese = Addon::create(['name' => 'Cheese', 'price' => 10.00, 'has_variants' => true,  'menu_item_id' => $menuItemIds->random()]);
         $sauce = Addon::create(['name' => 'Sauce', 'price' => 5.00, 'has_variants' => true, 'menu_item_id' => $menuItemIds->random()]);
 
-        AddonVariation::insert([
+        AddonVariant::insert([
             ['addon_id' => $cheese->id, 'attribute' => 'size', 'value' => 'small', 'price' => -2.00],
             ['addon_id' => $cheese->id, 'attribute' => 'size', 'value' => 'large', 'price' => 3.00],
             ['addon_id' => $sauce->id, 'attribute' => 'color', 'value' => 'red', 'price' => 0.00],
@@ -78,7 +76,7 @@ dump(1);
         $addonIds = Addon::pluck('id')->toArray();
         dump(66);
         foreach ($addonvariants as $variation) {
-            AddonVariation::create(array_merge($variation, [
+            AddonVariant::create(array_merge($variation, [
                 'addon_id' => $addonIds[array_rand($addonIds)], // Assign random addon_id
             ]));
         }

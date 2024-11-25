@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class VariationResource extends JsonResource
+class AddonVariantResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,6 +14,12 @@ class VariationResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'addon_id' => $this->addon_id,
+            'attribute' => $this->attribute,
+            'price' => $this->price,
+            'value' => $this->value,
+        ];
     }
 }

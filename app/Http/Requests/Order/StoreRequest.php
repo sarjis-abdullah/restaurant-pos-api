@@ -20,8 +20,8 @@ class StoreRequest extends Request
             'orders.*.quantity' => 'required|integer|min:1', // Validate quantity
             'orders.*.addons' => 'array', // Addons is optional but if present, it must be an array
             'orders.*.addons.*.addon_id' => 'integer|exists:addons,id', // Validate addon_id, if addons exist
-            'orders.*.addons.*.quantity' => 'integer|min:1', // Validate quantity of addon
-            'orders.*.addons.*.variant_id' => 'nullable|integer|exists:addon_variants,id', // Optional validation for variant_id
+//            'orders.*.addons.*.quantity' => 'integer|min:1', // Validate quantity of addon
+            'orders.*.addons.*.variant_id' => 'integer|exists:addon_variants,id', // Optional validation for variant_id
             'orders.*.variant_id' => [
                 'nullable',
                 'integer',

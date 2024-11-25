@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AddonVariation;
+use App\Models\AddonVariant;
 use Illuminate\Http\Request;
 
-class AddonVariationController extends Controller
+class AddonVariantController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class AddonVariationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(AddonVariation $addonVariation)
+    public function show(AddonVariant $addonVariant)
     {
         //
     }
@@ -42,7 +42,7 @@ class AddonVariationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(AddonVariation $addonVariation)
+    public function edit(AddonVariant $addonVariant)
     {
         //
     }
@@ -50,7 +50,7 @@ class AddonVariationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, AddonVariation $addonVariation)
+    public function update(Request $request, AddonVariant $addonVariant)
     {
         //
     }
@@ -58,7 +58,7 @@ class AddonVariationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AddonVariation $addonVariation)
+    public function destroy(AddonVariant $addonVariant)
     {
         //
     }

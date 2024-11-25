@@ -1,19 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Variation;
+namespace App\Http\Requests\AddonVariant;
 
+use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
-class IndexRequest extends FormRequest
+class UpdateRequest extends Request
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *

@@ -31,7 +31,7 @@ class OrderItem extends Model
     }
     function variant(): BelongsTo
     {
-        return $this->belongsTo(Variation::class, 'variant_id', 'id');
+        return $this->belongsTo(Variant::class, 'variant_id', 'id');
     }
     function order_item_addons(): HasMany
     {

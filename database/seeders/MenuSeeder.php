@@ -153,133 +153,133 @@ class MenuSeeder extends Seeder
         $tableIds = Table::query()->pluck('id');
 
 
-        $order1 = Order::create([
-            'order_by' => $customer->id,
-            'prepare_by' => $chef->id,
-            'created_by' => $admin->id,
-            'table_id' => $tableIds->random(),
-            'status' => OrderStatus::requested->value,
-            'type' => 'dine_in',
-            'branch_id' => 1,
-        ]);
-
-        OrderItem::create([
-            'order_id' => $order1->id,
-            'menu_item_id' => $menuItem1->id, // Rui Fish Fry
-            'total_price' => 400, // 200 x 2
-            'quantity' => 2,
-        ]);
-
-        OrderItem::create([
-            'order_id' => $order1->id,
-            'menu_item_id' => $menuItem2->id, // Shrimp Cocktail
-            'total_price' => $menuItem4->price*rand(1,4),
-            'quantity' => 1,
-        ]);
-
-        // Sample Order 2
-        $order2 = Order::create([
-            'order_by' => null,
-            'prepare_by' => $chef->id,
-            'created_by' => $admin->id,
-            'table_id' => $tableIds->random(),
-            'status' => OrderStatus::requested->value,
-            'type' => 'take_away',
-            'pickup_date' => Carbon::now()->addDay(),
-            'branch_id' => 1,
-        ]);
-
-        OrderItem::create([
-            'order_id' => $order2->id,
-            'menu_item_id' => $menuItem3->id, // Grilled Salmon
-            'total_price' => $menuItem3->price*rand(1,4),
-            'quantity' => 1,
-        ]);
-
-
-        /// more
-        ///
-        $order3 = Order::create([
-            'order_by' => $customer->id,
-            'prepare_by' => $chef->id,
-            'created_by' => $waiter->id,
-            'table_id' => $tableIds->random(),
-            'status' => OrderStatus::requested->value, // Order is being prepared
-            'type' => 'dine_in',
-            'branch_id' => 1,
-        ]);
-
-        OrderItem::create([
-            'order_id' => $order3->id,
-            'menu_item_id' => $menuItem4->id, // Rui Fish Fry
-            'total_price' => $menuItem2->price*rand(1,4),
-            'quantity' => 1,
-        ]);
-
-        OrderItem::create([
-            'order_id' => $order3->id,
-            'menu_item_id' => $menuItem3->id, // Grilled Salmon
-            'total_price' => $menuItem2->price*rand(1,4),
-            'quantity' => 1,
-        ]);
-
-        // Sample Order 4 (Take-away order with scheduled pickup)
-        $order4 = Order::create([
-            'order_by' => $customer->id,
-            'prepare_by' => $chef->id,
-            'created_by' => $admin->id,
-            'table_id' => null,
-            'status' => OrderStatus::requested->value,
-            'type' => 'take_away',
-            'pickup_date' => Carbon::now()->addHours(2),
-            'branch_id' => 1,
-        ]);
-
-        OrderItem::create([
-            'order_id' => $order4->id,
-            'menu_item_id' => $menuItem1->id, // Shrimp Cocktail
-            'total_price' => $menuItem2->price*rand(1,4),
-            'quantity' => 1,
-        ]);
-
-        OrderItem::create([
-            'order_id' => $order4->id,
-            'menu_item_id' => $menuItem1->id, // Rui Fish Fry (additional item)
-            'total_price' => $menuItem3->price*rand(1,4),
-            'quantity' => 1,
-        ]);
-
-        // Sample Order 5 (Dine-in order with multiple quantities)
-        $order5 = Order::create([
-            'order_by' => $customer->id,
-            'prepare_by' => $chef->id,
-            'created_by' => $waiter->id,
-            'table_id' => $tableIds->random(),
-            'status' => OrderStatus::requested->value,
-            'type' => 'dine_in',
-            'branch_id' => 1,
-        ]);
-
-        OrderItem::create([
-            'order_id' => $order5->id,
-            'menu_item_id' => $menuItem4->id, // Grilled Salmon
-            'total_price' => $menuItem1->price*rand(1,4), // 350 x 2
-            'quantity' => 2,
-        ]);
-
-        OrderItem::create([
-            'order_id' => $order5->id,
-            'menu_item_id' => $menuItem4->id, // Shrimp Cocktail
-            'total_price' => $menuItem2->price*rand(1,4), // 150 x 2
-            'quantity' => 2,
-        ]);
-
-        OrderItem::create([
-            'order_id' => $order5->id,
-            'menu_item_id' => $menuItem4->id, // Rui Fish Fry
-            'total_price' => $menuItem4->price*rand(1,4), // 200 x 2
-            'quantity' => 2,
-        ]);
+//        $order1 = Order::create([
+//            'order_by' => $customer->id,
+//            'prepare_by' => $chef->id,
+//            'created_by' => $admin->id,
+//            'table_id' => $tableIds->random(),
+//            'status' => OrderStatus::requested->value,
+//            'type' => 'dine_in',
+//            'branch_id' => 1,
+//        ]);
+//
+//        OrderItem::create([
+//            'order_id' => $order1->id,
+//            'menu_item_id' => $menuItem1->id, // Rui Fish Fry
+//            'total_price' => 400, // 200 x 2
+//            'quantity' => 2,
+//        ]);
+//
+//        OrderItem::create([
+//            'order_id' => $order1->id,
+//            'menu_item_id' => $menuItem2->id, // Shrimp Cocktail
+//            'total_price' => $menuItem4->price*rand(1,4),
+//            'quantity' => 1,
+//        ]);
+//
+//        // Sample Order 2
+//        $order2 = Order::create([
+//            'order_by' => null,
+//            'prepare_by' => $chef->id,
+//            'created_by' => $admin->id,
+//            'table_id' => $tableIds->random(),
+//            'status' => OrderStatus::requested->value,
+//            'type' => 'take_away',
+//            'pickup_date' => Carbon::now()->addDay(),
+//            'branch_id' => 1,
+//        ]);
+//
+//        OrderItem::create([
+//            'order_id' => $order2->id,
+//            'menu_item_id' => $menuItem3->id, // Grilled Salmon
+//            'total_price' => $menuItem3->price*rand(1,4),
+//            'quantity' => 1,
+//        ]);
+//
+//
+//        /// more
+//        ///
+//        $order3 = Order::create([
+//            'order_by' => $customer->id,
+//            'prepare_by' => $chef->id,
+//            'created_by' => $waiter->id,
+//            'table_id' => $tableIds->random(),
+//            'status' => OrderStatus::requested->value, // Order is being prepared
+//            'type' => 'dine_in',
+//            'branch_id' => 1,
+//        ]);
+//
+//        OrderItem::create([
+//            'order_id' => $order3->id,
+//            'menu_item_id' => $menuItem4->id, // Rui Fish Fry
+//            'total_price' => $menuItem2->price*rand(1,4),
+//            'quantity' => 1,
+//        ]);
+//
+//        OrderItem::create([
+//            'order_id' => $order3->id,
+//            'menu_item_id' => $menuItem3->id, // Grilled Salmon
+//            'total_price' => $menuItem2->price*rand(1,4),
+//            'quantity' => 1,
+//        ]);
+//
+//        // Sample Order 4 (Take-away order with scheduled pickup)
+//        $order4 = Order::create([
+//            'order_by' => $customer->id,
+//            'prepare_by' => $chef->id,
+//            'created_by' => $admin->id,
+//            'table_id' => null,
+//            'status' => OrderStatus::requested->value,
+//            'type' => 'take_away',
+//            'pickup_date' => Carbon::now()->addHours(2),
+//            'branch_id' => 1,
+//        ]);
+//
+//        OrderItem::create([
+//            'order_id' => $order4->id,
+//            'menu_item_id' => $menuItem1->id, // Shrimp Cocktail
+//            'total_price' => $menuItem2->price*rand(1,4),
+//            'quantity' => 1,
+//        ]);
+//
+//        OrderItem::create([
+//            'order_id' => $order4->id,
+//            'menu_item_id' => $menuItem1->id, // Rui Fish Fry (additional item)
+//            'total_price' => $menuItem3->price*rand(1,4),
+//            'quantity' => 1,
+//        ]);
+//
+//        // Sample Order 5 (Dine-in order with multiple quantities)
+//        $order5 = Order::create([
+//            'order_by' => $customer->id,
+//            'prepare_by' => $chef->id,
+//            'created_by' => $waiter->id,
+//            'table_id' => $tableIds->random(),
+//            'status' => OrderStatus::requested->value,
+//            'type' => 'dine_in',
+//            'branch_id' => 1,
+//        ]);
+//
+//        OrderItem::create([
+//            'order_id' => $order5->id,
+//            'menu_item_id' => $menuItem4->id, // Grilled Salmon
+//            'total_price' => $menuItem1->price*rand(1,4), // 350 x 2
+//            'quantity' => 2,
+//        ]);
+//
+//        OrderItem::create([
+//            'order_id' => $order5->id,
+//            'menu_item_id' => $menuItem4->id, // Shrimp Cocktail
+//            'total_price' => $menuItem2->price*rand(1,4), // 150 x 2
+//            'quantity' => 2,
+//        ]);
+//
+//        OrderItem::create([
+//            'order_id' => $order5->id,
+//            'menu_item_id' => $menuItem4->id, // Rui Fish Fry
+//            'total_price' => $menuItem4->price*rand(1,4), // 200 x 2
+//            'quantity' => 2,
+//        ]);
 
         // Add sample order status messages
         dump("Order 3 (Dine-in) is in 'processing' status.");

@@ -27,6 +27,7 @@ return new class extends Migration
             $table->dateTime('pickup_date')->nullable();
             $table->decimal('total_price');
             $table->decimal('total_discount');
+            $table->decimal('total_tax');
             $table->dateTime('order_date');
             $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
             $table->timestamps();

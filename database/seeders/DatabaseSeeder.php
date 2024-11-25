@@ -81,7 +81,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             MenuSeeder::class,
-            variantseeder::class,
+            VariantSeeder::class,
             AddonSeeder::class,
         ]);
 

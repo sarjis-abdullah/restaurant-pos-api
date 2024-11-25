@@ -47,7 +47,7 @@ class MenuItem extends Model
 
     function variants(): HasMany
     {
-        return $this->hasMany(Variation::class, 'menu_item_id', 'id');
+        return $this->hasMany(Variant::class, 'menu_item_id', 'id');
     }
     function addons(): HasMany
     {

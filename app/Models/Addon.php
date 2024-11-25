@@ -25,6 +25,6 @@ class Addon extends Model
 
     public function variants(): HasMany
     {
-        return $this->hasMany(AddonVariation::class);
+        return $this->hasMany(AddonVariant::class);
     }
 }

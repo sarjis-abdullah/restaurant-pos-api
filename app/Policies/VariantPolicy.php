@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Variation;
+use App\Models\Variant;
 use Illuminate\Auth\Access\Response;
 
-class VariationPolicy
+class VariantPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class VariationPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Variation $variation): bool
+    public function view(User $user, Variant $Variant): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class VariationPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Variation $variation): bool
+    public function update(User $user, Variant $Variant): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class VariationPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Variation $variation): bool
+    public function delete(User $user, Variant $Variant): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class VariationPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Variation $variation): bool
+    public function restore(User $user, Variant $Variant): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class VariationPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Variation $variation): bool
+    public function forceDelete(User $user, Variant $Variant): bool
     {
         //
     }

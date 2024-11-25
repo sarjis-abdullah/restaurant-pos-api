@@ -13,7 +13,8 @@ class Order extends Model
     protected $fillable = [
         'status',
         'total_discount',
-        'total_tax_amount',
+        'total_tax',
+        'total_price',
         'table_id',
         'type',
         'order_date',
