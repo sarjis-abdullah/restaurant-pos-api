@@ -16,4 +16,9 @@ class AddonVariant extends Model
         return $this->belongsTo(Addon::class);
     }
 
+    function variant(): BelongsTo
+    {
+        return $this->belongsTo(AddonVariant::class, 'variant_id', 'id');
+    }
+
 }

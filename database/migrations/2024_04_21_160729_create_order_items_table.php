@@ -16,10 +16,14 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
             $table->foreignId('menu_item_id')->constrained('menu_items')->onDelete('cascade');
             $table->unsignedBigInteger('variant_id')->nullable();
-            $table->decimal('total_price');
-            $table->decimal('total_discount')->default(0);
-            $table->decimal('total_tax')->default(0);
             $table->decimal('quantity', 5, 2);
+            $table->decimal('item_price');
+            $table->decimal('addons_total');
+            $table->decimal('menu_item_discount');
+            $table->decimal('additional_discount');
+            $table->decimal('total_price');
+            $table->decimal('tax_amount')->default(0);
+
             $table->timestamps();
         });
     }

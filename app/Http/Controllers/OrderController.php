@@ -43,9 +43,7 @@ class OrderController extends Controller
      */
     public function store(StoreRequest $request)
     {
-//        dd($request->all());
-        $list = $this->interface->calculateOrder($request->all());
-        dd($list);
+        $list = $this->interface->saveOrder($request->all());
         return new OrderResource($list);
     }
 
@@ -54,7 +52,8 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+//        $list = $this->interface->saveOrder($request->all());
+        return new OrderResource($order);
     }
 
     /**

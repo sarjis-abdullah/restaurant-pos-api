@@ -15,6 +15,7 @@ class Order extends Model
         'total_discount',
         'total_tax',
         'total_price',
+        'total_addons',
         'table_id',
         'type',
         'order_date',
@@ -24,11 +25,11 @@ class Order extends Model
         'created_by',
         'order_by'
     ];
-    function order_by(): BelongsTo
+    function orderByUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'order_by', 'id');
     }
-    function prepare_by(): BelongsTo
+    function preparedByUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'prepare_by', 'id');
     }

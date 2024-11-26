@@ -13,6 +13,7 @@ class OrderItemAddon extends Model
     protected $fillable = [
         'order_item_id',
         'addon_id',
+        'variant_id',
         'quantity',
         'total_price',
     ];
@@ -24,5 +25,9 @@ class OrderItemAddon extends Model
     function addon(): BelongsTo
     {
         return $this->belongsTo(Addon::class, 'addon_id', 'id');
+    }
+    function variant(): BelongsTo
+    {
+        return $this->belongsTo(AddonVariant::class, 'variant_id', 'id');
     }
 }

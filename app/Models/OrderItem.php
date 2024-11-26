@@ -14,11 +14,14 @@ class OrderItem extends Model
     protected $fillable = [
         'order_id',
         'menu_item_id',
-        'quantity',
-        'total_price',
         'variant_id',
-        'discount_amount',
+        'quantity',
+        'item_price',
+        'total_addons_price',
+        'menu_item_discount',
+        'additional_discount',
         'tax_amount',
+        'total_price',
     ];
 
     function order(): BelongsTo
