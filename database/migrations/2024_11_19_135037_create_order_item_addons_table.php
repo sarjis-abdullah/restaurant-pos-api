@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('addon_id')->constrained('addons')->onDelete('cascade');
             $table->foreignId('variant_id')->nullable()->constrained('addon_variants')->onDelete('cascade');
             $table->integer('quantity')->default(1);
-            $table->decimal('total_price');
+            $table->decimal('total_amount');
             $table->timestamps();
         });
     }

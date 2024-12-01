@@ -15,7 +15,7 @@ class OrderItemAddon extends Model
         'addon_id',
         'variant_id',
         'quantity',
-        'total_price',
+        'total_amount',
     ];
 
     function order_item(): BelongsTo

@@ -144,7 +144,7 @@ class DatabaseSeeder extends Seeder
         OrderItem::create([
             'order_id' => $order->id,
             'menu_item_id' => $menuItem->id,
-            'total_price' => $menuItem->price*rand(1,4),
+            'total_amount' => $menuItem->price*rand(1,4),
             'quantity' => $orderQty,
         ]);
 

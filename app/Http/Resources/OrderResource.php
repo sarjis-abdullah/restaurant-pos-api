@@ -16,6 +16,10 @@ class OrderResource extends Resource
     {
         return [
             'id' => $this->id,
+            'discount_amount' => $this->discount_amount,
+            'tax_amount' => $this->tax_amount,
+            'total_amount' => $this->total_amount,
+            'addons_total' => $this->addons_total,
             'status' => $this->status,
             'table_id' => $this->table_id,
             'type' => $this->type,

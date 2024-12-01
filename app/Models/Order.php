@@ -11,11 +11,11 @@ class Order extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'discount_amount',
+        'tax_amount',
+        'total_amount',
+        'addons_total',
         'status',
-        'total_discount',
-        'total_tax',
-        'total_price',
-        'total_addons',
         'table_id',
         'type',
         'order_date',
@@ -40,5 +40,9 @@ class Order extends Model
     function order_items(): HasMany
     {
         return $this->hasMany(OrderItem::class, 'order_id', 'id');
+    }
+    function discounts(): HasMany
+    {
+        return $this->hasMany(OrderDiscount::class, 'order_id', 'id');
     }
 }

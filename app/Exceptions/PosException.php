@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Exceptions;
-
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -12,7 +10,7 @@ class PosException extends Exception
     public $code;
     public $errors;
 
-    public function __construct($errors, $code = 422, $message = 'Invalid data')
+    public function __construct($message, $code, $errors)
     {
         $this->message = $message;
         $this->code = $code;
@@ -28,4 +26,3 @@ class PosException extends Exception
         ], $this->code);
     }
 }
-

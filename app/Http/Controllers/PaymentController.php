@@ -2,20 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePaymentRequest;
-use App\Http\Requests\UpdatePaymentRequest;
+use App\Http\Requests\Payment\IndexRequest;
+use App\Http\Requests\Payment\StoreRequest;
+use App\Http\Requests\Payment\UpdateRequest;
 use App\Http\Resources\PaymentResource;
 use App\Http\Resources\PaymentResourceCollection;
 use App\Models\Payment;
+use App\Repositories\Contracts\PaymentInterface;
 
 class PaymentController extends Controller
 {
+    private PaymentInterface $interface;
+
+    public function __construct(PaymentInterface $interface)
+    {
+        $this->interface = $interface;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexRequest $request)
     {
-        $items = Payment::paginate(5);
+        $items = $this->interface->findBy($request->all());
         return new PaymentResourceCollection($items);
     }
 
@@ -30,10 +39,10 @@ class PaymentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePaymentRequest $request)
+    public function store(StoreRequest $request)
     {
-        $items = Payment::paginate(5);
-        return new PaymentResource($items);
+        $items = $this->interface->save($request->all());
+        return new PaymentResourceCollection($items);
     }
 
     /**
@@ -55,9 +64,10 @@ class PaymentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePaymentRequest $request, Payment $payment)
+    public function update(UpdateRequest $request, Payment $payment)
     {
-        //
+        $items = $this->interface->update($payment, $request->all());
+        return new PaymentResource($items);
     }
 
     /**

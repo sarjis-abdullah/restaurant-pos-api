@@ -16,11 +16,8 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->decimal('total_amount')->default(0);
-            $table->decimal('paid_amount')->default(0);
+            $table->decimal('amount')->default(0);
             $table->decimal('due_amount')->default(0);
-            $table->decimal('tax_amount')->default(0);
-            $table->decimal('discount_amount')->default(0);
             $table->string('method')->nullable();
             $table->string('type')->nullable(); //partial payment, full payment
             $table->string('status')->default(PaymentStatus::pending->value);

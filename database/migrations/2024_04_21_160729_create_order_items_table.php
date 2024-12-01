@@ -20,8 +20,7 @@ return new class extends Migration
             $table->decimal('item_price');
             $table->decimal('addons_total');
             $table->decimal('menu_item_discount');
-            $table->decimal('additional_discount');
-            $table->decimal('total_price');
+            $table->decimal('total_amount');
             $table->decimal('tax_amount')->default(0);
 
             $table->timestamps();

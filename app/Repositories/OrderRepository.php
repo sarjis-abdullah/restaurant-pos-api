@@ -7,6 +7,7 @@ use App\Models\Addon;
 use App\Models\Discount;
 use App\Models\MenuItem;
 use App\Models\Order;
+use App\Models\OrderDiscount;
 use App\Models\OrderItem;
 use App\Models\OrderItemAddon;
 use App\Models\Tax;
@@ -17,30 +18,36 @@ use Illuminate\Support\Facades\DB;
 
 class OrderRepository extends BaseRepository implements OrderInterface
 {
-    public function saveOrder(array $orderData, $membershipDiscount = null, $promoCode = null)
+    /**
+     * @throws \Exception
+     */
+    public function saveOrder(array $orderData)
     {
         DB::beginTransaction();
 
         try {
             // Step 1: Calculate the order
-            $calculatedOrder = $this->calculateOrder($orderData['orders'], $membershipDiscount, $promoCode);
-
-//            dd($calculatedOrder['details']);
+            $calculatedOrder = $this->calculateOrder($orderData['orders']);
+            $hasDiscounts = isset($orderData['discounts']) && count($orderData['discounts']) > 0;
 
             $finalTotal = $calculatedOrder['finalTotal'];
             $finalTotalTax = $calculatedOrder['finalTotalTax'];
-            $finalTotalDiscount = $calculatedOrder['finalTotalDiscount'];
+            $finalTotalDiscount = $hasDiscounts ? $this->getAllDiscountSum($orderData['discounts'], $calculatedOrder['finalTotalDiscount']) : $calculatedOrder['finalTotalDiscount'];
+            $finalTotal -= $finalTotalDiscount;
             $finalTotalAddons = $calculatedOrder['finalTotalAddons'];
             $order = Order::create([
-                'total_price' => $finalTotal,
-                'total_tax' => $finalTotalTax,
-                'total_discount' => $finalTotalDiscount,
-                'total_addons_price' => $finalTotalAddons,
+                'total_amount' => $finalTotal,
+                'tax_amount' => $finalTotalTax,
+                'discount_amount' => $finalTotalDiscount,
+                'addons_total' => $finalTotalAddons,
                 'order_date' => now(),
                 'created_by' => 1,
                 'branch_id' => 1,
             ]);
 
+            if ($hasDiscounts) {
+                $order->discounts()->createMany($orderData['discounts']);
+            }
             // Step 3: Save each order item
             foreach ($calculatedOrder['details'] as $item) {
                 $orderItem = new OrderItem();
@@ -50,10 +57,10 @@ class OrderRepository extends BaseRepository implements OrderInterface
                 $orderItem->addons_total = $item['addons_total'];
                 $orderItem->item_price = $item['item_price'];
                 $orderItem->menu_item_discount = $item['menu_item_discount'];
-                $orderItem->additional_discount = $item['additional_discount'];
+                $orderItem->additional_discount = 0;
                 $orderItem->tax_amount = $item['tax'];
                 $orderItem->variant_id = $item['variant_id'];
-                $orderItem->total_price = $item['total'];
+                $orderItem->total_amount = $item['total'];
                 $orderItem->save();
 
                 // Step 4: Save addons for this item
@@ -65,61 +72,19 @@ class OrderRepository extends BaseRepository implements OrderInterface
                     $orderItemAddon->addon_id = $addon['addon_id'];
                     $orderItemAddon->variant_id = $addon['variant_id'] ?? null;
                     $orderItemAddon->quantity = $addon['quantity'] ?? 1;
-                    $orderItemAddon->total_price = $addon['total_price'];
+                    $orderItemAddon->total_amount = $addon['total_amount'];
                     $orderItemAddon->save();
                 }
             }
-//continue;
-            // Step 5: Save order-level discounts (membership, promo code)
-//            if ($membershipDiscount || $promoCode) {
-//                $discounts = [];
-//
-//                if ($membershipDiscount) {
-//                    $discounts[] = [
-//                        'order_id' => $order->id,
-//                        'type' => 'membership',
-//                        'amount' => $membershipDiscount['amount'],
-//                        'created_at' => now(),
-//                        'updated_at' => now()
-//                    ];
-//                }
-//
-//                if ($promoCode) {
-//                    $promoDiscount = Discount::where('promo_code', $promoCode)
-//                        ->where('is_active', true)
-//                        ->where('start_date', '<=', now())
-//                        ->where('end_date', '>=', now())
-//                        ->first();
-//
-//                    if ($promoDiscount) {
-//                        $discounts[] = [
-//                            'order_id' => $order->id,
-//                            'type' => 'promo_code',
-//                            'amount' => $promoDiscount->amount,
-//                            'created_at' => now(),
-//                            'updated_at' => now()
-//                        ];
-//                    }
-//                }
-//
-//                if (!empty($discounts)) {
-//                    OrderDiscount::insert($discounts);
-//                }
-//            }
 
             DB::commit();
-
-            $order->load('order_items');
             return $order;
         } catch (\Exception $e) {
             DB::rollBack();
-            return [
-                'success' => false,
-                'message' => $e->getMessage()
-            ];
+            throw $e;
         }
     }
-    public function calculateOrder(array $orders, $membershipDiscount = null, $promoCode = null)
+    public function calculateOrder(array $orders): array
     {
         $finalTotal = 0;
         $finalTotalDiscount = 0;
@@ -142,7 +107,7 @@ class OrderRepository extends BaseRepository implements OrderInterface
                 $addonPrice = $addonVariant ? $addonData->price + $addonVariant->price : $addonData->price; //todo, check variant price is additional price with menu item price or not
                 $addonsTotal += $addonPrice;
                 $addons->push([
-                    'total_price' => $addonPrice,
+                    'total_amount' => $addonPrice,
                     'addon_id' => $addon['addon_id'],
                     'variant_id' => $hasVariant ? $addon['variant_id'] : null,
                 ]);
@@ -168,46 +133,24 @@ class OrderRepository extends BaseRepository implements OrderInterface
             $taxAmount = 0;
             if ($menuItem?->tax instanceof Tax) {
                 $tax = $menuItem->tax;
-                $taxApplicableAmount = $menuItem->tax_included ? 0 : $priceAfterDiscount;
+                if ($menuItem->tax_included){
+                    $taxApplicableAmount = 0;
+                }else {
+                    $taxApplicableAmount = $priceAfterDiscount;
 
-                if ($tax->apply_before_discount) {
-                    $taxApplicableAmount = $itemPrice;
-                }
+                    if ($tax->apply_before_discount) {
+                        $taxApplicableAmount = $itemPrice;
+                    }
 
-                if ($tax->type === 'percentage') {
-                    $taxAmount += $taxApplicableAmount * ($tax->rate / 100) * $orderQty;
-                } else {
-                    $taxAmount += $tax->rate * $orderQty;
-                }
-            }
-
-            // Handle Additional Discounts (Membership and Promo Code)
-            $additionalDiscountAmount = 0;
-            if ($menuItem->allow_other_discount) {
-                if ($membershipDiscount) {
-                    $additionalDiscountAmount += $this->calculateAdditionalDiscount(
-                        $membershipDiscount, $priceAfterDiscount
-                    );
-                }
-
-                if ($promoCode) {
-                    $promoDiscount = Discount::where('promo_code', $promoCode)
-                        ->where('is_active', true)
-                        ->where('start_date', '<=', now())
-                        ->where('end_date', '>=', now())
-                        ->first();
-
-                    if ($promoDiscount) {
-                        $additionalDiscountAmount += $this->calculateAdditionalDiscount(
-                            $promoDiscount, $priceAfterDiscount
-                        );
+                    if ($tax->type === 'percentage') {
+                        $taxAmount += $taxApplicableAmount * ($tax->rate / 100) * $orderQty;
+                    } else {
+                        $taxAmount += $tax->rate * $orderQty;
                     }
                 }
             }
 
-            $totalAfterDiscounts = $priceAfterDiscount - $additionalDiscountAmount;
-
-            $finalPrice = $totalAfterDiscounts + $taxAmount;
+            $finalPrice = $priceAfterDiscount + $taxAmount;
 
             // Collect Details
             $details->push([
@@ -218,36 +161,15 @@ class OrderRepository extends BaseRepository implements OrderInterface
                 'addons_total' => $addonsTotal,
                 'item_price' => $itemPrice,
                 'menu_item_discount' => $menuItemDiscountAmount,
-                'additional_discount' => $additionalDiscountAmount,
                 'tax' => $taxAmount,
                 'total' => $finalPrice
             ]);
 
-//            OrderItem::create([
-//                'order_id' => $order['id'],
-//                'menu_item_id' => $order['menu_item_id'],
-//                'variant_id' => $order['variant_id'],
-//                'quantity' => $orderQty,
-//                'item_price' => $itemPrice,
-//                'menu_item_discount' => $menuItemDiscountAmount,
-//                'additional_discount' => $additionalDiscountAmount,
-//                'tax_amount' => $taxAmount,
-//                'total_price' => $finalPrice,
-//            ]);
-            $finalTotalDiscount += $menuItemDiscountAmount +  $additionalDiscountAmount;
+            $finalTotalDiscount += $menuItemDiscountAmount;
             $finalTotalAddons += $addonsTotal;
             $finalTotalTax += $taxAmount;
             $finalTotal += $finalPrice;
         }
-
-//        Order::create([
-//            'total_price' => $finalPrice,
-//            'total_discount' => $finalTotalDiscount,
-//            'total_tax' => $finalTotalTax,
-//            'order_date' => now(),
-//            'created_by' => Auth::user()->id,
-//            'branch_id' => 1,
-//        ]);
 
         return [
             'details' => $details,
@@ -258,11 +180,20 @@ class OrderRepository extends BaseRepository implements OrderInterface
         ];
     }
 
-    private function calculateAdditionalDiscount($discount, $amount)
+    private function calculateAdditionalDiscount($type, $amount, $discountAmount)
     {
-        if ($discount->type === 'percentage') {
-            return $amount * ($discount->amount / 100);
+        if ($type === 'percentage') {
+            return $amount * ($discountAmount / 100);
         }
-        return $discount->amount;
+        return $discountAmount;
+    }
+    private function getAllDiscountSum($discounts = [], $menuDiscounts = 0)
+    {
+        $sum = 0;
+        foreach ($discounts as $discount) {
+
+            $sum += $discount['discount_amount'];
+        }
+        return $sum + $menuDiscounts;
     }
 }

@@ -17,11 +17,10 @@ class OrderItem extends Model
         'variant_id',
         'quantity',
         'item_price',
-        'total_addons_price',
+        'addons_total',
         'menu_item_discount',
-        'additional_discount',
         'tax_amount',
-        'total_price',
+        'total_amount',
     ];
 
     function order(): BelongsTo
