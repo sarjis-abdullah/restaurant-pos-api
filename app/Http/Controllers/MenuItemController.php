@@ -2,20 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreMenuItemRequest;
-use App\Http\Requests\UpdateMenuItemRequest;
+use App\Http\Requests\MenuItem\IndexRequest;
+use App\Http\Requests\MenuItem\UpdateRequest;
+use App\Http\Requests\MenuItem\StoreRequest;
 use App\Http\Resources\MenuItemResource;
 use App\Http\Resources\MenuItemResourceCollection;
 use App\Models\MenuItem;
+use App\Repositories\Contracts\MenuItemInterface;
 
 class MenuItemController extends Controller
 {
+    private MenuItemInterface $interface;
+
+    public function __construct(MenuItemInterface $interface)
+    {
+        $this->interface = $interface;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexRequest $request)
     {
-        $items = MenuItem::paginate(5);
+        $items = $this->interface->findBy($request->all());
         return new MenuItemResourceCollection($items);
     }
 
@@ -30,9 +39,9 @@ class MenuItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMenuItemRequest $request)
+    public function store(StoreRequest $request)
     {
-        $items = MenuItem::paginate(5);
+        $items = $this->interface->save($request->all());
         return new MenuItemResource($items);
     }
 
@@ -41,13 +50,13 @@ class MenuItemController extends Controller
      */
     public function show(MenuItem $menuItem)
     {
-        //
+        return new MenuItemResource($menuItem);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(MenuItem $menuItem)
+    public function edit(MenuItem $menu)
     {
         //
     }
@@ -55,9 +64,10 @@ class MenuItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMenuItemRequest $request, MenuItem $menuItem)
+    public function update(UpdateRequest $request, MenuItem $menuItem)
     {
-        //
+        $items = $this->interface->update($menuItem, $request->all());
+        return new MenuItemResource($items);
     }
 
     /**
@@ -65,6 +75,7 @@ class MenuItemController extends Controller
      */
     public function destroy(MenuItem $menuItem)
     {
-        //
+        $this->interface->delete($menuItem);
+        return response()->json(null, 204);
     }
 }

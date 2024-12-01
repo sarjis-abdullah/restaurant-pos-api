@@ -19,19 +19,20 @@ class CategorySeeder extends Seeder
             'Beverages',
             'Desserts',
             'Salads',
-'Sandwiches',
-'Pasta',
-'Pizza',
-'Burgers',
-'Wraps',
-'Grilled Items',
-'Vegetarian',
-'Seafood',
-'Sushi',
-'Snacks',
-'Smoothies',
-'Appetizers',
-'Kids Menu'];
+            'Sandwiches',
+            'Pasta',
+            'Pizza',
+            'Burgers',
+            'Wraps',
+            'Grilled Items',
+            'Vegetarian',
+            'Seafood',
+            'Sushi',
+            'Snacks',
+            'Smoothies',
+            'Appetizers',
+            'Kids Menu'
+        ];
 
         foreach ($categories as $category) {
             Category::create([

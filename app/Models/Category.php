@@ -11,7 +11,7 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'branch_id'
+        'name', 'description',
     ];
 
     function menu_items(): HasMany

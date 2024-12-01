@@ -66,6 +66,8 @@ Route::group(['prefix' => 'api/v1'], function () {
             Route::apiResource('tax', \App\Http\Controllers\TaxController::class);
             Route::apiResource('order', \App\Http\Controllers\OrderController::class);
             Route::apiResource('payment', \App\Http\Controllers\PaymentController::class);
+            Route::apiResource('menu', \App\Http\Controllers\MenuController::class);
+            Route::apiResource('menu-item', \App\Http\Controllers\MenuItemController::class);
 //            Route::apiResource('membership-type', \App\Http\Controllers\MembershipTypeController::class);
         });
     });

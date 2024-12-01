@@ -80,6 +80,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call([
+            CategorySeeder::class,
             MenuSeeder::class,
             VariantSeeder::class,
             AddonSeeder::class,

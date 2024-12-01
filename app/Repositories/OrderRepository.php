@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Enums\OrderStatus;
+use App\Enums\TableStatus;
 use App\Models\Addon;
 use App\Models\Discount;
 use App\Models\MenuItem;
@@ -10,6 +11,7 @@ use App\Models\Order;
 use App\Models\OrderDiscount;
 use App\Models\OrderItem;
 use App\Models\OrderItemAddon;
+use App\Models\Table;
 use App\Models\Tax;
 use App\Repositories\Contracts\OrderInterface;
 use App\Repositories\Contracts\UserInterface;
@@ -35,6 +37,11 @@ class OrderRepository extends BaseRepository implements OrderInterface
             $finalTotalDiscount = $hasDiscounts ? $this->getAllDiscountSum($orderData['discounts'], $calculatedOrder['finalTotalDiscount']) : $calculatedOrder['finalTotalDiscount'];
             $finalTotal -= $finalTotalDiscount;
             $finalTotalAddons = $calculatedOrder['finalTotalAddons'];
+            if (isset($orderData['table_id'])){
+                Table::find($orderData['table_id'])->update([
+                    'status' => TableStatus::booked
+                ]);
+            }
             $order = Order::create([
                 'total_amount' => $finalTotal,
                 'tax_amount' => $finalTotalTax,

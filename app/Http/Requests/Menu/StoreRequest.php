@@ -15,7 +15,9 @@ class StoreRequest extends Request
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string',
+            'status' => 'required|string',
+            'branch_id' => 'required|integer',
         ];
     }
 }

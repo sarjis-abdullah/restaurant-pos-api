@@ -29,7 +29,7 @@ class PaymentRepository extends BaseRepository implements PaymentInterface
                 $requestRoundedAmount = ceil($payment['amount']);
                 $roundOffAmount = $roundedAmount - $order->total_amount;
                 if ($roundedAmount == $requestRoundedAmount) {
-                    $singleItem =[
+                    $singleItem = [
                         'order_id' => $payment['order_id'],
                         'status' => $payment['method'] == PaymentMethod::cash->value ? PaymentStatus::success : PaymentStatus::pending,
                         'amount' => $order->total_amount,

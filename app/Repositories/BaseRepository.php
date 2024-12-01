@@ -142,6 +142,9 @@ class BaseRepository implements BaseInterface
      */
     public function save(array $data): \ArrayAccess
     {
+        if (!isset($data['branch_id'])) {
+            $data['branch_id'] = 1;
+        }
         return $this->model->create($data);
     }
 

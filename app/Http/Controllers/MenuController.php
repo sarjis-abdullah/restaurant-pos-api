@@ -2,21 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreMenuRequest;
-use App\Http\Requests\UpdateMenuRequest;
+use App\Http\Requests\Menu\StoreRequest;
+use App\Http\Requests\Menu\UpdateRequest;
+use App\Http\Requests\Menu\IndexRequest;
 use App\Http\Resources\FloorResource;
+use App\Http\Resources\MenuResource;
 use App\Http\Resources\MenuResourceCollection;
 use App\Models\Floor;
 use App\Models\Menu;
+use App\Repositories\Contracts\MenuInterface;
 
 class MenuController extends Controller
 {
+    private MenuInterface $interface;
+
+    public function __construct(MenuInterface $interface)
+    {
+        $this->interface = $interface;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexRequest $request)
     {
-        $items = Menu::paginate(5);
+        $items = $this->interface->findBy($request->all());
         return new MenuResourceCollection($items);
     }
 
@@ -31,10 +41,10 @@ class MenuController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMenuRequest $request)
+    public function store(StoreRequest $request)
     {
-        $items = Floor::paginate(5);
-        return new FloorResource($items);
+        $items = $this->interface->save($request->all());
+        return new MenuResource($items);
     }
 
     /**
@@ -42,7 +52,7 @@ class MenuController extends Controller
      */
     public function show(Menu $menu)
     {
-        //
+        return new MenuResource($menu);
     }
 
     /**
@@ -56,9 +66,10 @@ class MenuController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMenuRequest $request, Menu $menu)
+    public function update(UpdateRequest $request, Menu $menu)
     {
-        //
+        $items = $this->interface->update($menu, $request->all());
+        return new MenuResource($items);
     }
 
     /**
@@ -66,6 +77,7 @@ class MenuController extends Controller
      */
     public function destroy(Menu $menu)
     {
-        //
+        $this->interface->delete($menu);
+        return response()->json(null, 204);
     }
 }

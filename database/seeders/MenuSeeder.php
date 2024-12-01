@@ -28,15 +28,12 @@ class MenuSeeder extends Seeder
     {
         $breakfast = Category::create([
             'name' => 'Pizza',
-            'branch_id' => 1,
         ]);
         $dinner = Category::create([
             'name' => 'Burger',
-            'branch_id' => 1,
         ]);
         $beverage = Category::create([
             'name' => 'Set menu',
-            'branch_id' => 1,
         ]);
 
         $menu1 = Menu::create([

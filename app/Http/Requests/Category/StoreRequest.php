@@ -15,7 +15,8 @@ class StoreRequest extends Request
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string',
+            'description' => 'nullable|string',
         ];
     }
 }
