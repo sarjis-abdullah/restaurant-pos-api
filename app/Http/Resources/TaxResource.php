@@ -18,6 +18,7 @@ class TaxResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'type' => $this->type,
+            'modifiedName' => $this->type == 'percentage' ? intval($this->rate) .'%' : $this->rate .'',
             'rate' => $this->rate,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

@@ -15,7 +15,15 @@ class StoreRequest extends Request
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string',
+            'price' => 'required|string',
+            'category_id' =>'required|string',
+            'discount_id' => 'required|string',
+            'tax_id' => 'required|string',
+            'menu_id' =>'required|string',
+            'branch_id' =>'required|string',
+            'quantity' =>'sometimes',
+//            'type' => 'required|string',
         ];
     }
 }

@@ -16,7 +16,7 @@ class DiscountResource extends Resource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'name' => $this->discount_type == 'percentage' ? intval($this->amount) .'%' : $this->amount .'',
             'discount_type' => $this->type,
             'amount' => $this->amount,
             'promo_code' => $this->promo_code,

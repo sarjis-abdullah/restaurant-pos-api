@@ -2,18 +2,11 @@
 
 namespace App\Http\Requests\Variant;
 
+use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class StoreRequest extends Request
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -22,7 +15,11 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'menu_item_id' => 'required|integer|exists:menu_items,id',
+            'variants' => 'required||required|array',
+            'variants.*.type' => 'required|string',
+            'variants.*.name' => 'required|string',
+            'variants.*.price' => 'required|numeric|min:0',
         ];
     }
 }
