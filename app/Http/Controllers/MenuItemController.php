@@ -64,7 +64,7 @@ class MenuItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, MenuItem $menuItem)
+    public function update(UpdateRequest $request, MenuItem $menuItem): MenuItemResource
     {
         $items = $this->interface->update($menuItem, $request->all());
         return new MenuItemResource($items);

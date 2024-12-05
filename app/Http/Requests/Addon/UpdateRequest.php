@@ -15,10 +15,9 @@ class UpdateRequest extends Request
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|string',
-            'base_price' => 'sometimes|numeric',
-            'has_variants' => 'sometimes|boolean',
-//            'branch_id' => 'sometimes|exists:branches,id',
+            'name' => 'required|string',
+            'price' => 'required|numeric',
+            'description' => 'required|string',
         ];
     }
 }

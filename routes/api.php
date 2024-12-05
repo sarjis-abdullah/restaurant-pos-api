@@ -69,6 +69,7 @@ Route::group(['prefix' => 'api/v1'], function () {
             Route::apiResource('menu', \App\Http\Controllers\MenuController::class);
             Route::apiResource('menu-item', \App\Http\Controllers\MenuItemController::class);
             Route::apiResource('variant', \App\Http\Controllers\VariantController::class);
+            Route::apiResource('addon', \App\Http\Controllers\AddonController::class);
 //            Route::apiResource('membership-type', \App\Http\Controllers\MembershipTypeController::class);
         });
     });

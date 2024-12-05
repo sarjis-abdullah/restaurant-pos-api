@@ -42,8 +42,8 @@ class AddonController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $list = $this->interface->save($request->all());
-        return new AddonResource($list);
+        $list = $this->interface->saveMultipleAddons($request->all());
+        return new AddonResourceCollection($list);
     }
 
     /**

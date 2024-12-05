@@ -16,7 +16,7 @@ class IndexRequest extends Request
     public function rules(): array
     {
         return [
-            //
+            "menu_item_id" => 'sometimes|integer',
         ];
     }
 }

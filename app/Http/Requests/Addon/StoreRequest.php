@@ -16,9 +16,11 @@ class StoreRequest extends Request
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'base_price' => 'required|numeric',
-            'has_variants' => 'required|boolean',
+            'menu_item_id' => 'required|integer|exists:menu_items,id',
+            'addons' => 'required||required|array',
+            'addons.*.description' => 'sometimes|string',
+            'addons.*.name' => 'required|string',
+            'addons.*.price' => 'required|numeric|min:0',
         ];
     }
 }

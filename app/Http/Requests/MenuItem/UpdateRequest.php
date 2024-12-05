@@ -15,7 +15,10 @@ class UpdateRequest extends Request
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string',
+            'price' => 'required|string',
+            'description' => 'required|string',
+            'type' => 'required|string',
         ];
     }
 }
