@@ -17,9 +17,9 @@ class AddonVariantResource extends JsonResource
         return [
             'id' => $this->id,
             'addon_id' => $this->addon_id,
-            'attribute' => $this->attribute,
+            'type' => $this->type,
             'price' => $this->price,
-            'value' => $this->value,
+            'name' => $this->name,
         ];
     }
 }

@@ -2,17 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddonVariant\IndexRequest;
+use App\Http\Resources\AddonVariantResource;
+use App\Http\Resources\AddonVariantResourceCollection;
 use App\Models\AddonVariant;
+use App\Repositories\Contracts\AddonVariantInterface;
 use Illuminate\Http\Request;
 
 class AddonVariantController extends Controller
 {
+    private AddonVariantInterface $interface;
+
+    public function __construct(AddonVariantInterface $interface)
+    {
+        $this->interface = $interface;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexRequest $request)
     {
-        //
+        $items = $this->interface->findBy($request->all());
+        return new AddonVariantResourceCollection($items);
     }
 
     /**
@@ -28,7 +40,8 @@ class AddonVariantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $items = $this->interface->saveMultipleAddonVariants($request->all());
+        return new AddonVariantResourceCollection($items);
     }
 
     /**
@@ -52,7 +65,8 @@ class AddonVariantController extends Controller
      */
     public function update(Request $request, AddonVariant $addonVariant)
     {
-        //
+        $item = $this->interface->update($addonVariant, $request->all());
+        return new AddonVariantResource($item);
     }
 
     /**
@@ -60,6 +74,7 @@ class AddonVariantController extends Controller
      */
     public function destroy(AddonVariant $addonVariant)
     {
-        //
+        $this->interface->delete($addonVariant);
+        return response()->json(null, 204);
     }
 }

@@ -38,38 +38,38 @@ dump(1);
         $sauce = Addon::create(['name' => 'Sauce', 'price' => 5.00, 'has_variants' => true, 'menu_item_id' => $menuItemIds->random()]);
 
         AddonVariant::insert([
-            ['addon_id' => $cheese->id, 'attribute' => 'size', 'value' => 'small', 'price' => -2.00],
-            ['addon_id' => $cheese->id, 'attribute' => 'size', 'value' => 'large', 'price' => 3.00],
-            ['addon_id' => $sauce->id, 'attribute' => 'color', 'value' => 'red', 'price' => 0.00],
-            ['addon_id' => $sauce->id, 'attribute' => 'color', 'value' => 'green', 'price' => 1.00],
+            ['addon_id' => $cheese->id, 'type' => 'size', 'name' => 'small', 'price' => -2.00],
+            ['addon_id' => $cheese->id, 'type' => 'size', 'name' => 'large', 'price' => 3.00],
+            ['addon_id' => $sauce->id, 'type' => 'color', 'name' => 'red', 'price' => 0.00],
+            ['addon_id' => $sauce->id, 'type' => 'color', 'name' => 'green', 'price' => 1.00],
         ]);
         dump(2);
         $addonvariants = [
             // Cheese Addon
-            ['attribute' => 'size', 'value' => 'Small', 'price' => -2.00],
-            ['attribute' => 'size', 'value' => 'Medium', 'price' => 0.00],
-            ['attribute' => 'size', 'value' => 'Large', 'price' => 3.00],
+            ['type' => 'size', 'name' => 'Small', 'price' => -2.00],
+            ['type' => 'size', 'name' => 'Medium', 'price' => 0.00],
+            ['type' => 'size', 'name' => 'Large', 'price' => 3.00],
 
             // Sauce Addon
-            ['attribute' => 'color', 'value' => 'Red', 'price' => 0.00],
-            ['attribute' => 'color', 'value' => 'Green', 'price' => 0.50],
-            ['attribute' => 'color', 'value' => 'Blue', 'price' => 1.00],
+            ['type' => 'color', 'name' => 'Red', 'price' => 0.00],
+            ['type' => 'color', 'name' => 'Green', 'price' => 0.50],
+            ['type' => 'color', 'name' => 'Blue', 'price' => 1.00],
 
             // Toppings Addon
-            ['attribute' => 'type', 'value' => 'Olives', 'price' => 1.50],
-            ['attribute' => 'type', 'value' => 'Mushrooms', 'price' => 2.00],
-            ['attribute' => 'type', 'value' => 'Jalapenos', 'price' => 1.75],
+            ['type' => 'type', 'name' => 'Olives', 'price' => 1.50],
+            ['type' => 'type', 'name' => 'Mushrooms', 'price' => 2.00],
+            ['type' => 'type', 'name' => 'Jalapenos', 'price' => 1.75],
 
             // Fries Addon
-            ['attribute' => 'flavor', 'value' => 'Regular', 'price' => 0.00],
-            ['attribute' => 'flavor', 'value' => 'Spicy', 'price' => 0.50],
-            ['attribute' => 'flavor', 'value' => 'Cheese Loaded', 'price' => 2.00],
+            ['type' => 'flavor', 'name' => 'Regular', 'price' => 0.00],
+            ['type' => 'flavor', 'name' => 'Spicy', 'price' => 0.50],
+            ['type' => 'flavor', 'name' => 'Cheese Loaded', 'price' => 2.00],
 
             // Drinks Addon
-            ['attribute' => 'size', 'value' => 'Small', 'price' => -1.00],
-            ['attribute' => 'size', 'value' => 'Medium', 'price' => 0.00],
-            ['attribute' => 'size', 'value' => 'Large', 'price' => 1.50],
-            ['attribute' => 'size', 'value' => 'Extra Large', 'price' => 2.50],
+            ['type' => 'size', 'name' => 'Small', 'price' => -1.00],
+            ['type' => 'size', 'name' => 'Medium', 'price' => 0.00],
+            ['type' => 'size', 'name' => 'Large', 'price' => 1.50],
+            ['type' => 'size', 'name' => 'Extra Large', 'price' => 2.50],
         ];
 
         // Fetch all Addon IDs

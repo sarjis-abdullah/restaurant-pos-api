@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class AddonVariant extends Model
 {
     use HasFactory;
-    protected $fillable = ['addon_id', 'attribute', 'value', 'price'];
+    protected $fillable = ['addon_id', 'type', 'name', 'price'];
 
     public function addon(): BelongsTo
     {

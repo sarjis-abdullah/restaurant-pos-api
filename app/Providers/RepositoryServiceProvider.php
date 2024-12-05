@@ -4,6 +4,7 @@ namespace App\Providers;
 
 
 use App\Models\Addon;
+use App\Models\AddonVariant;
 use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Company;
@@ -20,10 +21,12 @@ use App\Models\Tax;
 use App\Models\User;
 use App\Models\Variant;
 use App\Repositories\AddonRepository;
+use App\Repositories\AddonVariantRepository;
 use App\Repositories\BranchRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\CompanyRepository;
 use App\Repositories\Contracts\AddonInterface;
+use App\Repositories\Contracts\AddonVariantInterface;
 use App\Repositories\Contracts\BranchInterface;
 use App\Repositories\Contracts\CategoryInterface;
 use App\Repositories\Contracts\CompanyInterface;
@@ -88,6 +91,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(OrderItemAddonInterface::class, fn() => new OrderItemAddonRepository(new OrderItemAddon()));
         $this->app->bind(VariantInterface::class, fn() => new VariantRepository(new Variant()));
         $this->app->bind(PaymentInterface::class, fn() => new PaymentRepository(new Payment()));
+        $this->app->bind(AddonVariantInterface::class, fn() => new AddonVariantRepository(new AddonVariant()));
 
 
     }

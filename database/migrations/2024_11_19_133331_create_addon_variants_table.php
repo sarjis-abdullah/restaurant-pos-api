@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('addon_variants', function (Blueprint $table) {
             $table->id();
             $table->foreignId('addon_id')->constrained('addons')->onDelete('cascade');
-            $table->string('attribute');
-            $table->string('value');
-            $table->decimal('price', 10, 2)->default(0);
+            $table->string('type');
+            $table->string('name');
+            $table->decimal('price')->default(0);
             $table->timestamps();
         });
     }

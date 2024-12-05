@@ -16,6 +16,7 @@ class Addon extends Model
         'price',
         'has_variants',
         'menu_item_id',
+        'description',
     ];
 
     function menu_item(): BelongsTo
