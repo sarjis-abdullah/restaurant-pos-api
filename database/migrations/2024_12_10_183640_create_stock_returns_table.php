@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stock_logs', function (Blueprint $table) {
+        Schema::create('stock_returns', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->foreignId('stock_id')->constrained()->onDelete('cascade');
-            $table->string('type'); // in, out, adjustment
-            $table->decimal('prev_quantity');
-            $table->decimal('new_quantity');
-            $table->string('reference_id')->nullable(); // e.g., purchase ID or sale ID
+//            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->decimal('quantity');
             $table->string('reason')->nullable();
+            $table->string('return_type')->default('restaurant');
+            $table->timestamp('returned_at')->useCurrent();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stock_logs');
+        Schema::dropIfExists('stock_returns');
     }
 };
