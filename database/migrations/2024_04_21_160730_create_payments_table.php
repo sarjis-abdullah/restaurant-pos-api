@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('transaction_number')->nullable();
             $table->string('transaction_id');
             $table->unsignedBigInteger('payable_id');
-            $table->unsignedBigInteger('payable_type');
+            $table->string('payable_type');
             $table->foreignIdFor(User::class, 'created_by')->nullable();
             $table->foreignIdFor(User::class, 'received_by')->nullable();
             $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');

@@ -17,7 +17,7 @@ class StoreRequest extends Request
         return [
             'purchaseProducts' => ['required', 'array', 'min:1'],
             'purchaseProducts.*.product_id' => ['required', 'integer', 'exists:products,id'],
-            'purchaseProducts.*.sku' => ['nullable', 'string', 'max:50'],
+            'purchaseProducts.*.stockId' => ['nullable','sometimes', 'exists:stocks,id'],
             'purchaseProducts.*.quantity' => ['required', 'integer', 'min:1'],
             'purchaseProducts.*.purchase_price' => ['required', 'numeric', 'min:0'],
             'purchaseProducts.*.selling_price' => ['required', 'numeric', 'min:0'],
@@ -28,8 +28,9 @@ class StoreRequest extends Request
 
             'shipping_cost' => ['required', 'numeric', 'min:0'],
             'supplier_id' => ['required', 'integer', 'exists:suppliers,id'],
-            'purchase_date' => ['required', 'date', 'date_format:d-m-Y'],
+            'purchase_date' => ['required', 'date', 'date_format:Y-m-d'],
 
+            'payment' => ['required'],
             'payment.amount' => ['required', 'numeric', 'min:0'],
             'payment.method' => ['required', 'in:cash,bank'],
         ];

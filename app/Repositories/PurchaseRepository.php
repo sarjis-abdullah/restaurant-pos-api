@@ -2,15 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\Addon;
 use App\Models\Payment;
-use App\Models\Product;
 use App\Models\Purchase;
-use App\Models\PurchasePayment;
 use App\Models\PurchaseProduct;
 use App\Models\Stock;
-use App\Models\Supplier;
-use App\Repositories\Contracts\AddonInterface;
 use App\Repositories\Contracts\PurchaseInterface;
 use Illuminate\Support\Facades\DB;
 
@@ -44,6 +39,7 @@ class PurchaseRepository extends BaseRepository implements PurchaseInterface
                 $finalDiscount += $discountAmount;
                 $finalTax += $taxAmount;
                 $purchaseAbleItems->push([
+                    ...$purchaseProduct,
                     'product_id'     => $purchaseProduct['product_id'],
                     'quantity'       => $quantity,
                     'purchase_price' => $purchasePrice,
@@ -58,7 +54,7 @@ class PurchaseRepository extends BaseRepository implements PurchaseInterface
 
             $purchase = Purchase::create([
                 'supplier_id'    => $data['supplier_id'],
-                'purchase_date'  => $data['purchase_date'], // Random date within the last 30 days
+                'purchase_date'  => $data['purchase_date'] ?? now(), // Random date within the last 30 days
                 'total_amount'   => $finalTotal,     // Random amount between 50.00 and 500.00
                 'discount_amount' => $finalDiscount,         // Random discount
                 'tax_amount'      => $finalTax,       // Random tax
@@ -77,7 +73,7 @@ class PurchaseRepository extends BaseRepository implements PurchaseInterface
             $method = $data['payment']['method'];
 
             Payment::create([
-                'payable_type' => 'Purchase',
+                'payable_type' => Purchase::class,
                 'payable_id' => $purchase->id,
                 'amount' => $roundedAmount,
                 'reference_number' => $payment['reference_number'] ?? '',
@@ -86,15 +82,13 @@ class PurchaseRepository extends BaseRepository implements PurchaseInterface
                 'status' => $status,
                 'method' => $method,
                 'round_off_amount' => $roundOffAmount,
+                'branch_id' => 1,
             ]);
 
             $purchaseAbleItems = array_map(function ($item) use ($purchase, $shippingCost, $finalTotal) {
                 $item['purchase_id'] = $purchase->id;
                 $proportionalShipping = ($item['subtotal'] / $finalTotal) * $shippingCost;
                 $item['allocated_shipping_cost'] = $proportionalShipping;
-                if (!isset($item['sku'])) {
-                    $item['sku'] = uniqid('prod_');
-                }
                 $item['subtotal'] += $proportionalShipping;
                 return $item;
             }, $purchaseAbleItems->toArray());
@@ -102,11 +96,9 @@ class PurchaseRepository extends BaseRepository implements PurchaseInterface
             foreach ($purchaseAbleItems as $item) {
                 $costPerUnit = ($item['subtotal'] / $item['quantity']);
 
-                $purchaseItem  = $item;
-                unset($purchaseItem['sku']);
-                PurchaseProduct::create($purchaseItem);
-                if (isset($item['sku'])){
-                    $stock = Stock::where('sku', $item['sku'])->where('product_id', $item['product_id'])->first();
+                PurchaseProduct::create($item);
+                if (isset($item['stockId'])){
+                    $stock = Stock::where('id', $item['stockId'])->where('product_id', $item['product_id'])->first();
                     if ($stock instanceof Stock){
                         $stock->quantity = $stock->quantity + $item['quantity'];
                         $stock->save();

@@ -31,7 +31,7 @@ class PaymentRepository extends BaseRepository implements PaymentInterface
                 if ($roundedAmount == $requestRoundedAmount) {
                     $singleItem = [
                         'payable_id' => $payment['order_id'],
-                        'payable_type' => 'Order',
+                        'payable_type' => Order::class,
                         'status' => $payment['method'] == PaymentMethod::cash->value ? PaymentStatus::success : PaymentStatus::pending,
                         'amount' => $roundedAmount,
                         'round_off_amount' => $roundOffAmount,
