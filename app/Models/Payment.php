@@ -12,7 +12,9 @@ class Payment extends Model
     protected $fillable = [
         'created_by',
         'received_by',
-        'order_id',
+        'type',
+        'payable_type',
+        'payable_id',
         'status',
         'amount',
         'round_off_amount',
@@ -30,5 +32,9 @@ class Payment extends Model
     function received_by(): BelongsTo
     {
         return $this->belongsTo(User::class, 'received_by', 'id');
+    }
+    public function payable(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    {
+        return $this->morphTo();
     }
 }

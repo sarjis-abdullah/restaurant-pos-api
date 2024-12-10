@@ -16,6 +16,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderItemAddon;
 use App\Models\Payment;
+use App\Models\Purchase;
 use App\Models\Table;
 use App\Models\Tax;
 use App\Models\User;
@@ -38,6 +39,7 @@ use App\Repositories\Contracts\OrderInterface;
 use App\Repositories\Contracts\OrderItemAddonInterface;
 use App\Repositories\Contracts\OrderItemInterface;
 use App\Repositories\Contracts\PaymentInterface;
+use App\Repositories\Contracts\PurchaseInterface;
 use App\Repositories\Contracts\TableInterface;
 use App\Repositories\Contracts\TaxInterface;
 use App\Repositories\Contracts\UserInterface;
@@ -50,6 +52,7 @@ use App\Repositories\OrderItemAddonRepository;
 use App\Repositories\OrderItemRepository;
 use App\Repositories\OrderRepository;
 use App\Repositories\PaymentRepository;
+use App\Repositories\PurchaseRepository;
 use App\Repositories\TableRepository;
 use App\Repositories\TaxRepository;
 use App\Repositories\UserRepository;
@@ -92,6 +95,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(VariantInterface::class, fn() => new VariantRepository(new Variant()));
         $this->app->bind(PaymentInterface::class, fn() => new PaymentRepository(new Payment()));
         $this->app->bind(AddonVariantInterface::class, fn() => new AddonVariantRepository(new AddonVariant()));
+        $this->app->bind(PurchaseInterface::class, fn() => new PurchaseRepository(new Purchase()));
 
 
     }

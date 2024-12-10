@@ -45,4 +45,8 @@ class Order extends Model
     {
         return $this->hasMany(OrderDiscount::class, 'order_id', 'id');
     }
+    public function payments(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    {
+        return $this->morphMany(Payment::class, 'payable');
+    }
 }

@@ -18,4 +18,9 @@ class Purchase extends Model
         'shipping_cost',
         'status'
     ];
+    public function payments(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    {
+        return $this->morphMany(Payment::class, 'payable');
+    }
+
 }

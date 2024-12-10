@@ -71,6 +71,7 @@ Route::group(['prefix' => 'api/v1'], function () {
             Route::apiResource('variant', \App\Http\Controllers\VariantController::class);
             Route::apiResource('addon', \App\Http\Controllers\AddonController::class);
             Route::apiResource('addon-variant', \App\Http\Controllers\AddonVariantController::class);
+            Route::apiResource('purchase', \App\Http\Controllers\PurchaseController::class);
 //            Route::apiResource('membership-type', \App\Http\Controllers\MembershipTypeController::class);
         });
     });

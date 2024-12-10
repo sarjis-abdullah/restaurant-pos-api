@@ -16,6 +16,7 @@ use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\PurchasePayment;
 use App\Models\PurchaseProduct;
+use App\Models\Stock;
 use App\Models\Supplier;
 use App\Models\Table;
 use App\Models\Tax;
@@ -33,6 +34,7 @@ class DatabaseSeeder extends Seeder
 {
     public function runPurchaseProduct()
     {
+        DB::beginTransaction();
         $products = Product::query()->pluck('id');   // Assuming products exist
 
         $purchaseAbleItems = collect([]);
@@ -40,6 +42,7 @@ class DatabaseSeeder extends Seeder
         $finalDiscount = 0;
         $finalTax = 0;
         $finalCost = 0;
+        $shippingCost = rand(20, 21) * 10;
         for ($i = 0; $i < 10; $i++) {
             $discountType = ['flat', 'percentage'][array_rand(['flat', 'percentage'])];
             $taxType = ['flat', 'percentage'][array_rand(['flat', 'percentage'])];
@@ -48,7 +51,7 @@ class DatabaseSeeder extends Seeder
             $sellingPrice = rand(20,21)*10;
             $taxAmount = $taxType == 'percentage' ? $purchasePrice * (5/100) : 5;
             $discountAmount = $discountType == 'percentage' ? $purchasePrice * (2/100) : 2;
-            $shippingCost = rand(20, 21) * 10;
+
             $subtotal = ($quantity * $purchasePrice) + $taxAmount - $discountAmount;
             $finalTotal += $subtotal;
             $finalDiscount += $discountAmount;
@@ -92,13 +95,37 @@ class DatabaseSeeder extends Seeder
             $item['purchase_id'] = $purchase->id;
             $proportionalShipping = ($item['subtotal'] / $finalTotal) * $shippingCost;
             $item['allocated_shipping_cost'] = $proportionalShipping;
-
+            $stockSkus = Stock::query()->where('product_id', $item['product_id'])->pluck('sku');
+            if (count($stockSkus) > 0) {
+                $item['sku'] = $stockSkus->random();
+            }
             // Adjust the subtotal to include the allocated shipping cost
             $item['subtotal'] += $proportionalShipping;
             return $item;
         }, $purchaseAbleItems->toArray());
 
-        PurchaseProduct::insert($purchaseAbleItems);
+        foreach ($purchaseAbleItems as $item) {
+            $costPerUnit = ($item['subtotal'] / $item['quantity']);
+
+            $purchaseItem  = $item;
+            unset($purchaseItem['sku']);
+            PurchaseProduct::create($purchaseItem);
+            if (isset($item['sku'])){
+                $stock = Stock::where('sku', $item['sku'])->where('product_id', $item['product_id'])->first();
+                if ($stock instanceof Stock){
+                    $stock->quantity = $stock->quantity + $item['quantity'];
+                    $stock->save();
+                }
+            }else{
+                Stock::create([
+                    'sku' => uniqid('prod_'),
+                    'product_id' => $item['product_id'],
+                    'cost_per_unit' => $costPerUnit,
+                    'quantity' => $item['quantity'],
+                ]);
+            }
+        }
+        DB::commit();
     }
     private function createSupplier()
     {
@@ -110,11 +137,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->createSupplier();
+//        $this->createSupplier();
 //        $this->runPurchase();
-        $this->runPurchaseProduct();
-//        Product::factory()->count(20)->create();
-        return
+//        $this->runPurchaseProduct();
+////        Product::factory()->count(20)->create();
+//        return
         DB::beginTransaction();
         $faker = Faker::create();
 
@@ -165,7 +192,8 @@ class DatabaseSeeder extends Seeder
             VariantSeeder::class,
             AddonSeeder::class,
         ]);
-
+        Supplier::factory()->count(10)->create();
+        Product::factory()->count(20)->create();
         $menu = Menu::create([
             'name' => $faker->company,
             "branch_id" => $branch->id,
