@@ -2,19 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PurchaseProduct\IndexRequest;
 use App\Models\PurchaseProduct;
+use App\Repositories\Contracts\PurchaseProductInterface;
 use Illuminate\Http\Request;
 
 class PurchaseProductController extends Controller
 {
-    public function __construct()
+    private PurchaseProductInterface $interface;
+
+    /**
+     * @param PurchaseProductInterface $interface
+     */
+    public function __construct(PurchaseProductInterface $interface)
     {
+        $this->interface = $interface;
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexRequest $request)
     {
         //
     }
