@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Purchase extends Model
 {
@@ -22,9 +23,9 @@ class Purchase extends Model
     {
         return $this->morphMany(Payment::class, 'payable', 'payable_type', 'payable_id');
     }
-    public function supplier(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function supplier(): BelongsTo
     {
-        return $this->belongsTo(Supplier::class);
+        return $this->belongsTo(Supplier::class, 'supplier_id', 'id');
     }
 
     public function getDueAmountAttribute()

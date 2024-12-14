@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PurchaseProduct extends Model
 {
@@ -13,7 +14,6 @@ class PurchaseProduct extends Model
         'purchase_id',
         'product_id',
         'quantity',
-        'purchase_price',
         'selling_price',
         'tax_amount',
         'tax_type',
@@ -23,4 +23,12 @@ class PurchaseProduct extends Model
         'subtotal'
     ];
 
+    function purchase(): BelongsTo
+    {
+        return $this->belongsTo(Purchase::class);
+    }
+    function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

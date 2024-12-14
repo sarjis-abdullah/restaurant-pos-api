@@ -17,7 +17,7 @@ return new class extends Migration
 //            $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->decimal('quantity');
             $table->string('reason')->nullable();
-            $table->string('return_type')->default('restaurant');
+            $table->string('return_type')->default('purchase'); //order, purchase
             $table->timestamp('returned_at')->useCurrent();
             $table->timestamps();
         });

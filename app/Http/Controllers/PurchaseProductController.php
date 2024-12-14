@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PurchaseProduct\IndexRequest;
+use App\Http\Resources\PurchaseProductResource;
+use App\Http\Resources\PurchaseProductResourceCollection;
 use App\Models\PurchaseProduct;
 use App\Repositories\Contracts\PurchaseProductInterface;
 use Illuminate\Http\Request;
@@ -24,7 +26,8 @@ class PurchaseProductController extends Controller
      */
     public function index(IndexRequest $request)
     {
-        //
+        $items = $this->interface->findBy($request->all());
+        return new PurchaseProductResourceCollection($items);
     }
 
     /**
@@ -40,7 +43,8 @@ class PurchaseProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $items = $this->interface->save($request->all());
+        return new PurchaseProductResource($items);
     }
 
     /**
@@ -48,7 +52,7 @@ class PurchaseProductController extends Controller
      */
     public function show(PurchaseProduct $purchaseProduct)
     {
-        //
+        return new PurchaseProductResource($purchaseProduct);
     }
 
     /**
@@ -64,7 +68,8 @@ class PurchaseProductController extends Controller
      */
     public function update(Request $request, PurchaseProduct $purchaseProduct)
     {
-        //
+        $items = $this->interface->update($purchaseProduct, $request->all());
+        return new PurchaseProductResource($items);
     }
 
     /**
@@ -72,6 +77,7 @@ class PurchaseProductController extends Controller
      */
     public function destroy(PurchaseProduct $purchaseProduct)
     {
-        //
+        $this->interface->delete($purchaseProduct);
+        return response()->json([], 204);
     }
 }

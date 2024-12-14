@@ -25,9 +25,9 @@ class PurchaseResource extends Resource
             'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'due' => $this->when($this->needToInclude($request, 'due'), fn() => $this->getDueAmountAttribute()),
-            'supplier' => $this->when($this->needToInclude($request, 'supplier'), fn() => new SupplierResource($this->supplier)),
-            'payments' => $this->when($this->needToInclude($request, 'payments'), fn() => new PaymentResourceCollection($this->payments)),
+            'due' => $this->when($this->needToInclude($request, 'purchase.due'), fn() => $this->getDueAmountAttribute()),
+            'supplier' => $this->when($this->needToInclude($request, 'purchase.supplier'), fn() => new SupplierResource($this->supplier)),
+            'payments' => $this->when($this->needToInclude($request, 'purchase.payments'), fn() => new PaymentResourceCollection($this->payments)),
         ];
     }
 }
