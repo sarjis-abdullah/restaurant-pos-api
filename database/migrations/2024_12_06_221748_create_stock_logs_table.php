@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('type'); // in, out, adjustment
             $table->decimal('prev_quantity');
             $table->decimal('new_quantity');
+            $table->decimal('quantity_deducted')->default(0);
             $table->string('reference_id')->nullable(); // e.g., purchase ID or sale ID
             $table->string('reason')->nullable();
             $table->timestamps();

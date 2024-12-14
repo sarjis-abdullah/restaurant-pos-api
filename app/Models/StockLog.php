@@ -9,5 +9,5 @@ class StockLog extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['product_id','stock_id', 'type', 'prev_quantity', 'new_quantity', 'reference_id', 'reason'];
+    protected $fillable = ['product_id','stock_id', 'type', 'prev_quantity', 'new_quantity', 'reference_id', 'reason', 'quantity_deducted'];
 }
