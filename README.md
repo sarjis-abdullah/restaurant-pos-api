@@ -50,3 +50,8 @@ Schema hints diagram
 Schema design
 
 https://dbdiagram.io/d/6624910103593b6b61872f2a
+
+Todo
+1. Add expire date to purchase product
+2. Handle payment status to purchase product
+3. 

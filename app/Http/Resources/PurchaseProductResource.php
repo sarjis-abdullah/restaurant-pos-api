@@ -18,6 +18,7 @@ class PurchaseProductResource extends Resource
             'id' => $this->id,
             'purchase_id' => $this->purchase_id,
             'product_id' => $this->product_id,
+            'stock_id' => $this->stock_id,
             'quantity' => $this->quantity,
             'purchase_price' => $this->purchase_price,
             'selling_price' => $this->selling_price,
@@ -30,6 +31,8 @@ class PurchaseProductResource extends Resource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'purchase' => $this->when($this->needToInclude($request, 'pp.purchase'), fn() => new PurchaseResource($this->purchase)),
+            'stock' => $this->when($this->needToInclude($request, 'pp.stock'), fn() => new StockReturnResource($this->stock)),
+            'product' => $this->when($this->needToInclude($request, 'pp.product'), fn() => new ProductResource($this->product)),
         ];
     }
 }

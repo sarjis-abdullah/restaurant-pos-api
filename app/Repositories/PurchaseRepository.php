@@ -96,7 +96,7 @@ class PurchaseRepository extends BaseRepository implements PurchaseInterface
             foreach ($purchaseAbleItems as $item) {
                 $costPerUnit = ($item['subtotal'] / $item['quantity']);
 
-                PurchaseProduct::create($item);
+
                 if (isset($item['stockId'])){
                     $stock = Stock::where('id', $item['stockId'])->where('product_id', $item['product_id'])->first();
                     if ($stock instanceof Stock){
@@ -104,13 +104,18 @@ class PurchaseRepository extends BaseRepository implements PurchaseInterface
                         $stock->save();
                     }
                 }else{
-                    Stock::create([
+                    $stock = Stock::create([
                         'sku' => uniqid('prod_'),
                         'product_id' => $item['product_id'],
+                        'purchase_id' => $item['product_id'],
                         'cost_per_unit' => $costPerUnit,
                         'quantity' => $item['quantity'],
                     ]);
                 }
+                PurchaseProduct::create([
+                    ...$item,
+                    'stock_id' => $stock->id,
+                ]);
             }
             DB::commit();
             return $purchase;

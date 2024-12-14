@@ -27,6 +27,10 @@ class Purchase extends Model
     {
         return $this->belongsTo(Supplier::class, 'supplier_id', 'id');
     }
+    function purchaseProducts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(PurchaseProduct::class, 'purchase_id', 'id');
+    }
 
     public function getDueAmountAttribute()
     {

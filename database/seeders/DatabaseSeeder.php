@@ -14,7 +14,6 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Purchase;
-use App\Models\PurchasePayment;
 use App\Models\PurchaseProduct;
 use App\Models\Stock;
 use App\Models\Supplier;
@@ -82,14 +81,14 @@ class DatabaseSeeder extends Seeder
 
         $paymentMethods = ['cash', 'visa', 'mastercard', 'bank_transfer', 'due'];
 
-        PurchasePayment::create([
-            'purchase_id' => $purchase->id,
-            'amount' => $purchase->total_amount,
-            'payment_method' => $paymentMethods[array_rand($paymentMethods)],
-            'transaction_reference' => null,
-            'status' => 'completed',
-            'payment_date' => now(),
-        ]);
+//        PurchasePayment::create([
+//            'purchase_id' => $purchase->id,
+//            'amount' => $purchase->total_amount,
+//            'payment_method' => $paymentMethods[array_rand($paymentMethods)],
+//            'transaction_reference' => null,
+//            'status' => 'completed',
+//            'payment_date' => now(),
+//        ]);
 
         $purchaseAbleItems = array_map(function ($item) use ($purchase, $shippingCost, $finalTotal) {
             $item['purchase_id'] = $purchase->id;
@@ -109,7 +108,6 @@ class DatabaseSeeder extends Seeder
 
             $purchaseItem  = $item;
             unset($purchaseItem['sku']);
-            PurchaseProduct::create($purchaseItem);
             if (isset($item['sku'])){
                 $stock = Stock::where('sku', $item['sku'])->where('product_id', $item['product_id'])->first();
                 if ($stock instanceof Stock){
@@ -117,13 +115,17 @@ class DatabaseSeeder extends Seeder
                     $stock->save();
                 }
             }else{
-                Stock::create([
+                $stock = Stock::create([
                     'sku' => uniqid('prod_'),
                     'product_id' => $item['product_id'],
                     'cost_per_unit' => $costPerUnit,
                     'quantity' => $item['quantity'],
                 ]);
             }
+            PurchaseProduct::create([
+                ...$item,
+                'stock_id' => $stock->id,
+            ]);
         }
         DB::commit();
     }
@@ -141,7 +143,7 @@ class DatabaseSeeder extends Seeder
 //        $this->runPurchase();
 //        $this->runPurchaseProduct();
 ////        Product::factory()->count(20)->create();
-//        return
+//        return;
         DB::beginTransaction();
         $faker = Faker::create();
 
@@ -194,6 +196,7 @@ class DatabaseSeeder extends Seeder
         ]);
         Supplier::factory()->count(10)->create();
         Product::factory()->count(20)->create();
+        $this->runPurchaseProduct();
         $menu = Menu::create([
             'name' => $faker->company,
             "branch_id" => $branch->id,

@@ -13,7 +13,9 @@ class PurchaseProduct extends Model
     protected $fillable = [
         'purchase_id',
         'product_id',
+        'stock_id',
         'quantity',
+        'purchase_price',
         'selling_price',
         'tax_amount',
         'tax_type',
@@ -30,5 +32,9 @@ class PurchaseProduct extends Model
     function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+    function stock(): BelongsTo
+    {
+        return $this->belongsTo(Stock::class);
     }
 }
