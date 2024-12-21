@@ -142,8 +142,11 @@ class DatabaseSeeder extends Seeder
 //        $this->createSupplier();
 //        $this->runPurchase();
 //        $this->runPurchaseProduct();
-////        Product::factory()->count(20)->create();
-//        return;
+//        Product::factory()->count(20)->create();
+        $this->call([
+            RecipeSeeder::class,
+        ]);
+        return;
         DB::beginTransaction();
         $faker = Faker::create();
 

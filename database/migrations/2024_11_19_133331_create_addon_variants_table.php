@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('addon_variants', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('recipe_id')->nullable();
             $table->foreignId('addon_id')->constrained('addons')->onDelete('cascade');
             $table->string('type');
             $table->string('name');

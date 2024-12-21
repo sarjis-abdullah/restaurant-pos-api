@@ -26,6 +26,7 @@ class MenuItem extends Model
         'preparation_time',
         'serves',
         'allow_other_discount',
+        'recipe_id',
     ];
 
     function discount(): BelongsTo

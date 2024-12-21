@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('price');
             $table->text('description')->nullable();
             $table->boolean('has_variants')->default(false);
+            $table->unsignedBigInteger('recipe_id')->nullable();
             $table->foreignId('menu_item_id')->constrained('menu_items')->onDelete('cascade'); // Link to a specific menu item
             $table->timestamps();
         });

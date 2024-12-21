@@ -27,6 +27,7 @@ return new class extends Migration
             $table->integer('preparation_time')->nullable(); // in minutes
             $table->integer('serves')->default(1);
             $table->boolean('allow_other_discount')->default(true);
+            $table->unsignedBigInteger('recipe_id')->nullable();
             $table->timestamps();
         });
     }

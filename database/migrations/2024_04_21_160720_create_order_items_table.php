@@ -22,7 +22,6 @@ return new class extends Migration
             $table->decimal('menu_item_discount');
             $table->decimal('total_amount');
             $table->decimal('tax_amount')->default(0);
-
             $table->timestamps();
         });
     }

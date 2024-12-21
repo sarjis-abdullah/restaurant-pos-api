@@ -15,6 +15,7 @@ class Variant extends Model
         'type',
         'price',
         'menu_item_id',
+        'recipe_id',
     ];
 
     function menu_item(): BelongsTo
