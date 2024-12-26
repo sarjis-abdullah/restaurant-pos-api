@@ -15,6 +15,7 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\PurchaseProduct;
+use App\Models\Recipe;
 use App\Models\Stock;
 use App\Models\Supplier;
 use App\Models\Table;
@@ -143,10 +144,10 @@ class DatabaseSeeder extends Seeder
 //        $this->runPurchase();
 //        $this->runPurchaseProduct();
 //        Product::factory()->count(20)->create();
-        $this->call([
-            RecipeSeeder::class,
-        ]);
-        return;
+//        $this->call([
+//            RecipeSeeder::class,
+//        ]);
+//        return;
         DB::beginTransaction();
         $faker = Faker::create();
 
@@ -193,18 +194,23 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             CategorySeeder::class,
+
+        ]);
+        Supplier::factory()->count(10)->create();
+        Product::factory()->count(20)->create();
+        $this->call([
+            RecipeSeeder::class,
             MenuSeeder::class,
             VariantSeeder::class,
             AddonSeeder::class,
         ]);
-        Supplier::factory()->count(10)->create();
-        Product::factory()->count(20)->create();
         $this->runPurchaseProduct();
         $menu = Menu::create([
             'name' => $faker->company,
             "branch_id" => $branch->id,
         ]);
 
+        $recipeIds = Recipe::query()->pluck('id');
         $menuItem = MenuItem::create([
             "name" => $faker->company,
             "price" => 200,
@@ -213,6 +219,7 @@ class DatabaseSeeder extends Seeder
             "preparation_time" => '20',
             "serves" => 2,
             "menu_id" => $menu->id,
+            "recipe_id" => $recipeIds->random(),
         ]);
 
         /*

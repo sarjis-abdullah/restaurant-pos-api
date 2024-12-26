@@ -20,5 +20,9 @@ class AddonVariant extends Model
     {
         return $this->belongsTo(AddonVariant::class, 'variant_id', 'id');
     }
+    function recipe(): BelongsTo
+    {
+        return $this->belongsTo(Recipe::class, 'recipe_id', 'id');
+    }
 
 }

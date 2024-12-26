@@ -10,6 +10,7 @@ use App\Models\Menu;
 use App\Models\MenuItem;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Recipe;
 use App\Models\Table;
 use App\Models\Tax;
 use App\Models\User;
@@ -49,7 +50,7 @@ class MenuSeeder extends Seeder
         ]);
 
         $taxIds = Tax::query()->pluck('id');
-
+        $recipeIds = Recipe::query()->pluck('id');
 
         $menuItem1 = MenuItem::create([
             'name' => 'Scrambled Eggs',
@@ -65,6 +66,7 @@ class MenuSeeder extends Seeder
             'preparation_time' => 10,
             'serves' => 1,
             'allow_other_discount' => true,
+            "recipe_id" => $recipeIds->random(),
         ]);
 
         $discount = Discount::create([
@@ -86,7 +88,7 @@ class MenuSeeder extends Seeder
             'ingredients' => 'Pancakes, Eggs, Potatoes, Butter, Syrup',
             'preparation_time' => 15,
             'serves' => 1,
-            'allow_other_discount' => false,
+            'allow_other_discount' => false,"recipe_id" => $recipeIds->random(),
         ]);
 
         $menuItem3 = MenuItem::create([
@@ -102,7 +104,7 @@ class MenuSeeder extends Seeder
             'ingredients' => 'Steak, Potatoes, Broccoli, Carrots, Salt, Pepper',
             'preparation_time' => 25,
             'serves' => 1,
-            'allow_other_discount' => true,
+            'allow_other_discount' => true,"recipe_id" => $recipeIds->random(),
         ]);
 
         $menuItem4 = MenuItem::create([
@@ -118,7 +120,7 @@ class MenuSeeder extends Seeder
             'ingredients' => 'Oranges',
             'preparation_time' => 5,
             'serves' => 1,
-            'allow_other_discount' => true,
+            'allow_other_discount' => true,"recipe_id" => $recipeIds->random(),
         ]);
         $faker = Faker::create();
         foreach (range(1,10) as $in){
@@ -135,7 +137,7 @@ class MenuSeeder extends Seeder
                 'ingredients' => 'Oranges',
                 'preparation_time' => 5,
                 'serves' => 1,
-                'allow_other_discount' => true,
+                'allow_other_discount' => true,"recipe_id" => $recipeIds->random(),
             ]);
         }
 

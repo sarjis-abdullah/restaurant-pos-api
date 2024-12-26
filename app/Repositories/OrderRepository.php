@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Enums\OrderStatus;
 use App\Enums\TableStatus;
+use App\Events\OrderCreatedEvent;
 use App\Models\Addon;
 use App\Models\Discount;
 use App\Models\MenuItem;
@@ -52,37 +53,7 @@ class OrderRepository extends BaseRepository implements OrderInterface
                 'branch_id' => 1,
             ]);
 
-            if ($hasDiscounts) {
-                $order->discounts()->createMany($orderData['discounts']);
-            }
-            // Step 3: Save each order item
-            foreach ($calculatedOrder['details'] as $item) {
-                $orderItem = new OrderItem();
-                $orderItem->order_id = $order->id;
-                $orderItem->menu_item_id = $item['menu_item_id'];
-                $orderItem->quantity = $item['quantity'];
-                $orderItem->addons_total = $item['addons_total'];
-                $orderItem->item_price = $item['item_price'];
-                $orderItem->menu_item_discount = $item['menu_item_discount'];
-                $orderItem->additional_discount = 0;
-                $orderItem->tax_amount = $item['tax'];
-                $orderItem->variant_id = $item['variant_id'];
-                $orderItem->total_amount = $item['total'];
-                $orderItem->save();
-
-                // Step 4: Save addons for this item
-                $addons = $item['addons'] ?? [];
-
-                foreach ($addons as $addon) {
-                    $orderItemAddon = new OrderItemAddon();
-                    $orderItemAddon->order_item_id = $orderItem->id;
-                    $orderItemAddon->addon_id = $addon['addon_id'];
-                    $orderItemAddon->variant_id = $addon['variant_id'] ?? null;
-                    $orderItemAddon->quantity = $addon['quantity'] ?? 1;
-                    $orderItemAddon->total_amount = $addon['total_amount'];
-                    $orderItemAddon->save();
-                }
-            }
+            event(new OrderCreatedEvent($order, $orderData, $calculatedOrder, $hasDiscounts));
 
             DB::commit();
             return $order;

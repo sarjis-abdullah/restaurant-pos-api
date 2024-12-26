@@ -45,6 +45,10 @@ class MenuItem extends Model
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
+    function recipe(): BelongsTo
+    {
+        return $this->belongsTo(Recipe::class, 'recipe_id', 'id');
+    }
 
     function variants(): HasMany
     {

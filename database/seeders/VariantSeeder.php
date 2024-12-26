@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Recipe;
+use App\Models\Stock;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -59,6 +61,13 @@ class VariantSeeder extends Seeder
         ];
 
         // Insert all variants
+        $recipeIds = Recipe::query()->pluck('id');
+
+        $variants = array_map(function ($item) use ($recipeIds) {
+            $item['recipe_id'] = $recipeIds->random();
+            return $item;
+        }, $variants);
+
         DB::table('variants')->insert($variants);
 
         $variants = [
@@ -68,6 +77,11 @@ class VariantSeeder extends Seeder
             ['name' => 'Blue', 'type' => 'color', 'price' => 0.00, 'menu_item_id' => 11],
             ['name' => 'Black', 'type' => 'color', 'price' => 1.25, 'menu_item_id' => 12],
         ];
+
+        $variants = array_map(function ($item) use ($recipeIds) {
+            $item['recipe_id'] = $recipeIds->random();
+            return $item;
+        }, $variants);
 
         DB::table('variants')->insert($variants);
     }

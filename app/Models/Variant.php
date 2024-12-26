@@ -22,4 +22,8 @@ class Variant extends Model
     {
         return $this->belongsTo(MenuItem::class, 'menu_item_id', 'id');
     }
+    function recipe(): BelongsTo
+    {
+        return $this->belongsTo(Recipe::class, 'recipe_id', 'id');
+    }
 }

@@ -26,6 +26,8 @@ Route::group(['prefix' => 'api/v1'], function () {
         return response()->json(['message' => 'Hello from Restaurant POS API.']);
     });
 
+    Route::apiResource('test', 'TestApiController');
+
     Route::post('/login', 'UserController@login')->name('login');
 
     Route::middleware('auth:sanctum')->group(function () {
