@@ -44,7 +44,7 @@ class OrderCreatedListener implements ShouldQueue
 
             if ($hasDiscounts) {
                 $order->discounts()->createMany($orderData['discounts']);
-                dump('discounts created');
+//                dump('discounts created');
             }
             // Step 3: Save each order item
             foreach ($calculatedOrder['details'] as $item) {
@@ -55,13 +55,12 @@ class OrderCreatedListener implements ShouldQueue
                 $orderItem->addons_total = $item['addons_total'];
                 $orderItem->item_price = $item['item_price'];
                 $orderItem->menu_item_discount = $item['menu_item_discount'];
-                $orderItem->additional_discount = 0;
                 $orderItem->tax_amount = $item['tax'];
                 $orderItem->variant_id = $item['variant_id'];
                 $orderItem->total_amount = $item['total'];
                 $orderItem->save();
 
-                dump('orderItem created', $orderItem->id);
+//                dump('orderItem created', $orderItem->id);
 
                 $this->processOrderItemRecipeStocks($orderItem);
                 // Step 4: Save addons for this item
@@ -76,13 +75,13 @@ class OrderCreatedListener implements ShouldQueue
                     $orderItemAddon->total_amount = $addon['total_amount'];
                     $orderItemAddon->save();
 
-                    dump('OrderItemAddon created', $orderItemAddon->id);
+//                    dump('OrderItemAddon created', $orderItemAddon->id);
 
                     $this->processAddonRecipeStocks($orderItemAddon);
                 }
             }
 
-            $order->staus = OrderStatus::received->value;
+            $order->status = OrderStatus::received->value;
             $order->save();
             DB::commit();
         } catch (Exception $exception){
@@ -110,13 +109,13 @@ class OrderCreatedListener implements ShouldQueue
         }
         if (!$recipe) {
             $error = "Recipe not found.";
-            throw new PosException($error, [
+            throw new PosException($error,404, [
                 'error' => $error,
-            ], 404);
+            ]);
         }
         $ingredients = $recipe->ingredients;
 
-        dump('$ingredients for $addonId item');
+//        dump('$ingredients for $addonId item');
 
         $this->adjustStocks($ingredients, $orderQty);
     }
@@ -140,13 +139,13 @@ class OrderCreatedListener implements ShouldQueue
         }
         if (!$recipe) {
             $error = "Recipe not found.";
-            throw new PosException($error, [
+            throw new PosException($error,404, [
                 'error' => $error,
-            ], 404);
+            ]);
         }
 
         $ingredients = $recipe->ingredients;
-        dump('$ingredients for order item');
+//        dump('$ingredients for order item');
 
         $this->adjustStocks($ingredients, $orderQty);
     }
@@ -161,8 +160,8 @@ class OrderCreatedListener implements ShouldQueue
             $availableStock = $stockQuery->sum('quantity');
             $stocks = $stockQuery->get();
             $deductibleQuantity = $ingredient->quantity * $orderQty;
-            dump('adjustStocks');
-            if ($availableStock >= $ingredient->quantity) {
+//            dump('adjustStocks');
+            if ($availableStock >= $deductibleQuantity) {
                 foreach ($stocks as $stock) {
                     if ($deductibleQuantity <= $stock->quantity) {
                         $stock->quantity -= $deductibleQuantity;
@@ -176,9 +175,9 @@ class OrderCreatedListener implements ShouldQueue
                 }
             }else {
                 $error = "Insufficient stock for product ID: {$ingredient->product_id}";
-                throw new PosException($error, [
+                throw new PosException($error,400, [
                     'error' => $error
-                ], 400);
+                ]);
             }
         }
     }

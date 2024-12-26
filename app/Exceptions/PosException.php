@@ -8,7 +8,7 @@ class PosException extends Exception
 {
     public $message;
     public $code;
-    public array $errors;
+    public $errors;
 
     public function __construct($message, $code, $errors)
     {
