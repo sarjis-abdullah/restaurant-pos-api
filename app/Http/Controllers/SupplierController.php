@@ -2,17 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Supplier\IndexRequest;
+use App\Http\Requests\Supplier\StoreRequest;
+use App\Http\Requests\Supplier\UpdateRequest;
+use App\Http\Resources\SupplierResource;
+use App\Http\Resources\SupplierResourceCollection;
 use App\Models\Supplier;
+use App\Repositories\Contracts\SupplierInterface;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
+    private SupplierInterface $interface;
+
+    /**
+     * @param SupplierInterface $interface
+     */
+    public function __construct(SupplierInterface $interface)
+    {
+        $this->interface = $interface;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexRequest $request)
     {
-        //
+        $list = $this->interface->findBy($request->all());
+        return new SupplierResourceCollection($list);
     }
 
     /**
@@ -28,7 +45,8 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $list = $this->interface->save($request->all());
+        return new SupplierResource($list);
     }
 
     /**
@@ -36,7 +54,7 @@ class SupplierController extends Controller
      */
     public function show(Supplier $supplier)
     {
-        //
+        return new SupplierResource($supplier);
     }
 
     /**
@@ -52,7 +70,8 @@ class SupplierController extends Controller
      */
     public function update(Request $request, Supplier $supplier)
     {
-        //
+        $list = $this->interface->update($supplier, $request->all());
+        return new SupplierResource($list);
     }
 
     /**
@@ -60,6 +79,7 @@ class SupplierController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
-        //
+        $list = $this->interface->delete($supplier);
+        return response()->json(null, 204);
     }
 }

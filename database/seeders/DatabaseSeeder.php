@@ -32,6 +32,166 @@ use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
+    function addBurgerProducts()
+    {
+        $products = [
+            [
+                'name' => 'Burger Bun',
+                'description' => 'Soft and fluffy burger buns.',
+                'unit' => 'piece',
+            ],
+            [
+                'name' => 'Beef Patty',
+                'description' => 'Juicy beef patty for burgers.',
+                'unit' => 'piece',
+            ],
+            [
+                'name' => 'Cheese Slice',
+                'description' => 'Creamy cheese slices.',
+                'unit' => 'slice',
+            ],
+            [
+                'name' => 'Lettuce',
+                'description' => 'Fresh iceberg lettuce leaves.',
+                'unit' => 'leaf',
+            ],
+            [
+                'name' => 'Tomato',
+                'description' => 'Freshly sliced tomatoes.',
+                'unit' => 'kg',
+            ],
+            [
+                'name' => 'Onion',
+                'description' => 'Fresh onion rings.',
+                'unit' => 'kg',
+            ],
+            [
+                'name' => 'Pickle',
+                'description' => 'Tangy pickle slices.',
+                'unit' => 'slice',
+            ],
+            [
+                'name' => 'Mayonnaise',
+                'description' => 'Creamy mayonnaise for dressing.',
+                'unit' => 'ml',
+            ],
+            [
+                'name' => 'Ketchup',
+                'description' => 'Tomato ketchup for flavor.',
+                'unit' => 'ml',
+            ],
+            [
+                'name' => 'Mustard',
+                'description' => 'Tangy mustard sauce.',
+                'unit' => 'ml',
+            ],
+        ];
+
+        $products = array_map(function ($item) {
+            $item['barcode'] = Str::random(13);
+            return $item;
+        }, $products);
+
+        Product::insert($products);
+    }
+
+    public function purchaseBurgerProduct()
+    {
+        DB::beginTransaction();
+        $products = Product::query()->where('id', '>', 20)->pluck('id');   // Assuming products exist
+
+        $purchaseAbleItems = collect([]);
+        $finalTotal = 0;
+        $finalDiscount = 0;
+        $finalTax = 0;
+        $finalCost = 0;
+        $shippingCost = rand(20, 21) * 10;
+
+        $discountType = 'flat';
+        $taxType = 'percentage';
+        $quantity = rand(10, 11);
+        $purchasePrice = rand(10,11)*10;
+        $sellingPrice = rand(20,21)*10;
+        $taxAmount = $taxType == 'percentage' ? $purchasePrice * (5/100) : 5;
+        $discountAmount = $discountType == 'percentage' ? $purchasePrice * (2/100) : 2;
+
+        $subtotal = ($quantity * $purchasePrice) + $taxAmount - $discountAmount;
+        $finalTotal += $subtotal;
+        $finalDiscount += $discountAmount;
+        $finalTax += $taxAmount;
+        $purchaseAbleItems->push([
+            'product_id'     => $products->random(),
+            'quantity'       => $quantity,
+            'purchase_price' => $purchasePrice,
+            'selling_price'  => $sellingPrice,
+            'tax'     => $taxAmount,
+            'discount'=> $discountAmount,
+            'discount_type'  => $discountType,
+            'tax_type'       => $taxType,
+            'subtotal'       => $subtotal,
+        ]);
+
+        $suppliers = Supplier::query()->pluck('id');
+        $purchase = Purchase::create([
+            'supplier_id'    => $suppliers->random(),
+            'purchase_date'  => now()->subDays(rand(1, 30)), // Random date within the last 30 days
+            'total_amount'   => $finalTotal,     // Random amount between 50.00 and 500.00
+            'discount' => $finalDiscount,         // Random discount
+            'tax'      => $finalTax,       // Random tax
+            'shipping_cost'   => $finalCost,        // Random shipping cost
+            'status'          => ['pending', 'completed', 'cancelled'][array_rand(['pending', 'completed', 'cancelled'])],
+        ]);
+
+        $paymentMethods = ['cash', 'visa', 'mastercard', 'bank_transfer', 'due'];
+
+//        PurchasePayment::create([
+//            'purchase_id' => $purchase->id,
+//            'amount' => $purchase->total_amount,
+//            'payment_method' => $paymentMethods[array_rand($paymentMethods)],
+//            'transaction_reference' => null,
+//            'status' => 'completed',
+//            'payment_date' => now(),
+//        ]);
+
+        $purchaseAbleItems = array_map(function ($item) use ($purchase, $shippingCost, $finalTotal) {
+            $item['purchase_id'] = $purchase->id;
+            $proportionalShipping = ($item['subtotal'] / $finalTotal) * $shippingCost;
+            $item['allocated_shipping_cost'] = $proportionalShipping;
+            $stockSkus = Stock::query()->where('product_id', $item['product_id'])->pluck('sku');
+            if (count($stockSkus) > 0) {
+                $item['sku'] = $stockSkus->random();
+            }
+            // Adjust the subtotal to include the allocated shipping cost
+            $item['subtotal'] += $proportionalShipping;
+            return $item;
+        }, $purchaseAbleItems->toArray());
+
+        foreach ($purchaseAbleItems as $item) {
+            $costPerUnit = ($item['subtotal'] / $item['quantity']);
+
+            $purchaseItem  = $item;
+            unset($purchaseItem['sku']);
+            if (isset($item['sku'])){
+                $stock = Stock::where('sku', $item['sku'])->where('product_id', $item['product_id'])->first();
+                if ($stock instanceof Stock){
+                    $stock->quantity = $stock->quantity + $item['quantity'];
+                    $stock->save();
+                }
+            }else{
+                $stock = Stock::create([
+                    'sku' => uniqid('prod_'),
+                    'product_id' => $item['product_id'],
+                    'cost_per_unit' => $costPerUnit,
+                    'quantity' => $item['quantity'],
+                ]);
+            }
+            PurchaseProduct::create([
+                ...$item,
+                'stock_id' => $stock->id,
+            ]);
+        }
+        DB::commit();
+    }
     public function runPurchaseProduct()
     {
         DB::beginTransaction();
@@ -61,8 +221,8 @@ class DatabaseSeeder extends Seeder
                 'quantity'       => $quantity,
                 'purchase_price' => $purchasePrice,
                 'selling_price'  => $sellingPrice,
-                'tax_amount'     => $taxAmount,
-                'discount_amount'=> $discountAmount,
+                'tax'     => $taxAmount,
+                'discount'=> $discountAmount,
                 'discount_type'  => $discountType,
                 'tax_type'       => $taxType,
                 'subtotal'       => $subtotal,
@@ -74,8 +234,8 @@ class DatabaseSeeder extends Seeder
             'supplier_id'    => $suppliers->random(),
             'purchase_date'  => now()->subDays(rand(1, 30)), // Random date within the last 30 days
             'total_amount'   => $finalTotal,     // Random amount between 50.00 and 500.00
-            'discount_amount' => $finalDiscount,         // Random discount
-            'tax_amount'      => $finalTax,       // Random tax
+            'discount' => $finalDiscount,         // Random discount
+            'tax'      => $finalTax,       // Random tax
             'shipping_cost'   => $finalCost,        // Random shipping cost
             'status'          => ['pending', 'completed', 'cancelled'][array_rand(['pending', 'completed', 'cancelled'])],
         ]);
@@ -147,6 +307,7 @@ class DatabaseSeeder extends Seeder
 //        $this->call([
 //            RecipeSeeder::class,
 //        ]);
+//        $this->addBurgerProducts();
 //        return;
         DB::beginTransaction();
         $faker = Faker::create();
@@ -204,7 +365,7 @@ class DatabaseSeeder extends Seeder
             VariantSeeder::class,
             AddonSeeder::class,
         ]);
-        $this->runPurchaseProduct();
+//        $this->runPurchaseProduct();
         $menu = Menu::create([
             'name' => $faker->company,
             "branch_id" => $branch->id,

@@ -19,7 +19,7 @@ class OrderItem extends Model
         'item_price',
         'addons_total',
         'menu_item_discount',
-        'tax_amount',
+        'tax',
         'total_amount',
     ];
 

@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
             $table->foreignId('supplier_id')->constrained()->onDelete('cascade');
+            $table->foreignId('branch_id')->constrained()->onDelete('cascade');
             $table->date('purchase_date');
             $table->decimal('total_amount');
-            $table->decimal('discount_amount')->default(0);
-            $table->decimal('tax_amount')->default(0);
+            $table->decimal('discount')->default(0);
+            $table->decimal('tax')->default(0);
             $table->decimal('shipping_cost')->default(0);
             $table->string('status')->default('pending');
             $table->timestamps();

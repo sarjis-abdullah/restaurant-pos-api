@@ -17,10 +17,10 @@ class PurchaseProduct extends Model
         'quantity',
         'purchase_price',
         'selling_price',
-        'tax_amount',
+        'tax',
         'tax_type',
         'discount_type',
-        'discount_amount',
+        'discount',
         'allocated_shipping_cost',
         'subtotal'
     ];

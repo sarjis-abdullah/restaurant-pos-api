@@ -9,6 +9,18 @@ class Stock extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['sku', 'product_id', 'quantity', 'cost_per_unit'];
+    protected $fillable = [
+        'sku',
+        'product_id',
+        'quantity',
+        'unit_cost',
+        'purchase_price',
+        'selling_price',
+        'tax',
+        'tax_type',
+        'discount_type',
+        'discount',
+        'shipping_cost',
+    ];
 
 }

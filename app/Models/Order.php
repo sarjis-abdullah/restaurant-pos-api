@@ -11,8 +11,8 @@ class Order extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'discount_amount',
-        'tax_amount',
+        'discount',
+        'tax',
         'total_amount',
         'addons_total',
         'status',

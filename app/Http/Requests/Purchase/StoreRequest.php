@@ -21,9 +21,9 @@ class StoreRequest extends Request
             'purchaseProducts.*.quantity' => ['required', 'integer', 'min:1'],
             'purchaseProducts.*.purchase_price' => ['required', 'numeric', 'min:0'],
             'purchaseProducts.*.selling_price' => ['required', 'numeric', 'min:0'],
-            'purchaseProducts.*.tax_amount' => ['required', 'numeric', 'min:0'],
+            'purchaseProducts.*.tax' => ['required', 'numeric', 'min:0'],
             'purchaseProducts.*.tax_type' => ['required', 'in:flat,percentage'],
-            'purchaseProducts.*.discount_amount' => ['required', 'numeric', 'min:0'],
+            'purchaseProducts.*.discount' => ['required', 'numeric', 'min:0'],
             'purchaseProducts.*.discount_type' => ['required', 'in:flat,percentage'],
 
             'shipping_cost' => ['required', 'numeric', 'min:0'],

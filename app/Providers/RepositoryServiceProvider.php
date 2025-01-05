@@ -16,9 +16,11 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderItemAddon;
 use App\Models\Payment;
+use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\PurchaseProduct;
 use App\Models\StockReturn;
+use App\Models\Supplier;
 use App\Models\Table;
 use App\Models\Tax;
 use App\Models\User;
@@ -41,9 +43,11 @@ use App\Repositories\Contracts\OrderInterface;
 use App\Repositories\Contracts\OrderItemAddonInterface;
 use App\Repositories\Contracts\OrderItemInterface;
 use App\Repositories\Contracts\PaymentInterface;
+use App\Repositories\Contracts\ProductInterface;
 use App\Repositories\Contracts\PurchaseInterface;
 use App\Repositories\Contracts\PurchaseProductInterface;
 use App\Repositories\Contracts\StockReturnInterface;
+use App\Repositories\Contracts\SupplierInterface;
 use App\Repositories\Contracts\TableInterface;
 use App\Repositories\Contracts\TaxInterface;
 use App\Repositories\Contracts\UserInterface;
@@ -56,9 +60,11 @@ use App\Repositories\OrderItemAddonRepository;
 use App\Repositories\OrderItemRepository;
 use App\Repositories\OrderRepository;
 use App\Repositories\PaymentRepository;
+use App\Repositories\ProductRepository;
 use App\Repositories\PurchaseProductRepository;
 use App\Repositories\PurchaseRepository;
 use App\Repositories\StockReturnRepository;
+use App\Repositories\SupplierRepository;
 use App\Repositories\TableRepository;
 use App\Repositories\TaxRepository;
 use App\Repositories\UserRepository;
@@ -104,6 +110,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(PurchaseInterface::class, fn() => new PurchaseRepository(new Purchase()));
         $this->app->bind(StockReturnInterface::class, fn() => new StockReturnRepository(new StockReturn()));
         $this->app->bind(PurchaseProductInterface::class, fn() => new PurchaseProductRepository(new PurchaseProduct()));
+        $this->app->bind(SupplierInterface::class, fn() => new SupplierRepository(new Supplier()));
+        $this->app->bind(ProductInterface::class, fn() => new ProductRepository(new Product()));
 
 
     }

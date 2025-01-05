@@ -41,7 +41,7 @@ class StoreRequest extends Request
 
             'discounts' => 'sometimes|required|array',
             'discounts.*.type' => 'required|string|in:membership,promo-code,instant-discount',
-            'discounts.*.discount_amount' => 'required|numeric|min:0',
+            'discounts.*.discount' => 'required|numeric|min:0',
         ];
     }
     protected function getOrderIndex($attribute): ?string

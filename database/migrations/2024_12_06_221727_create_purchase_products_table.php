@@ -19,8 +19,8 @@ return new class extends Migration
             $table->decimal('quantity');
             $table->decimal('purchase_price');
             $table->decimal('selling_price');
-            $table->decimal('tax_amount');
-            $table->decimal('discount_amount');
+            $table->decimal('tax');
+            $table->decimal('discount');
             $table->decimal('allocated_shipping_cost');
             $table->string('discount_type')->default('flat');
             $table->string('tax_type')->default('percentage');

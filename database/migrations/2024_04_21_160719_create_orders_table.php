@@ -26,8 +26,8 @@ return new class extends Migration
             $table->string('type')->default(OrderType::dine_in->value);
             $table->dateTime('pickup_date')->nullable();
             $table->decimal('total_amount')->default(0);
-            $table->decimal('discount_amount')->default(0);
-            $table->decimal('tax_amount')->default(0);
+            $table->decimal('discount')->default(0);
+            $table->decimal('tax')->default(0);
             $table->decimal('addons_total')->default(0);
             $table->dateTime('order_date');
             $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
             $table->string('type'); //membership, promo
-            $table->decimal('discount_amount');
+            $table->decimal('discount');
             $table->timestamps();
         });
     }

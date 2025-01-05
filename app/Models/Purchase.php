@@ -14,10 +14,11 @@ class Purchase extends Model
         'supplier_id',
         'purchase_date',
         'total_amount',
-        'discount_amount',
-        'tax_amount',
+        'discount',
+        'tax',
         'shipping_cost',
-        'status'
+        'status',
+        'branch_id',
     ];
     public function payments(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {

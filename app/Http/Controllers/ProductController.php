@@ -2,17 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Product\IndexRequest;
+use App\Http\Requests\Product\StoreRequest;
+use App\Http\Requests\Product\UpdateRequest;
+use App\Http\Resources\ProductResource;
+use App\Http\Resources\ProductResourceCollection;
 use App\Models\Product;
+use App\Repositories\Contracts\ProductInterface;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    private ProductInterface $interface;
+
+    public function __construct(ProductInterface $interface)
+    {
+        $this->interface = $interface;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexRequest $request)
     {
-        //
+        $list = $this->interface->findBy($request->all());
+        return new ProductResourceCollection($list);
     }
 
     /**
@@ -26,9 +40,10 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        $list = $this->interface->save($request->all());
+        return new ProductResource($list);
     }
 
     /**
@@ -36,7 +51,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return new ProductResource($product);
     }
 
     /**
@@ -50,9 +65,10 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(UpdateRequest $request, Product $product)
     {
-        //
+        $list = $this->interface->update($product, $request->all());
+        return new ProductResource($list);
     }
 
     /**
@@ -60,6 +76,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $list = $this->interface->delete($product);
+        return response()->json(null, 204);
     }
 }

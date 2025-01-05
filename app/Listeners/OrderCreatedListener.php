@@ -55,7 +55,7 @@ class OrderCreatedListener implements ShouldQueue
                 $orderItem->addons_total = $item['addons_total'];
                 $orderItem->item_price = $item['item_price'];
                 $orderItem->menu_item_discount = $item['menu_item_discount'];
-                $orderItem->tax_amount = $item['tax'];
+                $orderItem->tax = $item['tax'];
                 $orderItem->variant_id = $item['variant_id'];
                 $orderItem->total_amount = $item['total'];
                 $orderItem->save();

@@ -76,6 +76,8 @@ Route::group(['prefix' => 'api/v1'], function () {
             Route::apiResource('purchase', \App\Http\Controllers\PurchaseController::class);
             Route::apiResource('purchase-product', \App\Http\Controllers\PurchaseProductController::class);
             Route::apiResource('return', \App\Http\Controllers\StockReturnController::class);
+            Route::apiResource('supplier', \App\Http\Controllers\SupplierController::class);
+            Route::apiResource('product', \App\Http\Controllers\ProductController::class);
 //            Route::apiResource('membership-type', \App\Http\Controllers\MembershipTypeController::class);
         });
     });

@@ -44,8 +44,8 @@ class PurchaseRepository extends BaseRepository implements PurchaseInterface
                     'quantity'       => $quantity,
                     'purchase_price' => $purchasePrice,
                     'selling_price'  => $sellingPrice,
-                    'tax_amount'     => $taxAmount,
-                    'discount_amount'=> $discountAmount,
+                    'tax'     => $taxAmount,
+                    'discount'=> $discountAmount,
                     'discount_type'  => $discountType,
                     'tax_type'       => $taxType,
                     'subtotal'       => $subtotal,
@@ -56,8 +56,8 @@ class PurchaseRepository extends BaseRepository implements PurchaseInterface
                 'supplier_id'    => $data['supplier_id'],
                 'purchase_date'  => $data['purchase_date'] ?? now(), // Random date within the last 30 days
                 'total_amount'   => $finalTotal,     // Random amount between 50.00 and 500.00
-                'discount_amount' => $finalDiscount,         // Random discount
-                'tax_amount'      => $finalTax,       // Random tax
+                'discount' => $finalDiscount,         // Random discount
+                'tax'      => $finalTax,       // Random tax
                 'shipping_cost'   => $finalCost,        // Random shipping cost
                 'status'          => 'received',
             ]);

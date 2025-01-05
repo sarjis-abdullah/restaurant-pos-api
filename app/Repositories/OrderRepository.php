@@ -50,8 +50,8 @@ class OrderRepository extends BaseRepository implements OrderInterface
             }
             $order = Order::create([
                 'total_amount' => $finalTotal,
-                'tax_amount' => $finalTotalTax,
-                'discount_amount' => $finalTotalDiscount,
+                'tax' => $finalTotalTax,
+                'discount' => $finalTotalDiscount,
                 'addons_total' => $finalTotalAddons,
                 'order_date' => now(),
                 'created_by' => 1,
@@ -183,7 +183,7 @@ class OrderRepository extends BaseRepository implements OrderInterface
                 $orderItem->item_price = $item['item_price'];
                 $orderItem->menu_item_discount = $item['menu_item_discount'];
 //                $orderItem->additional_discount = 0;
-                $orderItem->tax_amount = $item['tax'];
+                $orderItem->tax = $item['tax'];
                 $orderItem->variant_id = $item['variant_id'];
                 $orderItem->total_amount = $item['total'];
                 $orderItem->save();
@@ -324,7 +324,7 @@ class OrderRepository extends BaseRepository implements OrderInterface
         $sum = 0;
         foreach ($discounts as $discount) {
 
-            $sum += $discount['discount_amount'];
+            $sum += $discount['discount'];
         }
         return $sum + $menuDiscounts;
     }

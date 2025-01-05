@@ -11,6 +11,6 @@ class OrderDiscount extends Model
 
     protected $fillable = [
         'type',
-        'discount_amount',
+        'discount',
     ];
 }
