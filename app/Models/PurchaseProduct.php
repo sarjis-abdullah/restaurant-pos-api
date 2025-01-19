@@ -13,7 +13,7 @@ class PurchaseProduct extends Model
     protected $fillable = [
         'purchase_id',
         'product_id',
-        'stock_id',
+        'cost_per_unit',
         'quantity',
         'purchase_price',
         'selling_price',
@@ -22,7 +22,9 @@ class PurchaseProduct extends Model
         'discount_type',
         'discount',
         'allocated_shipping_cost',
-        'subtotal'
+        'subtotal',
+        'expire_date',
+        'status'
     ];
 
     function purchase(): BelongsTo

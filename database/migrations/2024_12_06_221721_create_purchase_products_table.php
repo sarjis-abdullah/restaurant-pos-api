@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('purchase_products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('stock_id')->constrained()->onDelete('cascade');
+//            $table->foreignId('stock_id')->constrained()->onDelete('cascade');
             $table->foreignId('purchase_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->decimal('quantity');
+            $table->decimal('cost_per_unit');
             $table->decimal('purchase_price');
             $table->decimal('selling_price');
             $table->decimal('tax');
@@ -24,6 +25,8 @@ return new class extends Migration
             $table->decimal('allocated_shipping_cost');
             $table->string('discount_type')->default('flat');
             $table->string('tax_type')->default('percentage');
+            $table->string('status')->default('received');
+            $table->date('expire_date')->nullable();
             $table->decimal('subtotal');
             $table->timestamps();
         });

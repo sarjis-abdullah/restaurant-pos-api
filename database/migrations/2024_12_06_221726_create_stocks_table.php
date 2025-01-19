@@ -15,15 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('sku')->unique();
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
-            $table->decimal('unit_cost');
-            $table->decimal('purchase_price');
-            $table->decimal('selling_price');
-            $table->decimal('tax')->default(0);
-            $table->enum('tax_type', ['percentage', 'flat'])->default('percentage');
-            $table->enum('discount_type', ['percentage', 'flat'])->default('percentage');
-            $table->decimal('discount')->default(0);
+            $table->foreignId('purchase_product_id')->constrained('purchase_products')->onDelete('cascade');
+//            $table->decimal('unit_cost');
+//            $table->decimal('purchase_price');
+//            $table->decimal('selling_price');
+//            $table->decimal('tax')->default(0);
+//            $table->enum('tax_type', ['percentage', 'flat'])->default('percentage');
+//            $table->enum('discount_type', ['percentage', 'flat'])->default('percentage');
+//            $table->decimal('discount')->default(0);
             $table->decimal('quantity')->default(0);
-            $table->decimal('shipping_cost')->default(0);
+//            $table->decimal('shipping_cost')->default(0);
             $table->timestamps();
         });
     }

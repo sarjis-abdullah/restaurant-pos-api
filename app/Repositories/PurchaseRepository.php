@@ -25,16 +25,20 @@ class PurchaseRepository extends BaseRepository implements PurchaseInterface
             $finalTax = 0;
             $finalCost = 0;
             $shippingCost = rand(20, 21) * 10;
+
             foreach ($data['purchaseProducts'] as $purchaseProduct) {
                 $discountType = $purchaseProduct['tax_type'];
                 $taxType = $purchaseProduct['tax_type'];
                 $quantity = $purchaseProduct['quantity'];
-                $purchasePrice =$purchaseProduct['purchase_price'];
-                $sellingPrice = $purchaseProduct['purchase_price'];
-                $taxAmount = $taxType == 'percentage' ? $purchasePrice * (5/100) : 5;
-                $discountAmount = $discountType == 'percentage' ? $purchasePrice * (2/100) : 2;
-
-                $subtotal = ($quantity * $purchasePrice) + $taxAmount - $discountAmount;
+                $purchasePrice = $purchaseProduct['purchase_price'];
+                $sellingPrice = $purchaseProduct['selling_price'];
+                $tax = $purchaseProduct['tax'];
+                $discount = $purchaseProduct['discount'];
+                $taxAmount = $taxType == 'percentage' ? $quantity * $purchasePrice * ($tax/100) : $tax;
+                $discountAmount = $discountType == 'percentage' ? $quantity * $purchasePrice * ($discount/100) : $discount;
+                $suppingCost = $purchaseProduct['allocated_shipping_cost'];
+                $subtotal = ($quantity * $purchasePrice) + $taxAmount - $discountAmount + $suppingCost;
+//                dd($subtotal,$quantity, $purchasePrice,$tax, $taxAmount,$discountAmount, $suppingCost);
                 $finalTotal += $subtotal;
                 $finalDiscount += $discountAmount;
                 $finalTax += $taxAmount;
@@ -44,11 +48,15 @@ class PurchaseRepository extends BaseRepository implements PurchaseInterface
                     'quantity'       => $quantity,
                     'purchase_price' => $purchasePrice,
                     'selling_price'  => $sellingPrice,
-                    'tax'     => $taxAmount,
-                    'discount'=> $discountAmount,
-                    'discount_type'  => $discountType,
-                    'tax_type'       => $taxType,
-                    'subtotal'       => $subtotal,
+                    'tax'     => $purchaseProduct['tax'],
+                    'discount'=> $purchaseProduct['discount'],
+                    'discount_type'  => $purchaseProduct['discount_type'],
+                    'tax_type'       => $purchaseProduct['tax_type'],
+                    'cost_per_unit'  => $purchaseProduct['cost_per_unit'],
+                    'expire_date'  => $purchaseProduct['expire_date'],
+                    'allocated_shipping_cost'  => $purchaseProduct['allocated_shipping_cost'],
+                    'subtotal'  => 0, //todo, remove it
+
                 ]);
             }
 
@@ -58,8 +66,9 @@ class PurchaseRepository extends BaseRepository implements PurchaseInterface
                 'total_amount'   => $finalTotal,     // Random amount between 50.00 and 500.00
                 'discount' => $finalDiscount,         // Random discount
                 'tax'      => $finalTax,       // Random tax
-                'shipping_cost'   => $finalCost,        // Random shipping cost
-                'status'          => 'received',
+                'shipping_cost'   => $data['shipping_cost'],        // Random shipping cost
+                'status'          => $data['status'],
+                'branch_id'      => $data['branch_id'],
             ]);
 
 
@@ -88,14 +97,12 @@ class PurchaseRepository extends BaseRepository implements PurchaseInterface
             $purchaseAbleItems = array_map(function ($item) use ($purchase, $shippingCost, $finalTotal) {
                 $item['purchase_id'] = $purchase->id;
                 $proportionalShipping = ($item['subtotal'] / $finalTotal) * $shippingCost;
-                $item['allocated_shipping_cost'] = $proportionalShipping;
                 $item['subtotal'] += $proportionalShipping;
                 return $item;
             }, $purchaseAbleItems->toArray());
 
             foreach ($purchaseAbleItems as $item) {
-                $costPerUnit = ($item['subtotal'] / $item['quantity']);
-
+                $purchaseProductId = PurchaseProduct::create($item)->id;
 
                 if (isset($item['stockId'])){
                     $stock = Stock::where('id', $item['stockId'])->where('product_id', $item['product_id'])->first();
@@ -107,15 +114,11 @@ class PurchaseRepository extends BaseRepository implements PurchaseInterface
                     $stock = Stock::create([
                         'sku' => uniqid('prod_'),
                         'product_id' => $item['product_id'],
-                        'purchase_id' => $item['product_id'],
-                        'cost_per_unit' => $costPerUnit,
+                        'purchase_product_id' => $purchaseProductId,
                         'quantity' => $item['quantity'],
                     ]);
                 }
-                PurchaseProduct::create([
-                    ...$item,
-                    'stock_id' => $stock->id,
-                ]);
+
             }
             DB::commit();
             return $purchase;
