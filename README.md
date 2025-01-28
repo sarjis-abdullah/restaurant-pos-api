@@ -14,6 +14,14 @@ To run locally (recommended for linux):
 
 `sudo docker-compose build --no-cache` (this command will remove existing docker setup and create new instance)
 
+To run locally (recommended for windows):
+
+`1. docker-compose build` (for the first time it will take some time to install everything.)
+
+`2. docker-compose up -d` (everytime before run this project should execute this command)
+
+`docker-compose build --no-cache` (this command will remove existing docker setup and create new instance)
+
 To setup locally:
 
 `create a .env file in project root directory`
