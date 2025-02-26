@@ -2,22 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Company\IndexRequest;
 use App\Http\Requests\Company\StoreRequest;
+use App\Http\Requests\Company\UpdateRequest;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Http\Resources\CompanyResource;
 use App\Http\Resources\CompanyResourceCollection;
 use App\Models\Company;
+use App\Repositories\Contracts\CompanyInterface;
 
 class CompanyController extends Controller
 {
+    private CompanyInterface $interface;
+
+    public function __construct(CompanyInterface $interface)
+    {
+        $this->interface = $interface;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexRequest $request)
     {
-        $items = Company::paginate(5);
-        return new CompanyResourceCollection($items);
+        $item = $this->interface->findBy($request->all());
+        return new CompanyResourceCollection($item);
     }
 
     /**
@@ -33,8 +43,8 @@ class CompanyController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $items = Company::create($request->all());
-        return new CompanyResource($items);
+        $item = $this->interface->save($request->all());
+        return new CompanyResource($item);
     }
 
     /**
@@ -42,7 +52,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        //
+        return new CompanyResource($company);
     }
 
     /**
@@ -56,9 +66,10 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCompanyRequest $request, Company $company)
+    public function update(UpdateRequest $request, Company $company)
     {
-        //
+        $item = $this->interface->update($company, $request->all());
+        return new CompanyResource($item);
     }
 
     /**
@@ -66,6 +77,7 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        //
+        $this->interface->delete($company);
+        return response()->json(null, 204);
     }
 }
