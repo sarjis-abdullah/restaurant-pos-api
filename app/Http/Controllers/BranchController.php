@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Branch\IndexRequest;
 use App\Http\Requests\Branch\StoreRequest;
+use App\Http\Requests\Branch\UpdateRequest;
 use App\Http\Requests\StoreBranchRequest;
 use App\Http\Requests\UpdateBranchRequest;
 use App\Http\Resources\BranchResource;
@@ -42,7 +43,7 @@ class BranchController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $items = Branch::create($request->all());
+        $items = $this->interface->save($request->all());
         return new BranchResource($items);
     }
 
@@ -51,7 +52,7 @@ class BranchController extends Controller
      */
     public function show(Branch $branch)
     {
-        //
+        return new BranchResource($branch);
     }
 
     /**
@@ -65,16 +66,18 @@ class BranchController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Update $request, Branch $branch)
+    public function update(UpdateRequest $request, Branch $branch)
     {
-        //
+        $items = $this->interface->update($branch, $request->all());
+        return new BranchResource($items);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Branch $branch)
+    public function destroy(Branch $branch): \Illuminate\Http\JsonResponse
     {
-        //
+        $this->interface->delete($branch);
+        return response()->json(null, 204);
     }
 }
